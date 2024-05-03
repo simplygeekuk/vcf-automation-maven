@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <modules>
+        <module>source/vro-js</module>
+        <module>source/vro-xml</module>
+        <module>source/vra-content</module>
+    </modules>
+
+    <parent>
+        <groupId>com.vmware.pscoe.o11n</groupId>
+        <artifactId>base-package</artifactId>
+        <version>2.38.1</version>
+    </parent>
+
+    <groupId>com.simplygeek</groupId>
+    <artifactId>aria-automation-all</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <scm>
+        <developerConnection>scm:git:https://flcgit.freelancercolo.local/aria-automation/aria-build-tools/aria-automation.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+    </properties>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <tagNameFormat>v@{project.version}</tagNameFormat>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <skipAssembly>true</skipAssembly>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
