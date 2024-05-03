@@ -277,12 +277,14 @@
             var timeout = 10;
             var success = false;
             var statusCode;
+            var attemptNum = 1;
+            var retryOn500 = true;
 
             // Default to status code '200' if no expected status codes have been defined.
             if (!expectedResponseCodes ||
                 (Array.isArray(expectedResponseCodes) &&
                 expectedResponseCodes.length < 1)) {
-                expectedResponseCodes = [200, 201, 204];
+                expectedResponseCodes = [200];
             }
 
             createRequest.call(
@@ -302,32 +304,47 @@
             if (content) {
                 var regex = new RegExp('(password|secret/i)', 'i');
                 var contentString = JSON.stringify(content);
-                if (contentString.match(regex)) {
-                    content['password'] = "*****";
+                var matches = contentString.match(regex);
+                if (matches) {
+                    content[matches[1]] = "*****";
                     //content['secret'] = "*****";
                     contentString = JSON.stringify(content);
                 }
                 this.log.debug("Content: " + contentString);
             }
 
-            for (var i = 0; i < maxAttempts; i++) {
+            do {
                 try {
                     response = this.request.execute();
-                    success = true;
-                    break;
+                    statusCode = response.statusCode;
+                    if (statusCode === 500 && !retryOn500) {
+                        success = true;
+                    }
                 } catch (e) {
                     System.sleep(timeout * 1000);
                     this.log.warn("Request failed: " + e + " retrying...");
-                    continue;
                 }
-            }
+                attemptNum++
+            } while (!success || (attemptNum > maxAttempts));
+
+            // for (var i = 0; i < maxAttempts; i++) {
+            //     try {
+            //         response = this.request.execute();
+            //         success = true;
+            //         break;
+            //     } catch (e) {
+            //         System.sleep(timeout * 1000);
+            //         this.log.warn("Request failed: " + e + " retrying...");
+            //         continue;
+            //     }
+            // }
 
             if (!success) {
                 throw "Request failed after " + maxAttempts.toString() +
                     " attempts. Aborting.";
             }
 
-            statusCode = response.statusCode;
+            // statusCode = response.statusCode;
             if (expectedResponseCodes.indexOf(statusCode) > -1) {
                 this.log.debug("Request completed successfully with status: " +
                             statusCode);
