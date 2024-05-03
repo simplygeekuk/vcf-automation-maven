@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@vmware-pscoe/vropkg": "file:../../../.m2/repository/com/vmware/pscoe/iac/vropkg/2.36.0/vropkg-2.36.0.tgz"
+  }
+}
