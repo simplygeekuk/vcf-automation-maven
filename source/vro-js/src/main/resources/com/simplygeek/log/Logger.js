@@ -8,7 +8,7 @@
     ) {
         this.type = logType;
         this.name = logName;
-        this.info = function (
+        this.log = function (
             message
         ) {
             System.log("[" + this.type + ": " + this.name + "] " + message);
