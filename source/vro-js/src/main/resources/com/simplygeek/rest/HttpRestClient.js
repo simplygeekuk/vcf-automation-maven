@@ -7,15 +7,23 @@
      * Defines the HttpRestClient class.
      * @class
      * @param {REST:RESTHost} restHost - The HTTP REST host.
+     * @param {number} retryMaxAttempts - The maximum number attempts to retry a failed request.
+     * @param {number} retryDelay - The delay (in seconds) between retry attempts.
+     * @param {boolean} retryOn500 - Should retry the request if HTTP Status 500 is received.
      * 
      * @returns {Any} An instance of the HttpRestClient class.
      */
 
     function HttpRestClient(
-        restHost
+        restHost,
+        retryMaxAttempts,
+        retryDelay,
+        retryOn500
     ) {
         if (!restHost || System.getObjectType(restHost) !== "REST:RESTHost") {
-            throw new ReferenceError("restHost is required and must be of type 'REST:RESTHost'");
+            throw new ReferenceError(
+                "restHost is required and must be of type 'REST:RESTHost'"
+            );
         }
 
         this.log = new (System.getModule("com.simplygeek.log").Logger())(
@@ -24,6 +32,9 @@
         );
 
         this.restHost = restHost;
+        this.retryMaxAttempts = retryMaxAttempts || 5;
+        this.retryDelay = retryDelay || 10;
+        this.retryOn500 = retryOn500 !== false;
 
         /**
          * Defines the GET method.
@@ -273,12 +284,8 @@
             }
 
             var response;
-            var maxAttempts = 5;
-            var timeout = 10;
-            var success = false;
             var statusCode;
-            var attemptNum = 1;
-            var retryOn500 = true;
+            var retryAttempt = 1;
 
             // Default to status code '200' if no expected status codes have been defined.
             if (!expectedResponseCodes ||
@@ -306,8 +313,7 @@
                 var contentString = JSON.stringify(content);
                 var matches = contentString.match(regex);
                 if (matches) {
-                    content[matches[1]] = "*****";
-                    //content['secret'] = "*****";
+                    content[matches[1]] = "*******";
                     contentString = JSON.stringify(content);
                 }
                 this.log.debug("Content: " + contentString);
@@ -317,42 +323,40 @@
                 try {
                     response = this.request.execute();
                     statusCode = response.statusCode;
-                    if (statusCode === 500 && !retryOn500) {
-                        success = true;
+                    var responseString = response.contentAsString;
+                    if (statusCode === 500 && this.retryOn500) {
+                        response = null;
+                        throw new Error(responseString)
                     }
                 } catch (e) {
-                    System.sleep(timeout * 1000);
-                    this.log.warn("Request failed: " + e + " retrying...");
+                    this.log.warn(
+                        "Request failed: " + e + " retrying..." +
+                        retryAttempt + " of " + this.retryMaxAttempts
+                    );
+                    if (retryAttempt < this.retryMaxAttempts) System.sleep(this.retryDelay * 1000);
                 }
-                attemptNum++
-            } while (!success || (attemptNum > maxAttempts));
-
-            // for (var i = 0; i < maxAttempts; i++) {
-            //     try {
-            //         response = this.request.execute();
-            //         success = true;
-            //         break;
-            //     } catch (e) {
-            //         System.sleep(timeout * 1000);
-            //         this.log.warn("Request failed: " + e + " retrying...");
-            //         continue;
-            //     }
-            // }
-
-            if (!success) {
-                throw "Request failed after " + maxAttempts.toString() +
-                    " attempts. Aborting.";
+                retryAttempt++
+            } while (!response && (retryAttempt <= this.retryMaxAttempts));
+       
+            if (!response) {
+                throw new Error(
+                    "Request failed after " + this.retryMaxAttempts.toString() +
+                    " attempts. Aborting."
+                );
             }
 
-            // statusCode = response.statusCode;
             if (expectedResponseCodes.indexOf(statusCode) > -1) {
-                this.log.debug("Request completed successfully with status: " +
-                            statusCode);
+                this.log.debug(
+                    "Request completed successfully with status: " +
+                    statusCode
+                            );
             } else {
-                throw "Request failed, incorrect response code received: '" +
+                throw new Error(
+                    "Request failed, incorrect response code received: '" +
                     statusCode + "' expected one of: '" +
                     expectedResponseCodes.join(",") +
-                    "'\n" + response.contentAsString;
+                    "'\n" + response.contentAsString
+                );
             }
 
             return response;
@@ -435,7 +439,7 @@
             this.request.setHeader("Accept", this.acceptType);
             this.log.debug("Adding Header: Content-Type: " + this.contentType);
             this.request.setHeader("Content-Type", this.contentType);
-            if (headers && (headers instanceof Properties)) {
+            if (headers) {
                 headers.keys.forEach(
                     function (headerKey) {
                         var headerValue = headers.get(headerKey);
