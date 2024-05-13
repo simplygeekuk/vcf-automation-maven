@@ -237,12 +237,14 @@
             var validAcceptTypes = [
                 "*/*",
                 "application/json",
+                "application/json; charset=utf-8",
                 "application/xml",
                 "text/plain"
             ];
 
             var validContentTypes = [
                 "application/json",
+                "application/json; charset=utf-8",
                 "application/xml",
                 "text/plain",
                 "application/x-www-form-urlencoded"
@@ -405,19 +407,25 @@
             this.log.debug("Setting Content-Type to '" + this.contentType + "'");
 
             if (!content ) {
-                this.request = this.restHost.createRequest(restMethod,
-                                                        uri);
+                this.request = this.restHost.createRequest(
+                    restMethod,
+                    uri
+                );
                 this.request.contentType = this.contentType;
             } else {
                 if (contentType === 'application/x-www-form-urlencoded') {
-                    this.request = this.restHost.createRequest(restMethod,
-                                                            uri,
-                                                            xwwwformurlencoder.call(this, content));
+                    this.request = this.restHost.createRequest(
+                        restMethod,
+                        uri,
+                        xwwwformurlencoder.call(this, content)
+                    );
                     this.request.contentType = this.contentType;
                 } else {
-                    this.request = this.restHost.createRequest(restMethod,
-                                                            uri,
-                                                            JSON.stringify(content));
+                    this.request = this.restHost.createRequest(
+                        restMethod,
+                        uri,
+                        JSON.stringify(content)
+                    );
                     this.request.contentType = this.contentType;
                 }
             }
