@@ -11,7 +11,7 @@
      */
 
     function ConfigElementService() {
-        this.log = new (System.getModule("com.simplygeek.log").log())(
+        this.log = new (System.getModule("com.simplygeek.log").Logger())(
             "Action",
             "ConfigElementService"
         );
@@ -50,36 +50,39 @@
                 "Get Configuration Element '" + configElementName +
                 "' in path '" + categoryPath
             );
-            this.log.debug(
-                "Getting Configuration Element Category in path: " + categoryPath
-            );
             configElementCategory = Server.getConfigurationElementCategoryWithPath(categoryPath);
 
-            this.log.debug(
-                "Get all Configuration Elements in category: " + categoryPath
-            );
-            configElements = configElementCategory.allConfigurationElements;
-
-            configElementsFound = configElements.filter(
-                function(configElement) {
-                    return configElement.name === configElementName;
-                }
-            );
-
-            if (configElementsFound.length > 1) {
-                throw new Error(
-                    "More than one Configuration Element was found with the name '" +
-                    configElementName + "'"
+            if (configElementCategory) {
+                this.log.debug(
+                    "Get all Configuration Elements in category: " + categoryPath
                 );
-            } else if (configElementsFound.length > 0) {
-                configElement = configElementsFound[0];
+                configElements = configElementCategory.allConfigurationElements;
+
+                configElementsFound = configElements.filter(
+                    function(configElement) {
+                        return configElement.name === configElementName;
+                    }
+                );
+
+                if (configElementsFound.length > 1) {
+                    throw new Error(
+                        "More than one Configuration Element was found with the name '" +
+                        configElementName + "'"
+                    );
+                } else if (configElementsFound.length > 0) {
+                    configElement = configElementsFound[0];
+                } else {
+                    throw new Error(
+                        "No Configuration Element found with the name '" +
+                        configElementName + "'"
+                    );
+                }
             } else {
                 throw new Error(
-                    "No Configuration Element found with the name '" +
-                    configElementName + "'"
+                    this.log.debug("No configuration element category found '" + categoryPath)
                 );
             }
-
+            
             this.log.debug(
                 "Found Configuration Element '" + configElement.name + "'"
             );
