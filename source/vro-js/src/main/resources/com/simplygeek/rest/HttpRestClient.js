@@ -311,7 +311,7 @@
             this.log.debug("Method: " + restMethod);
 
             if (content) {
-                var regex = new RegExp('(password|secret/i)', 'i');
+                var regex = new RegExp('(password|secret|refreshToken)', 'i');
                 var contentString = JSON.stringify(content);
                 var matches = contentString.match(regex);
                 if (matches) {
