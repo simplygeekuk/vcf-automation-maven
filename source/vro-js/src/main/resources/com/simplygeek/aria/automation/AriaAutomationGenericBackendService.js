@@ -4,66 +4,33 @@
  */
 (function () {
     /**
-     * Defines the AriaAutomationAssemblerBackendService class.
+     * Defines the AriaAutomationGenericBackendService class.
      * @class
      * 
-     * @returns {Any} An instance of the AriaAutomationAssemblerBackendService class.
+     * @returns {Any} An instance of the AriaAutomationGenericBackendService class.
      */
 
-    function AriaAutomationAssemblerBackendService(restHost) {
+    function AriaAutomationGenericBackendService(restHost) {
         if (!restHost || System.getObjectType(restHost) !== "REST:RESTHost") {
             throw new ReferenceError(
                 "restHost is required and must be of type 'REST:RESTHost'"
             );
         }
 
+        AriaAutomationAssemblerIaasAuthenticationService.call(this, restHost);
+
         this.rest = new (System.getModule("com.simplygeek.rest").HttpRestClient())(restHost);
         this.mediaType = "application/json";
-        this.baseUri = "/iaas/api";
-        this.apiVersion = "2021-07-15";
 
-        var headers = new Properties();
-        this.sessionHeaders = headers;
+        // var headers = new Properties();
+        // this.sessionHeaders = headers;
     }
 
-    // ## Authentication ##
-    
-    /**
-     * Defines the createSession method.
-     * @method
-     * @public
-     * @param {string} refreshToken - The authorization scope.
-     * 
-     * @returns {Any} The request response object.
-     */
-
-    AriaAutomationAssemblerBackendService.prototype.createSession = function (refreshToken) {
-        if (!refreshToken || typeof refreshToken !== "string") {
-            throw new ReferenceError(
-                "refreshToken is required and must " +
-                "be of type 'string'"
-            );
-        }
-
-        this.session = {};
-        var uri = this.baseUri + "/login";
-
-        var content = {
-            refreshToken: refreshToken
-        }
-
-        this.log.debug("Creating API session.");
-        var response = this.rest.post(
-            uri,
-            this.mediaType,
-            content,
-            this.mediaType
-        );
-
-        this.session = JSON.parse(response.contentAsString);
-        this.sessionHeaders.put("apiVersion", this.apiVersion);
-        this.sessionHeaders.put("Authorization", "Bearer " + this.session.token);
-    }
+    var AriaAutomationAssemblerIaasAuthenticationService = System.getModule(
+        "com.simplygeek.aria.automation.assembler.iaas"
+    ).AriaAutomationAssemblerIaasAuthenticationService();
+    AriaAutomationGenericBackendService.prototype = Object.create(AriaAutomationAssemblerIaasAuthenticationService.prototype);
+    AriaAutomationGenericBackendService.prototype.constructor = AriaAutomationGenericBackendService;
 
     // ## Methods ##
 
@@ -78,7 +45,7 @@
      * @returns {Any||Array/Any} The response result or results.
      */
 
-    AriaAutomationAssemblerBackendService.prototype.get = function (
+    AriaAutomationGenericBackendService.prototype.get = function (
         uri,
         expectedResponseCodes,
         throwOnNotFound
@@ -99,18 +66,9 @@
         }
 
         var result;
-        var uriVersion = "apiVersion=" + this.apiVersion;
-        var initialUri;
-
-        // Check if existing parameters are defined in the URI.
-        if (uri.indexOf('?') > -1) {
-            initialUri = uri + "&";
-        } else {
-            initialUri = uri + "?";
-        }
 
         var response = this.rest.get(
-            initialUri + uriVersion,
+            uri,
             this.mediaType,
             expectedResponseCodes,
             this.sessionHeaders
@@ -119,10 +77,10 @@
         var responseContent = JSON.parse(response.contentAsString);
 
         // Check if we have a collection.
-        if (responseContent.totalElements) {
+        if (responseContent.totalElements || responseContent.totalElements === 0) {
             var numTotalResults = responseContent.totalElements;
             var results = responseContent.content;
-            var numResultsOnPage = responseContent.numberOfElements;
+            var numResultsOnPage = responseContent.numberOfElements || responseContent.size;
             this.log.debug(
                 "Found " + numResultsOnPage + " of " +
                 numTotalResults + " results"
@@ -183,7 +141,7 @@
      * @returns {Any} The response content object.
      */
 
-    AriaAutomationAssemblerBackendService.prototype.post = function (
+    AriaAutomationGenericBackendService.prototype.post = function (
         uri,
         content,
         expectedResponseCodes
@@ -197,10 +155,9 @@
         }
 
         var responseContent;
-        var uriVersion = "?apiVersion=" + this.apiVersion;
 
         var response = this.rest.post(
-            uri + uriVersion,
+            uri,
             this.mediaType,
             content,
             this.mediaType,
@@ -223,7 +180,7 @@
      * @returns {Any} The response content object.
      */
 
-    AriaAutomationAssemblerBackendService.prototype.put = function (
+    AriaAutomationGenericBackendService.prototype.put = function (
         uri,
         content,
         expectedResponseCodes
@@ -241,10 +198,9 @@
         }
 
         var responseContent;
-        var uriVersion = "?apiVersion=" + this.apiVersion;
 
         var response = this.rest.put(
-            uri + uriVersion,
+            uri,
             this.mediaType,
             content,
             this.mediaType,
@@ -267,7 +223,7 @@
      * @returns {Any} The response content object.
      */
 
-    AriaAutomationAssemblerBackendService.prototype.patch = function (
+    AriaAutomationGenericBackendService.prototype.patch = function (
         uri,
         content,
         expectedResponseCodes
@@ -285,10 +241,9 @@
         }
 
         var responseContent;
-        var uriVersion = "?apiVersion=" + this.apiVersion;
 
         var response = this.rest.patch(
-            uri + uriVersion,
+            uri,
             this.mediaType,
             content,
             this.mediaType,
@@ -308,7 +263,7 @@
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
      */
 
-    AriaAutomationAssemblerBackendService.prototype.delete = function (
+    AriaAutomationGenericBackendService.prototype.delete = function (
         uri,
         expectedResponseCodes
     ) {
@@ -321,22 +276,13 @@
             var expectedResponseCodes = [204];
         }
 
-        var uriVersion = "apiVersion=" + this.apiVersion;
-
-        // Check if existing parameters are defined in the URI.
-        if (uri.indexOf('?') > -1) {
-            uri += "&";
-        } else {
-            uri += "?";
-        }
-
         this.rest.delete(
-            uri + uriVersion,
+            uri,
             this.mediaType,
             expectedResponseCodes,
             this.sessionHeaders
         );
     }
     
-    return AriaAutomationAssemblerBackendService;
+    return AriaAutomationGenericBackendService;
 });

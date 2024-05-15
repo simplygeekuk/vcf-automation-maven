@@ -12,18 +12,22 @@
      */
 
     function AriaAutomationAssemblerIaaSApiService(restHost) {
-        AriaAutomationAssemblerBackendService.call(this, restHost);
+        AriaAutomationGenericBackendService.call(this, restHost);
 
         this.log = new (System.getModule("com.simplygeek.log").Logger())(
             "Action",
-            "AriaAutomationAssemblerIaaSApiService2"
+            "AriaAutomationAssemblerIaasApiService"
         );
+
+        this.baseUri = "/iaas/api";
+        this.apiVersion = "2021-07-15";
+        this.apiVersionParam = "apiVersion=" + this.apiVersion;
     }
 
-    var AriaAutomationAssemblerBackendService = System.getModule(
-        "com.simplygeek.aria.automation.assembler"
-    ).AriaAutomationAssemblerBackendService();
-    AriaAutomationAssemblerIaaSApiService.prototype = Object.create(AriaAutomationAssemblerBackendService.prototype);
+    var AriaAutomationGenericBackendService = System.getModule(
+        "com.simplygeek.aria.automation.assembler.iaas"
+    ).AriaAutomationGenericBackendService();
+    AriaAutomationAssemblerIaaSApiService.prototype = Object.create(AriaAutomationGenericBackendService.prototype);
     AriaAutomationAssemblerIaaSApiService.prototype.constructor = AriaAutomationAssemblerIaaSApiService;
 
     // ## Custom Naming ##
@@ -37,7 +41,7 @@
      */
 
     AriaAutomationAssemblerIaaSApiService.prototype.getCustomNames = function () {
-        var uri = this.baseUri + "/naming"
+        var uri = this.baseUri + "/naming?" + this.apiVersionParam;
 
         var results;
 
@@ -69,7 +73,7 @@
             );
         }
 
-        var uri = this.baseUri + "/naming/" + customNamingId;
+        var uri = this.baseUri + "/naming/" + customNamingId + "?" + this.apiVersionParam;
         var customNamingObject;
 
         this.log.debug("Getting custom naming with ID '" + customNamingId + "'");
@@ -106,7 +110,8 @@
             );
         }
 
-        var uri = this.baseUri + "/naming/?$filter=name eq '" + customNamingName + "'";
+        var uri = this.baseUri + "/naming/?$filter=name eq '" + customNamingName + "'" +
+                                 "&" + this.apiVersionParam;
         var customNamingObject;
         var customNamingFullObject;
 
@@ -168,7 +173,7 @@
             );
         }
 
-        var uri = this.baseUri + "/naming";
+        var uri = this.baseUri + "/naming?" + this.apiVersionParam;
         var updatedCustomNamingObject;
 
         updatedCustomNamingObject = this.put(
