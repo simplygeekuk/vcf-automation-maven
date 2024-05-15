@@ -33,7 +33,7 @@
     var ariaIaasService = new (
         System.getModule(
             "com.simplygeek.aria.automation.assembler.iaas"
-        ).AriaAutomationAssemblerIaaSApiService())(ariaAutomationRestHost);
+        ).AriaAutomationAssemblerIaasApiService())(ariaAutomationRestHost);
 
     var locking = new (
         System.getModule(
