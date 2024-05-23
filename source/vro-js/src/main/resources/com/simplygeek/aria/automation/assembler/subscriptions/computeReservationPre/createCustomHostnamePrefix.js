@@ -9,39 +9,53 @@
         "Action",
         "createCustomHostnamePrefix"
     );
-
     // Get values from Input Properties
     var customProps = inputProperties.get("customProperties");
     var hostnamePrefix = customProps.get("hostnamePrefix");
+
     log.debug("hostnamePrefix: " + hostnamePrefix);
 
     // Get Provisioning Configuration
-    var configService = new (System.getModule("com.simplygeek.aria.orchestrator.configurations").ConfigElementService());
+    var configService = new (System.getModule(
+        "com.simplygeek.aria.orchestrator.configurations"
+    ).ConfigElementService());
     var provisioningConfigPath = "Simplygeek/Aria/Automation/Provisioning";
     var restHostConfigPath = "Simplygeek/Aria/Orchestrator/Resthosts";
-    var provisioningDefaultsConfigElement = configService.getConfigElement("Defaults", provisioningConfigPath);
-
+    var provisioningDefaultsConfigElement = configService.getConfigElement(
+        "Defaults", provisioningConfigPath
+    );
     // Get Custom Naming
-    var customNamingProfile = configService.getConfigElementAttribute(provisioningDefaultsConfigElement, "customNamingProfile").value;
-
+    var customNamingProfileName = configService.getConfigElementAttribute(
+        provisioningDefaultsConfigElement,
+        "customNamingProfile"
+    ).value;
     // Get Aria Automation Resthost
-    var ariaAutomationRestHostName = configService.getConfigElementAttribute(provisioningDefaultsConfigElement, "ariaAutomationRestHostName").value;
-    var ariaAutomationRestHost = System.getModule("com.simplygeek.rest").getRestHost(ariaAutomationRestHostName);
-    var ariaAutomationRestHostConfigElement = configService.getConfigElement(ariaAutomationRestHostName, restHostConfigPath);
-    var ariaAutomationApiToken = configService.getConfigElementAttribute(ariaAutomationRestHostConfigElement, "refreshToken").value;
-
-    var ariaIaasService = new (
+    var ariaAutomationRestHostName = configService.getConfigElementAttribute(
+        provisioningDefaultsConfigElement,
+        "ariaAutomationRestHostName"
+    ).value;
+    var ariaAutomationRestHost = System.getModule("com.simplygeek.rest").getRestHost(
+        ariaAutomationRestHostName
+    );
+    var ariaAutomationRestHostConfigElement = configService.getConfigElement(
+        ariaAutomationRestHostName,
+        restHostConfigPath
+    );
+    var ariaAutomationApiToken = configService.getConfigElementAttribute(
+        ariaAutomationRestHostConfigElement,
+        "refreshToken"
+    ).value;
+    var customNamingService = new (
         System.getModule(
             "com.simplygeek.aria.automation.assembler.iaas"
-        ).AriaAutomationAssemblerIaasApiService())(ariaAutomationRestHost);
-
+        ).AriaAutomationCustomNamingService())(ariaAutomationRestHost);
     var locking = new (
         System.getModule(
             "com.simplygeek.aria.orchestrator.locking"
         ).LockingService());
-    
-    ariaIaasService.createSession(ariaAutomationApiToken);
-    var customNamingProfile = ariaIaasService.getCustomNamingByName(customNamingProfile);
+
+    customNamingService.createSessionWithRefreshToken(ariaAutomationApiToken);
+    var customNamingProfile = customNamingService.getCustomNamingByName(customNamingProfileName);
     var customNamingProfileId = customNamingProfile.id;
     var customNamingStartCounter = 0;
     var customNamingIncrementStep = 1;
@@ -50,21 +64,22 @@
         "Adding hostname prefix '" + hostnamePrefix +
         " to custom naming profile '" + customNamingProfile.name + "'"
     );
-    if (ariaIaasService.checkCustomNamingPrefixExists(
+    if (customNamingService.checkCustomNamingPrefixExists(
         customNamingProfileId,
         hostnamePrefix)
     ) {
-        this.log.log("The prefix '" + prefix + "' already exists");
+        this.log.log("The prefix '" + hostnamePrefix + "' already exists");
     } else {
         locking.createLock("customNaming", customNamingProfileId);
         try {
-            var updatedCustomNamingObject = ariaIaasService.addCustomNamingPrefixToTemplate(
+            customNamingService.addCustomNamingPrefixToTemplate(
                 customNamingProfileId,
                 hostnamePrefix + "-",
                 "COMPUTE",
                 customNamingStartCounter,
                 customNamingIncrementStep
             );
+
             log.log("Hostname prefix successfully added");
 
         } catch (e) {

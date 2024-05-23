@@ -29,6 +29,6 @@
             System.debug("[" + this.type + ": " + this.name + "] " + message);
         };
     }
-    
+
     return Logger;
 });

@@ -17,22 +17,30 @@
             );
         }
 
-        AriaAutomationAssemblerIaasAuthenticationService.call(this, restHost);
+        AriaAutomationAuthenticationService.call(this, restHost);
 
         this.rest = new (System.getModule("com.simplygeek.rest").HttpRestClient())(restHost);
         this.mediaType = "application/json";
-
-        // var headers = new Properties();
-        // this.sessionHeaders = headers;
     }
 
-    var AriaAutomationAssemblerIaasAuthenticationService = System.getModule(
-        "com.simplygeek.aria.automation.assembler.iaas"
-    ).AriaAutomationAssemblerIaasAuthenticationService();
-    AriaAutomationGenericBackendService.prototype = Object.create(AriaAutomationAssemblerIaasAuthenticationService.prototype);
+    var AriaAutomationAuthenticationService = System.getModule(
+        "com.simplygeek.aria.automation"
+    ).AriaAutomationAuthenticationService();
+
+    AriaAutomationGenericBackendService.prototype = Object.create(
+        AriaAutomationAuthenticationService.prototype
+    );
     AriaAutomationGenericBackendService.prototype.constructor = AriaAutomationGenericBackendService;
 
     // ## Methods ##
+
+    AriaAutomationGenericBackendService.prototype.about = function () {
+        var response = this.get(
+            this.baseUri + "/about"
+        );
+
+        return response;
+    }
 
     /**
      * Defines the GET method.
