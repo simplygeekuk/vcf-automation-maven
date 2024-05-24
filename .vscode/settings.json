@@ -1,8 +1,8 @@
 {
     "vrdev.maven.profile": "tenant-dev",
     "java.configuration.updateBuildConfiguration": "automatic",
+    "eslint.runtime": "C:/Users/stephensg/AppData/Local/node-v20.13.1-win-x64",
     "cSpell.words": [
-        "Baisc",
         "simplygeek"
     ]
 }
