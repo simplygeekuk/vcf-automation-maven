@@ -74,14 +74,12 @@
         }
 
         var result;
-
         var response = this.rest.get(
             uri,
             this.mediaType,
             expectedResponseCodes,
             this.sessionHeaders
         );
-
         var responseContent = JSON.parse(response.contentAsString);
 
         // Check if we have a collection.
@@ -89,6 +87,7 @@
             var numTotalResults = responseContent.totalElements;
             var results = responseContent.content;
             var numResultsOnPage = responseContent.numberOfElements || responseContent.size;
+
             this.log.debug(
                 "Found " + numResultsOnPage + " of " +
                 numTotalResults + " results"
@@ -105,23 +104,26 @@
                         uri += "?";
                     }
 
+                    var pageSize = numResultsOnPage;
+
                     do {
                         this.log.debug("Getting additional results");
                         var uriParam1 = "$skip=" + numResultsOnPage;
-                        
-                        var uriWithParams = uri + uriParam1 + "&" + uriVersion;
+                        var uriWithParams = uri + uriParam1;
+                        var extraResponse = this.rest.get(
+                            uriWithParams,
+                            this.mediaType,
+                            expectedResponseCodes,
+                            this.sessionHeaders
+                        );
+                        var extraResponseContent = JSON.parse(extraResponse.contentAsString);
 
-                        var response = this.rest.get(uriWithParams,
-                                                    this.mediaType,
-                                                    expectedResponseCodes,
-                                                    this.sessionHeaders);
-
-                        var responseContent = JSON.parse(response.contentAsString);
-                        results = results.concat(responseContent.content);
+                        results = results.concat(extraResponseContent.content);
                         this.log.debug(
-                            "Found " + numResultsOnPage + " of " +
+                            "Found " + results.length + " of " +
                             numTotalResults + " results"
                         );
+                        numResultsOnPage += pageSize;
                     } while (results.length < numTotalResults)
                 }
             } else {
