@@ -1,8 +1,0 @@
-{
-    "vrdev.maven.profile": "tenant-dev",
-    "java.configuration.updateBuildConfiguration": "automatic",
-    "cSpell.words": [
-        "Baisc",
-        "simplygeek"
-    ]
-}
