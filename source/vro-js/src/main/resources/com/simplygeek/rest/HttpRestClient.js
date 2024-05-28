@@ -10,7 +10,7 @@
      * @param {number} retryMaxAttempts - The maximum number attempts to retry a failed request.
      * @param {number} retryDelay - The delay (in seconds) between retry attempts.
      * @param {boolean} retryOn500 - Should retry the request if HTTP Status 500 is received.
-     * 
+     *
      * @returns {Any} An instance of the HttpRestClient class.
      */
 
@@ -44,7 +44,7 @@
          * @param {string} [acceptType] - The encoding format to accept.
          * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
          * @param {Properties} [headers] - A key/value set of headers to include in the request.
-         * 
+         *
          * @returns {Any} The request response object.
          */
 
@@ -66,7 +66,7 @@
             );
 
             return response;
-        }
+        };
 
         /**
          * Defines the POST method.
@@ -78,7 +78,7 @@
          * @param {string} [contentType] - The encoding for content.
          * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
          * @param {Properties} [headers] - A key/value set of headers to include in the request.
-         * 
+         *
          * @returns {Any} The request response object.
          */
 
@@ -104,7 +104,7 @@
             );
 
             return response;
-        }
+        };
 
         /**
          * Defines the PUT method.
@@ -116,7 +116,7 @@
          * @param {string} [contentType] - The encoding for content.
          * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
          * @param {Properties} [headers] - A key/value set of headers to include in the request.
-         * 
+         *
          * @returns {Any} The request response object.
          */
 
@@ -140,7 +140,7 @@
             );
 
             return response;
-        }
+        };
 
         /**
          * Defines the PATCH method.
@@ -152,7 +152,7 @@
          * @param {string} [contentType] - The encoding for content.
          * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
          * @param {Properties} [headers] - A key/value set of headers to include in the request.
-         * 
+         *
          * @returns {Any} The request response object.
          */
 
@@ -176,7 +176,7 @@
             );
 
             return response;
-        }
+        };
 
         /**
          * Defines the DELETE method.
@@ -186,7 +186,7 @@
          * @param {string} [acceptType] - The encoding format to accept.
          * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
          * @param {Properties} [headers] - A key/value set of headers to include in the request.
-         * 
+         *
          * @returns {Any} The request response object.
          */
 
@@ -208,7 +208,7 @@
             );
 
             return response;
-        }
+        };
 
         /**
          * A function that invokes the request.
@@ -220,7 +220,7 @@
          * @param {string} [contentType] - The encoding for content.
          * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
          * @param {Properties} [headers] - A key/value set of headers to include in the request.
-         * 
+         *
          * @returns {Any} The request response object.
          */
 
@@ -233,6 +233,7 @@
             expectedResponseCodes,
             headers
         ) {
+            // eslint-disable-next-line no-useless-escape
             var uriRegex = /^[-a-zA-Z0-9()@:%_$,.~#?&\|\'\"\+\/\/=\s]*$/i;
             var validAcceptTypes = [
                 "*/*",
@@ -241,7 +242,6 @@
                 "application/xml",
                 "text/plain"
             ];
-
             var validContentTypes = [
                 "application/json",
                 "application/json; charset=utf-8",
@@ -249,7 +249,7 @@
                 "text/plain",
                 "application/x-www-form-urlencoded"
             ];
-        
+
             if (!uri || typeof uri !== "string") {
                 throw new ReferenceError("uri is required and must be of type 'string'");
             } else if (uri && !uri.match(uriRegex)) {
@@ -258,16 +258,16 @@
             if (acceptType && typeof acceptType !== "string") {
                 throw new TypeError("acceptType must be of type 'string'");
             } else if (acceptType && validAcceptTypes.indexOf(acceptType.toLowerCase()) < 0) {
-                throw new ReferenceError("Invalid Accept type '" + acceptType + "'." + 
-                " Supported Accept types: " + validAcceptTypes.join(', '));
+                throw new ReferenceError("Invalid Accept type '" + acceptType + "'." +
+                " Supported Accept types: " + validAcceptTypes.join(", "));
             }
             if (contentType && typeof contentType !== "string") {
                 throw new TypeError("contentType must be of type 'string'");
             } else if (contentType && validContentTypes.indexOf(contentType.toLowerCase()) < 0) {
-                throw new ReferenceError("Invalid Content type '" + contentType + "'." + 
-                " Supported Content types: " + validContentTypes.join(', '));
+                throw new ReferenceError("Invalid Content type '" + contentType + "'." +
+                " Supported Content types: " + validContentTypes.join(", "));
             }
-            if (content && typeof content !== 'object') {
+            if (content && typeof content !== "object") {
                 throw new TypeError("content must be of type 'object'");
             }
             if (expectedResponseCodes && !Array.isArray(expectedResponseCodes)) {
@@ -275,7 +275,7 @@
             } else if (expectedResponseCodes && expectedResponseCodes.length > 0) {
                 expectedResponseCodes.forEach(
                     function(code) {
-                        if (typeof code !== 'number') {
+                        if (typeof code !== "number") {
                             throw new TypeError("expectedResponseCodes must be of type 'Array/number'");
                         }
                     }
@@ -311,9 +311,10 @@
             this.log.debug("Method: " + restMethod);
 
             if (content) {
-                var regex = new RegExp('(password|secret|refreshToken)', 'i');
+                var regex = new RegExp("(password|secret|refreshToken)", "i");
                 var contentString = JSON.stringify(content);
                 var matches = contentString.match(regex);
+
                 if (matches) {
                     content[matches[1]] = "*******";
                     contentString = JSON.stringify(content);
@@ -326,9 +327,10 @@
                     response = this.request.execute();
                     statusCode = response.statusCode;
                     var responseString = response.contentAsString;
+
                     if (statusCode === 500 && this.retryOn500) {
                         response = null;
-                        throw new Error(responseString)
+                        throw new Error(responseString);
                     }
                 } catch (e) {
                     this.log.warn(
@@ -337,9 +339,9 @@
                     );
                     if (retryAttempt < this.retryMaxAttempts) System.sleep(this.retryDelay * 1000);
                 }
-                retryAttempt++
+                retryAttempt++;
             } while (!response && (retryAttempt <= this.retryMaxAttempts));
-       
+
             if (!response) {
                 throw new Error(
                     "Request failed after " + this.retryMaxAttempts.toString() +
@@ -351,7 +353,7 @@
                 this.log.debug(
                     "Request completed successfully with status: " +
                     statusCode
-                            );
+                );
             } else {
                 throw new Error(
                     "Request failed, incorrect response code received: '" +
@@ -362,7 +364,7 @@
             }
 
             return response;
-        }
+        };
 
         /**
          * A function that creates the request.
@@ -373,10 +375,11 @@
          * @param {Any} [content] - The request content.
          * @param {string} [contentType] - The encoding for content.
          * @param {Properties} [headers] - A key/value set of headers to include in the request.
-         * 
+         *
          * @returns {Any} The request response object.
          */
 
+        // eslint-disable-next-line padding-line-between-statements
         var createRequest = function (
             restMethod,
             uri,
@@ -386,20 +389,21 @@
             headers
         ) {
             // Perform URL encoding.
-            if (contentType === 'application/x-www-form-urlencoded') {
+            if (contentType === "application/x-www-form-urlencoded") {
                 this.log.debug("x-www-form-urlencoded will be used for URL encoding.");
             } else {
-                if (uri.indexOf('%') > -1) {
+                if (uri.indexOf("%") > -1) {
                     this.log.debug("Possible encoding detected in URI, encoder will not be used.");
                 } else {
                     this.log.debug("Performing URL encoding.");
-                    var uri = encodeURI(uri);
+                    uri = encodeURI(uri);
+
                     this.log.debug("Encoded URL: " + uri);
                 }
             }
 
             // Set default media types if not defined.
-            this.acceptType = acceptType || "application/json"
+            this.acceptType = acceptType || "application/json";
             this.contentType = contentType || this.acceptType;
 
             // Create request
@@ -413,7 +417,7 @@
                 );
                 this.request.contentType = this.contentType;
             } else {
-                if (contentType === 'application/x-www-form-urlencoded') {
+                if (contentType === "application/x-www-form-urlencoded") {
                     this.request = this.restHost.createRequest(
                         restMethod,
                         uri,
@@ -432,7 +436,7 @@
 
             this.log.debug("Setting headers...");
             setHeaders.call(this, headers);
-        }
+        };
 
         /**
          * function that sets the request headers.
@@ -440,6 +444,7 @@
          * @param {Properties} [headers] - A key/value set of headers to include in the request.
          */
 
+        // eslint-disable-next-line padding-line-between-statements
         var setHeaders = function (
             headers
         ) {
@@ -451,12 +456,13 @@
                 headers.keys.forEach(
                     function (headerKey) {
                         var headerValue = headers.get(headerKey);
+
                         this.log.debug("Adding Header: '" + headerKey + ": " + headerValue + "'");
                         this.request.setHeader(headerKey, headerValue);
                     }, this
                 );
             }
-        }
+        };
 
         /**
          * A function that converts a JSON body to a form-url-encoded string
@@ -464,26 +470,29 @@
          * @param {Any} [content] - The request content.
          */
 
+        // eslint-disable-next-line padding-line-between-statements
         var xwwwformurlencoder = function (
             content
         ) {
             this.log.debug("Performing Form URL Encoding");
             var contentUrlEncoded = "";
             var keys = Object.keys(content);
-                
-            for (var i=0; i <keys.length; i++){
+
+            for (var i = 0; i < keys.length; i++){
                 var key = keys[i];
-                if (key.toLowerCase() === 'password' || key.toLowerCase() === 'secret') {
-                    var value = content[keys[i]];
+                var value;
+
+                if (key.toLowerCase() === "password" || key.toLowerCase() === "secret") {
+                    value = content[keys[i]];
                 } else {
-                    var value = encodeURIComponent(content[keys[i]]);
+                    value = encodeURIComponent(content[keys[i]]);
                 }
                 contentUrlEncoded += encodeURIComponent(key) + "=" + value;
-                if (i < (keys.length -1 )) contentUrlEncoded += "&";
+                if (i < (keys.length - 1 )) contentUrlEncoded += "&";
             }
 
             return contentUrlEncoded;
-        }
+        };
     }
 
     return HttpRestClient;

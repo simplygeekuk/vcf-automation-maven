@@ -6,7 +6,7 @@
     /**
      * Defines the LockingService class.
      * @class
-     * 
+     *
      * @returns {Any} An instance of the LockingService class.
      */
 
@@ -15,7 +15,6 @@
             "Action",
             "LockingService"
         );
-
 
         /**
          * Defines the createLock method.
@@ -26,7 +25,7 @@
          * @param {number} [retryMaxAttempts] - param description.
          * @param {number} [retryDelay] - param description.
          * @param {boolean} [autoRemoveLock] - param description.
-         * 
+         *
          * @returns {boolean} - describe the return type as well
          */
 
@@ -61,8 +60,8 @@
                 );
             }
 
-            var retryMaxAttempts = retryMaxAttempts || 5;
-            var retryDelay = retryDelay || 60;
+            retryMaxAttempts = retryMaxAttempts || 5;
+            retryDelay = retryDelay || 60;
             var lockAcquired = false;
             var autoRemoveLock = autoRemoveLock !== false;
             var retryAttempt = 1;
@@ -86,10 +85,10 @@
                     throw new Error(
                         "Unexpected error occurred when trying to create lock: " + e
                     );
-                    
+
                 }
                 if (retryAttempt < retryMaxAttempts) System.sleep(retryDelay * 1000);
-                retryAttempt++
+                retryAttempt++;
             } while (!lockAcquired && (retryAttempt <= retryMaxAttempts));
 
             if (!lockAcquired) {
@@ -99,7 +98,7 @@
                         " attempts. Auto removing lock."
                     );
                     try {
-                        this.log.debug("Attempting to remove lock")
+                        this.log.debug("Attempting to remove lock");
                         LockingSystem.unlock(lockId,lockOwner);
                         this.log.debug("Lock removed successfully");
 
@@ -126,7 +125,7 @@
             }
 
             return lockAcquired;
-        }
+        };
 
         /**
          * Defines the removeLock method.
@@ -161,7 +160,7 @@
             }
 
             this.log.debug("Lock successfully removed");
-        }
+        };
     }
 
     return LockingService;

@@ -6,7 +6,7 @@
     /**
      * Defines the ConfigElementService class.
      * @class
-     * 
+     *
      * @returns {Any} An instance of the ConfigElementService class.
      */
 
@@ -22,7 +22,7 @@
          * @public
          * @param {string} configElementName - Configuration Element Name.
          * @param {string} categoryPath - Configuration Element Path.
-         * 
+         *
          * @returns {ConfigurationElement} Configuration Element object.
          */
 
@@ -82,13 +82,13 @@
                     this.log.debug("No configuration element category found '" + categoryPath)
                 );
             }
-            
+
             this.log.debug(
                 "Found Configuration Element '" + configElement.name + "'"
             );
 
             return configElement;
-        }
+        };
 
         /**
          * Defines the createConfigElement method.
@@ -96,7 +96,7 @@
          * @public
          * @param {string} configElementName - Configuration Element Name.
          * @param {string} categoryPath - Configuration Element Path.
-         * 
+         *
          * @returns {ConfigurationElement} Configuration Elemenet object.
          */
 
@@ -122,8 +122,10 @@
                 "' in path '" + categoryPath + "'"
             );
             try {
-                configElement = Server.createConfigurationElement(categoryPath,
-                                                                configElementName);
+                configElement = Server.createConfigurationElement(
+                    categoryPath,
+                    configElementName
+                );
 
                 this.log.debug(
                     "Successfully created Configuration Element '" +
@@ -134,7 +136,7 @@
             }
 
             return configElement;
-        }
+        };
 
         /**
          * Defines the getConfigElementAttribute method.
@@ -142,7 +144,7 @@
          * @public
          * @param {ConfigurationElement} configElement - Configuration Element Object.
          * @param {string} attributeName - Configuration Element Attribute Name.
-         * 
+         *
          * @returns {Any} Configuration Elemenet Attribute.
          */
 
@@ -164,7 +166,6 @@
             var attribute;
             var attributes;
             var attributesFound;
-            var attributeName;
             var attributeValue;
             var attributeType;
 
@@ -193,14 +194,14 @@
             attributeName = attribute.name;
             attributeValue = attribute.value;
             attributeType = attribute.type;
-            if (attribute.type === 'SecureString') attributeValue = '******'
+            if (attributeType === "SecureString") attributeValue = "******";
             this.log.debug(
                 "Found Configuration Element Attribute '" + attributeName +
-                "' with value '" + attributeValue + "'"
+                "' with value '" + attributeValue + "' and type '" + attributeType + "'"
             );
 
             return attribute;
-        }
+        };
 
         /**
          * Defines the createConfigElementAttribute method.
@@ -210,7 +211,7 @@
          * @param {string} attributeName - Configuration Element Attribute Name.
          * @param {string} attributeValue - Configuration Element Attribute Value.
          * @param {string} attributeType - Configuration Element Attribute Type.
-         * 
+         *
          * @returns {Any} Configuration Elemenet Attribute.
          */
 
@@ -248,12 +249,13 @@
                 "Creating Configuration Element Attribute '" + attributeName +
                 "' in Configuration Element '" + configElement.name + "'"
             );
-            
+
             try {
                 existingAttribute = this.getConfigElementAttribute(
                     configElement,
                     attributeName
                 );
+            // eslint-disable-next-line no-unused-vars
             } catch (e) {
                 // Catch if attribute not found - This comment is needed.
             }
@@ -283,7 +285,7 @@
             );
 
             return attribute;
-        }
+        };
 
         /**
          * Defines the updateConfigElementAttribute method.
@@ -293,7 +295,7 @@
          * @param {string} attributeName - Configuration Element Attribute Name.
          * @param {string} attributeValue - Configuration Element Attribute Value.
          * @param {string} [attributeType] - Configuration Element Attribute Type.
-         * 
+         *
          * @returns {Any} Configuration Elemenet Attribute.
          */
 
@@ -332,12 +334,13 @@
                 "' in Configuration Element '" + configElement.name + "' with " +
                 "value '" + attributeValue + "'"
             );
-            
+
             try {
                 existingAttribute = this.getConfigElementAttribute(
                     configElement,
                     attributeName
                 );
+            // eslint-disable-next-line no-unused-vars
             } catch (e) {
                 // Catch if attribute not found - This comment is needed.
             }
@@ -352,8 +355,8 @@
                 if (attributeType) {
                     configElement.setAttributeWithKey(
                         attributeName,
-                        attributeValue, 
-                        ttributeType
+                        attributeValue,
+                        attributeType
                     );
                 } else {
                     configElement.setAttributeWithKey(
@@ -376,7 +379,7 @@
             );
 
             return attribute;
-        }
+        };
 
         /**
          * Defines the removeConfigElementAttribute method.
@@ -384,7 +387,7 @@
          * @public
          * @param {ConfigurationElement} configElement - Configuration Element Object.
          * @param {string} attributeName - Configuration Element Attribute Name.
-         * 
+         *
          * @returns {void}
          */
 
@@ -418,7 +421,7 @@
             this.log.debug(
                 "Successfully removed Configuration Element Attribute '" + attributeName + "'"
             );
-        }
+        };
     }
 
     return ConfigElementService;

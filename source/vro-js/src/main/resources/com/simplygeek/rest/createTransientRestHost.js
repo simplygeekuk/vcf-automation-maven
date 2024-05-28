@@ -29,12 +29,12 @@
     // Mandatory param check
     if (!restHostUrl || typeof restHostUrl !== "string") {
         throw new ReferenceError("restHostUrl is required and must be of type 'string'");
-    } else if (restHostUrl && !restHostUrl.match(uriRegex)) {
+    } else if (restHostUrl && !restHostUrl.match(urlRegex)) {
         throw new ReferenceError("restHostUrl not a valid URI");
     }
     // Optional param check
     if (restHostName && typeof restHostName !== "string") {
-       throw new TypeError("restHostName must be of type 'string'");
+        throw new TypeError("restHostName must be of type 'string'");
     }
     if ((connectionTimeout && connectionTimeout !== 0) && typeof connectionTimeout !== "number") {
         throw new TypeError("connectionTimeout must be of type 'number'");
@@ -62,6 +62,8 @@
     );
 
     var name = restHostName || "dynamicHost";
+    var authParams;
+
     log.debug("Creating transient rest host '" + name + "' with url '" + restHostUrl + "'");
     var restHost = RESTHostManager.createTransientHostFrom(
         RESTHostManager.createHost(name)
@@ -71,14 +73,14 @@
     restHost.connectionTimeout = connectionTimeout || 120;
     restHost.operationTimeout = operationTimeout || 240;
     restHost.hostVerification = hostVerification !== false;
-    
+
     if (authenticationType && authenticationType.toLowerCase() === "basic") {
         log.debug("Setting Baisc Authentication");
-        var authParams = ["Shared Session", basicUsername, basicPassword];
+        authParams = ["Shared Session", basicUsername, basicPassword];
         restHost.authentication = RESTAuthenticationManager.createAuthentication("Basic", authParams);
     } else if (authenticationType && authenticationType.toLowerCase() === "oauth2") {
         log.debug("Setting OAuth2 Authentication");
-        var authParams = [apiToken, "Authorization header"];
+        authParams = [apiToken, "Authorization header"];
         restHost.authentication = RESTAuthenticationManager.createAuthentication("OAuth 2.0", authParams);
     }
 

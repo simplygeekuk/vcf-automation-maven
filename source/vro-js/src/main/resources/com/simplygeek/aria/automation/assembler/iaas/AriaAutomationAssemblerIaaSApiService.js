@@ -4,14 +4,14 @@
  */
 (function () {
     /**
-     * Defines the AriaAutomationAssemblerIaaSApiService class.
+     * Defines the AriaAutomationAssemblerIaasApiService class.
      * @class
      * @param {REST:RESTHost} restHost - The Aria Automation HTTP REST host.
      *
-     * @returns {Any} An instance of the AriaAutomationAssemblerIaaSApiService class.
+     * @returns {Any} An instance of the AriaAutomationAssemblerIaasApiService class.
      */
 
-    function AriaAutomationAssemblerIaaSApiService(restHost) {
+    function AriaAutomationAssemblerIaasApiService(restHost) {
         AriaAutomationGenericBackendService.call(this, restHost);
 
         this.log = new (System.getModule("com.simplygeek.log").Logger())(
@@ -27,8 +27,9 @@
     var AriaAutomationGenericBackendService = System.getModule(
         "com.simplygeek.aria.automation"
     ).AriaAutomationGenericBackendService();
-    AriaAutomationAssemblerIaaSApiService.prototype = Object.create(AriaAutomationGenericBackendService.prototype);
-    AriaAutomationAssemblerIaaSApiService.prototype.constructor = AriaAutomationAssemblerIaaSApiService;
+
+    AriaAutomationAssemblerIaasApiService.prototype = Object.create(AriaAutomationGenericBackendService.prototype);
+    AriaAutomationAssemblerIaasApiService.prototype.constructor = AriaAutomationAssemblerIaasApiService;
 
     // ## Projects ##
 
@@ -41,7 +42,7 @@
      * @returns {Any} The project zones object.
      */
 
-    AriaAutomationAssemblerIaaSApiService.prototype.getProjectZones = function (
+    AriaAutomationAssemblerIaasApiService.prototype.getProjectZones = function (
         projectId
     ) {
         if (!projectId || typeof projectId !== "string") {
@@ -56,10 +57,10 @@
         var projectZonesObject;
 
         this.log.debug("Getting zones for project with ID '" + projectId + "'");
-        var projectZonesObject = this.get(uri);
+        projectZonesObject = this.get(uri);
 
         return projectZonesObject;
-    }
+    };
 
-    return AriaAutomationAssemblerIaaSApiService;
+    return AriaAutomationAssemblerIaasApiService;
 });

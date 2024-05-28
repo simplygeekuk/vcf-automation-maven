@@ -6,7 +6,7 @@
     /**
      * Defines the AriaAutomationGenericBackendService class.
      * @class
-     * 
+     *
      * @returns {Any} An instance of the AriaAutomationGenericBackendService class.
      */
 
@@ -40,7 +40,7 @@
         );
 
         return response;
-    }
+    };
 
     /**
      * Defines the GET method.
@@ -49,7 +49,7 @@
      * @param {string} uri - The request uri.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     * 
+     *
      * @returns {Any||Array/Any} The response result or results.
      */
 
@@ -63,11 +63,11 @@
         }
         if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
             expectedResponseCodes.length < 1)) {
-            var expectedResponseCodes = [200];
+            expectedResponseCodes = [200];
         }
 
         // Default throwOnNotFound to true, unless explicitly set to false.
-        throwOnNotFound = throwOnNotFound != false;
+        throwOnNotFound = throwOnNotFound !== false;
 
         if (!throwOnNotFound) {
             expectedResponseCodes.push(404);
@@ -98,7 +98,7 @@
                     // Get additional pages
 
                     // Check if existing parameters are defined in the URI.
-                    if (uri.indexOf('?') > -1) {
+                    if (uri.indexOf("?") > -1) {
                         uri += "&";
                     } else {
                         uri += "?";
@@ -124,7 +124,7 @@
                             numTotalResults + " results"
                         );
                         numResultsOnPage += pageSize;
-                    } while (results.length < numTotalResults)
+                    } while (results.length < numTotalResults);
                 }
             } else {
                 if (throwOnNotFound) throw new Error("No results found");
@@ -138,7 +138,7 @@
         }
 
         return result || results;
-    }
+    };
 
     /**
      * Defines the POST method.
@@ -147,7 +147,7 @@
      * @param {string} uri - The request uri.
      * @param {Any} [content] - The request content.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
-     * 
+     *
      * @returns {Any} The response content object.
      */
 
@@ -161,11 +161,10 @@
         }
         if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
             expectedResponseCodes.length < 1)) {
-            var expectedResponseCodes = [201];
+            expectedResponseCodes = [201];
         }
 
         var responseContent;
-
         var response = this.rest.post(
             uri,
             this.mediaType,
@@ -174,11 +173,11 @@
             expectedResponseCodes,
             this.sessionHeaders
         );
-        
+
         if (response.statusCode !== 204) responseContent = JSON.parse(response.contentAsString);
 
         return responseContent;
-    }
+    };
 
     /**
      * Defines the PUT method.
@@ -186,7 +185,7 @@
      * @param {string} uri - The request uri.
      * @param {Any} content - The request content.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
-     * 
+     *
      * @returns {Any} The response content object.
      */
 
@@ -195,20 +194,19 @@
         content,
         expectedResponseCodes
     ) {
-        if (!uri || typeof uri !== 'string') {
+        if (!uri || typeof uri !== "string") {
             throw new ReferenceError("uri is required and must be of type 'string'");
         }
-        if (!content || typeof content !== 'object') {
+        if (!content || typeof content !== "object") {
             throw new ReferenceError("content is required and must be of type 'object'");
         }
 
         if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
             expectedResponseCodes.length < 1)) {
-            var expectedResponseCodes = [200];
+            expectedResponseCodes = [200];
         }
 
         var responseContent;
-
         var response = this.rest.put(
             uri,
             this.mediaType,
@@ -221,7 +219,7 @@
         responseContent = JSON.parse(response.contentAsString);
 
         return responseContent;
-    }
+    };
 
     /**
      * Defines the PATCH method.
@@ -229,7 +227,7 @@
      * @param {string} uri - The request uri.
      * @param {Any} content - The request content.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
-     * 
+     *
      * @returns {Any} The response content object.
      */
 
@@ -238,20 +236,19 @@
         content,
         expectedResponseCodes
     ) {
-        if (!uri || typeof uri !== 'string') {
+        if (!uri || typeof uri !== "string") {
             throw new ReferenceError("uri is required and must be of type 'string'");
         }
-        if (!content || typeof content !== 'object') {
+        if (!content || typeof content !== "object") {
             throw new ReferenceError("content is required and must be of type 'object'");
         }
 
         if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
             expectedResponseCodes.length < 1)) {
-            var expectedResponseCodes = [200];
+            expectedResponseCodes = [200];
         }
 
         var responseContent;
-
         var response = this.rest.patch(
             uri,
             this.mediaType,
@@ -264,7 +261,7 @@
         responseContent = JSON.parse(response.contentAsString);
 
         return responseContent;
-    }
+    };
 
     /**
      * Defines the DELETE method.
@@ -277,13 +274,13 @@
         uri,
         expectedResponseCodes
     ) {
-        if (!uri || typeof uri !== 'string') {
+        if (!uri || typeof uri !== "string") {
             this.log.e("uri has not been defined or not of type 'string'");
         }
 
         if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
             expectedResponseCodes.length < 1)) {
-            var expectedResponseCodes = [204];
+            expectedResponseCodes = [204];
         }
 
         this.rest.delete(
@@ -292,7 +289,7 @@
             expectedResponseCodes,
             this.sessionHeaders
         );
-    }
-    
+    };
+
     return AriaAutomationGenericBackendService;
 });
