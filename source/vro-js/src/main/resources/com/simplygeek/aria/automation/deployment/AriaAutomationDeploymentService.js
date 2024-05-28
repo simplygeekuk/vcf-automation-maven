@@ -7,11 +7,27 @@
      * Defines the AriaAutomationDeploymentService class.
      * @class
      * @param {REST:RESTHost} restHost - The Aria Automation HTTP REST host.
+     * @param {string} apiToken - The Aria Automation API Token.
      *
      * @returns {Any} An instance of the AriaAutomationDeploymentService class.
      */
 
-    function AriaAutomationDeploymentService(restHost) {
+    function AriaAutomationDeploymentService(
+        restHost,
+        apiToken
+    ) {
+        if (!restHost || System.getObjectType(restHost) !== "REST:RESTHost") {
+            throw new ReferenceError(
+                "restHost is required and must be of type 'REST:RESTHost'"
+            );
+        }
+        if (!apiToken || typeof apiToken !== "string") {
+            throw new ReferenceError(
+                "apiToken is required and must " +
+                "be of type 'string'"
+            );
+        }
+
         AriaAutomationGenericBackendService.call(this, restHost);
 
         this.log = new (System.getModule("com.simplygeek.log").Logger())(
@@ -20,6 +36,8 @@
         );
 
         this.baseUri = "/deployment/api";
+
+        this.createSessionWithRefreshToken(apiToken);
     }
 
     var AriaAutomationGenericBackendService = System.getModule(
