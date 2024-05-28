@@ -7,12 +7,29 @@
      * Defines the AriaAutomationProjectService class.
      * @class
      * @param {REST:RESTHost} restHost - The Aria Automation HTTP REST host.
+     * @param {string} apiToken - The Aria Automation API Token.
      *
      * @returns {Any} An instance of the AriaAutomationProjectService class.
      */
 
-    function AriaAutomationProjectService(restHost) {
+    function AriaAutomationProjectService(
+        restHost,
+        apiToken
+    ) {
+        if (!restHost || System.getObjectType(restHost) !== "REST:RESTHost") {
+            throw new ReferenceError(
+                "restHost is required and must be of type 'REST:RESTHost'"
+            );
+        }
+        if (!apiToken || typeof apiToken !== "string") {
+            throw new ReferenceError(
+                "apiToken is required and must " +
+                "be of type 'string'"
+            );
+        }
+
         AriaAutomationGenericBackendService.call(this, restHost);
+        AriaAutomationAssemblerIaasApiService.call(this, restHost);
 
         this.log = new (System.getModule("com.simplygeek.log").Logger())(
             "Action",
@@ -22,6 +39,8 @@
         this.baseUri = "/project-service/api";
         this.apiVersion = this.about().latestApiVersion;
         this.apiVersionParam = "apiVersion=" + this.apiVersion;
+
+        this.createSessionWithRefreshToken(apiToken);
     }
 
     var AriaAutomationGenericBackendService = System.getModule(
@@ -32,6 +51,12 @@
         AriaAutomationGenericBackendService.prototype
     );
     AriaAutomationProjectService.prototype.constructor = AriaAutomationProjectService;
+
+    var AriaAutomationAssemblerIaasApiService = System.getModule(
+        "com.simplygeek.aria.automation.assembler.iaas"
+    ).AriaAutomationAssemblerIaasApiService();
+
+    AriaAutomationProjectService.prototype.getProjectZones = AriaAutomationAssemblerIaasApiService.prototype.getProjectZones;
 
     /**
      * Defines the getProjects method.
@@ -120,7 +145,7 @@
         throwOnNotFound = throwOnNotFound !== false;
 
         var uri = this.baseUri + "/projects?$filter=name eq '" + projectName + "'" +
-                                 "&" + this.apiVersionParam;
+                                "&" + this.apiVersionParam;
         var projectObject;
         var projectId;
 
@@ -179,7 +204,7 @@
         }
 
         var uri = this.baseUri + "/projects?$filter=startswith(name, '" + projectNamePrefix + "')" +
-                                 "&" + this.apiVersionParam;
+                                "&" + this.apiVersionParam;
         var projects = [];
 
         this.log.debug(
@@ -254,7 +279,7 @@
         }
 
         var uri = this.baseUri + "/projects/" + projectId +
-                                 "/resource-metadata?" + this.apiVersionParam;
+                                "/resource-metadata?" + this.apiVersionParam;
         var projectMetadataObject;
         var projectTags = [];
 
@@ -304,7 +329,7 @@
         }
 
         var uri = this.baseUri + "/projects/" + projectId +
-                                 "/resource-metadata?" + this.apiVersionParam;
+                                "/resource-metadata?" + this.apiVersionParam;
         var updatedProjectTags;
         var projectTags = {};
 
