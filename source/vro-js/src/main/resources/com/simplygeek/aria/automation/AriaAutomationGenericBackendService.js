@@ -34,9 +34,29 @@
 
     // ## Methods ##
 
+    /**
+     * Defines the about method.
+     *
+     * @returns {Any} The API About object.
+     */
+
     AriaAutomationGenericBackendService.prototype.about = function () {
         var response = this.get(
             this.baseUri + "/about"
+        );
+
+        return response;
+    };
+
+    /**
+     * Defines the IaaS about method.
+     *
+     * @returns {Any} The API About object.
+     */
+
+    AriaAutomationGenericBackendService.prototype.iaasAbout = function () {
+        var response = this.get(
+            this.iaasBaseUri + "/about"
         );
 
         return response;
