@@ -47,7 +47,7 @@
     ).value;
     var customNamingService = new (
         System.getModule(
-            "com.simplygeek.aria.automation.assembler.iaas"
+            "com.simplygeek.aria.automation.iaas"
         ).AriaAutomationCustomNamingService())(ariaAutomationRestHost);
     var locking = new (
         System.getModule(

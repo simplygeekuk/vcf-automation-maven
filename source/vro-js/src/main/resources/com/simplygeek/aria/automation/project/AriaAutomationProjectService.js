@@ -53,7 +53,7 @@
     AriaAutomationProjectService.prototype.constructor = AriaAutomationProjectService;
 
     var AriaAutomationAssemblerIaasApiService = System.getModule(
-        "com.simplygeek.aria.automation.assembler.iaas"
+        "com.simplygeek.aria.automation.iaas"
     ).AriaAutomationAssemblerIaasApiService();
 
     AriaAutomationProjectService.prototype.getProjectZones = AriaAutomationAssemblerIaasApiService.prototype.getProjectZones;
