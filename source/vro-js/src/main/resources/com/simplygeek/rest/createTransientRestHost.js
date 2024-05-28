@@ -9,7 +9,7 @@
  * @param {string} [basicUsername] - The username if Basic authentication is used.
  * @param {SecureString} [basicPassword] - The password if Basic authentication is used.
  * @param {string} [apiToken] - The API Bearer Token if Oauth2 authentication is used.
- * 
+ *
  * @returns {REST:RESTHost} - The RESTHost vRO type
  */
 (function (
@@ -23,6 +23,11 @@
     basicPassword,
     apiToken
 ) {
+    var log = new (System.getModule("com.simplygeek.log").Logger())(
+        "Action",
+        "AriaAutomationDeploymentService"
+    );
+    // eslint-disable-next-line no-useless-escape
     var urlRegex = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\/?$/i;
     var validAuthTypes = ["basic", "oauth2"];
 
@@ -48,8 +53,8 @@
     if (authenticationType && typeof authenticationType !== "string") {
         throw new TypeError("authenticationType must be of type 'string'");
     } else if (authenticationType && validAuthTypes.indexOf(authenticationType.toLowerCase()) < 0) {
-        throw new Error("Invalid authentication type '" + authenticationType + "'." + 
-                " Supported authentication types: " + validAuthTypes.join(', '));
+        throw new Error("Invalid authentication type '" + authenticationType + "'." +
+                " Supported authentication types: " + validAuthTypes.join(", "));
     } else if ((authenticationType && authenticationType.toLowerCase() === "basic") && (!basicUsername || !basicPassword)) {
         throw new Error("A Username and Password must be provided to use Basic authentication");
     } else if ((authenticationType && authenticationType.toLowerCase() === "oauth2") && !apiToken) {
@@ -84,5 +89,5 @@
         restHost.authentication = RESTAuthenticationManager.createAuthentication("OAuth 2.0", authParams);
     }
 
-    return restHost
+    return restHost;
 });
