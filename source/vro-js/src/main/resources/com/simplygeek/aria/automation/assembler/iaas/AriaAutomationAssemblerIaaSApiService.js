@@ -19,9 +19,9 @@
             "AriaAutomationAssemblerIaasApiService"
         );
 
-        this.baseUri = "/iaas/api";
-        this.apiVersion = this.about().latestApiVersion;
-        this.apiVersionParam = "apiVersion=" + this.apiVersion;
+        this.iaasBaseUri = "/iaas/api";
+        this.iaasApiVersion = this.iaasAbout().latestApiVersion;
+        this.iaasApiVersionParam = "apiVersion=" + this.iaasApiVersion;
     }
 
     var AriaAutomationGenericBackendService = System.getModule(
@@ -52,8 +52,8 @@
             );
         }
 
-        var uri = this.baseUri + "/projects/" + projectId +
-                                 "/zones?" + this.apiVersionParam;
+        var uri = this.iaasBaseUri + "/projects/" + projectId +
+                                    "/zones?" + this.iaasApiVersionParam;
         var projectZonesObject;
 
         this.log.debug("Getting zones for project with ID '" + projectId + "'");
