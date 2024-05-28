@@ -28,8 +28,8 @@
             );
         }
 
-        AriaAutomationGenericBackendService.call(this, restHost);
-        AriaAutomationAssemblerIaasApiService.call(this, restHost);
+        AriaAutomationGenericBackendService.call(this, restHost, apiToken);
+        AriaAutomationAssemblerIaasApiService.call(this, restHost, apiToken);
 
         this.log = new (System.getModule("com.simplygeek.log").Logger())(
             "Action",
