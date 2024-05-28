@@ -19,7 +19,9 @@ export default [
                 Server: "readonly",
                 Properties: "readonly",
                 VcPlugin: "readonly",
-                LockingSystem: "readonly"
+                LockingSystem: "readonly",
+                RESTHostManager: "readonly",
+                RESTAuthenticationManager: "readonly"
             }
         },
         rules: {
