@@ -47,10 +47,9 @@
 
         this.session = {};
         var uri = this.iaasBaseUri + "/login";
-
         var content = {
             refreshToken: refreshToken
-        }
+        };
 
         this.log.debug("Creating API session.");
         var response = this.rest.post(
@@ -62,7 +61,7 @@
 
         this.session = JSON.parse(response.contentAsString);
         this.sessionHeaders.put("Authorization", "Bearer " + this.session.token);
-    }
+    };
 
     /**
      * Defines the createSessionWithRefreshToken method.
@@ -71,7 +70,7 @@
      * @param {string} username - The authorization scope.
      * @param {SecureString} password - The authorization scope.
      * @param {string} [domain] - The authorization scope.
-     * 
+     *
      * @returns {Any} The request response object.
      */
 
@@ -89,10 +88,11 @@
 
         this.session = {};
         var uri = this.iaasBaseUri + "/login";
-
         var content = {
-            username: username
-        }
+            username: username,
+            password: password,
+            domain: domain
+        };
 
         this.log.debug("Creating API session.");
         var response = this.rest.post(
@@ -104,7 +104,7 @@
 
         this.session = JSON.parse(response.contentAsString);
         this.sessionHeaders.put("Authorization", "Bearer " + this.session.token);
-    }
+    };
 
     return AriaAutomationAuthenticationService;
 });
