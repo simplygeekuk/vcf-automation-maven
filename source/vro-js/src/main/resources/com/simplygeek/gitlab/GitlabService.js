@@ -6,6 +6,8 @@
     /**
      * Defines the GitlabService class.
      * @class
+     * @param {REST:RESTHost} restHost - The Aria Automation HTTP REST host.
+     * @param {string} accessToken -  Personal Access Token for authentication.
      *
      * @returns {Any} An instance of the GitlabService class.
      */
@@ -22,7 +24,7 @@
 
         this.log = new (System.getModule("com.simplygeek.log").Logger())(
             "Action",
-            "AriaAutomationDeploymentService"
+            "GitlabService"
         );
         this.baseUri = "/api/v4";
         this.rest = new (System.getModule("com.simplygeek.rest").HttpRestClient())(
@@ -58,7 +60,7 @@
      * Defines the getGroupById method.
      * @method
      * @public
-     * @param {string} groupId - The group id.
+     * @param {number} groupId - The group id.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
      *
      * @returns {Any} The group object.
@@ -68,30 +70,21 @@
         groupId,
         throwOnNotFound
     ) {
-        if (!groupId || typeof groupId !== "string") {
+        if ((!groupId && groupId !== 0) || typeof groupId !== "number") {
             throw new ReferenceError(
                 "groupId is required and must " +
-                "be of type 'string'"
+                "be of type 'number'"
             );
         }
 
         // Default throwOnNotFound to true
         throwOnNotFound = throwOnNotFound !== false;
 
-        var uri = this.baseUri + "/groups/" + groupId;
-        var groupObj;
-
-        this.log.debug("Getting group with ID '" + groupId + "'");
-        groupObj = this.get(uri, null, throwOnNotFound);
-
-        if (groupObj) {
-            var groupName = groupObj.name;
-
-            this.log.debug(
-                "Found group with name '" + groupName +
-                "' and id '" + groupId + "'"
-            );
-        }
+        var groupObj = this.getResourceById(
+            groupId,
+            "groups",
+            throwOnNotFound
+        );
 
         return groupObj;
     };
@@ -120,51 +113,455 @@
         // Default throwOnNotFound to true
         throwOnNotFound = throwOnNotFound !== false;
 
-        var uri = this.baseUri + "/groups?search=" + groupName;
-        var groupObj;
-        var groupId;
+        var groupObj = this.getResourceByName(
+            groupName,
+            "groups",
+            throwOnNotFound
+        );
+
+        return groupObj;
+    };
+
+    /**
+     * Defines the createGroup method.
+     * @method
+     * @public
+     * @param {Any} groupSpecification - The group specification.
+     *
+     * @returns {Any} The new group object.
+     */
+
+    GitlabService.prototype.createGroup = function (
+        groupSpecification
+    ) {
+        if (!groupSpecification || typeof groupSpecification !== "object") {
+            throw new ReferenceError(
+                "groupSpecification is required and must " +
+                "be of type 'object'"
+            );
+        }
+
+        var uri = this.baseUri + "/groups";
+        var groupObject;
+        var parentId;
+        var parentGroup;
+
+        if (groupSpecification.parent_id) {
+            parentId = groupSpecification.parent_id;
+            parentGroup = this.getGroupById(parentId);
+            if (parentGroup.parent_id !== null) {
+                throw new Error(
+                    "Group specification references parent with id '" + parentId.toString() +
+                    "' but is not a valid parent group"
+                );
+            }
+        }
+
+        groupObject = this.post(
+            uri,
+            groupSpecification
+        );
+
+        return groupObject;
+    };
+
+    /**
+     * Defines the createSamlGroupLink method.
+     * @method
+     * @public
+     * @param {number} groupId - The group id.
+     * @param {Any} samlGroupLinkSpecification - The SAML group spec.
+     *
+     * @returns {Any} The SAML group link object.
+     */
+
+    GitlabService.prototype.createSamlGroupLink = function (
+        groupId,
+        samlGroupLinkSpecification
+    ) {
+        if ((!groupId && groupId !== 0) || typeof groupId !== "number") {
+            throw new ReferenceError(
+                "groupId is required and must " +
+                "be of type 'number'"
+            );
+        }
+        if (!samlGroupLinkSpecification || typeof samlGroupLinkSpecification !== "object") {
+            throw new ReferenceError(
+                "samlGroupLinkSpecification is required and must " +
+                "be of type 'object'"
+            );
+        }
+
+        var uri = this.baseUri + "/groups/" + groupId + "/saml_group_links";
+        var samlGroupLinkObject;
+
+        samlGroupLinkObject = this.post(
+            uri,
+            samlGroupLinkSpecification
+        );
+
+        return samlGroupLinkObject;
+    };
+
+    /**
+     * Defines the getGroupAccessTokens method.
+     * @method
+     * @public
+     * @param {number} groupId - The group id.
+     *
+     * @returns {Array/Any} The list of group access tokens.
+     */
+
+    GitlabService.prototype.getGroupAccessTokens = function (
+        groupId
+    ) {
+        if ((!groupId && groupId !== 0) || typeof groupId !== "number") {
+            throw new ReferenceError(
+                "groupId is required and must " +
+                "be of type 'number'"
+            );
+        }
+
+        var uri = this.baseUri + "/groups/" + groupId + "/access_tokens";
+        var results;
+
+        this.log.debug("Getting a list of Group Access Tokens");
+        results = this.get(uri);
+        this.log.debug("Found " + results.length + " Group Access Tokens");
+
+        return results;
+    };
+
+    /**
+     * Defines the getGroupAccessTokenById method.
+     * @method
+     * @public
+     * @param {number} groupId - The group id.
+     * @param {number} accessTokenId - The Access Token id.
+     * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
+     *
+     * @returns {Any} The access token object.
+     */
+
+    GitlabService.prototype.getGroupAccessTokenById = function (
+        groupId,
+        accessTokenId,
+        throwOnNotFound
+    ) {
+        if ((!groupId && groupId !== 0) || typeof groupId !== "number") {
+            throw new ReferenceError(
+                "groupId is required and must " +
+                "be of type 'number'"
+            );
+        }
+        if ((!accessTokenId && accessTokenId !== 0) || typeof accessTokenId !== "number") {
+            throw new ReferenceError(
+                "accessTokenId is required and must " +
+                "be of type 'number'"
+            );
+        }
+
+        // Default throwOnNotFound to true
+        throwOnNotFound = throwOnNotFound !== false;
+
+        var accessTokenObj = this.getResourceById(
+            accessTokenId,
+            "groups/" + groupId.toString(),
+            throwOnNotFound
+        );
+
+        return accessTokenObj;
+    };
+
+    /**
+     * Defines the getAccessTokenByName method.
+     * @method
+     * @public
+     * @param {number} groupId - The group id.
+     * @param {string} accessTokenName - The access token name.
+     * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
+     *
+     * @returns {Any} The access token object.
+     */
+
+    GitlabService.prototype.getAccessTokenByName = function (
+        groupId,
+        accessTokenName,
+        throwOnNotFound
+    ) {
+        if ((!groupId && groupId !== 0) || typeof groupId !== "number") {
+            throw new ReferenceError(
+                "groupId is required and must " +
+                "be of type 'number'"
+            );
+        }
+        if (!accessTokenName || typeof accessTokenName !== "string") {
+            throw new ReferenceError(
+                "accessTokenName is required and must " +
+                "be of type 'string'"
+            );
+        }
+
+        // Default throwOnNotFound to true
+        throwOnNotFound = throwOnNotFound !== false;
+
+        var accessTokenObj = this.getResourceByName(
+            accessTokenName,
+            "groups/" + groupId.toString(),
+            throwOnNotFound
+        );
+
+        return accessTokenObj;
+    };
+
+    /**
+     * Defines the createGroupAccessToken method.
+     * @method
+     * @public
+     * @param {number} groupId - The group id.
+     * @param {Any} accessTokenSpecification - The Access Token spec.
+     *
+     * @returns {Any} The SAML group link object.
+     */
+
+    GitlabService.prototype.createGroupAccessToken = function (
+        groupId,
+        accessTokenSpecification
+    ) {
+        if ((!groupId && groupId !== 0) || typeof groupId !== "number") {
+            throw new ReferenceError(
+                "groupId is required and must " +
+                "be of type 'number'"
+            );
+        }
+        if (!accessTokenSpecification || typeof accessTokenSpecification !== "object") {
+            throw new ReferenceError(
+                "accessTokenSpecification is required and must " +
+                "be of type 'object'"
+            );
+        }
+
+        var uri = this.baseUri + "/groups/" + groupId.toString() + "/access_tokens";
+        var accessTokenObject;
+
+        accessTokenObject = this.post(
+            uri,
+            accessTokenSpecification
+        );
+
+        return accessTokenObject;
+    };
+
+    /**
+     * Defines the getProjects method.
+     * @method
+     * @public
+     *
+     * @returns {Array/Any} The list of Projects.
+     */
+
+    GitlabService.prototype.getProjects = function () {
+        var uri = this.baseUri + "/projects";
+        var results;
+
+        this.log.debug("Getting a list of Projects");
+        results = this.get(uri);
+        this.log.debug("Found " + results.length + " Projects");
+
+        return results;
+    };
+
+    /**
+     * Defines the getProjectById method.
+     * @method
+     * @public
+     * @param {number} projectId - The project id.
+     * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
+     *
+     * @returns {Any} The project object.
+     */
+
+    GitlabService.prototype.getProjectById = function (
+        projectId,
+        throwOnNotFound
+    ) {
+        if ((!projectId && projectId !== 0) || typeof projectId !== "number") {
+            throw new ReferenceError(
+                "projectId is required and must " +
+                "be of type 'number'"
+            );
+        }
+
+        // Default throwOnNotFound to true
+        throwOnNotFound = throwOnNotFound !== false;
+
+        var projectObj = this.getResourceById(
+            projectId,
+            "projects",
+            throwOnNotFound
+        );
+
+        return projectObj;
+    };
+
+    /**
+     * Defines the getProjectByName method.
+     * @method
+     * @public
+     * @param {number} projectName - The project name.
+     * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
+     *
+     * @returns {Any} The project object.
+     */
+
+    GitlabService.prototype.getProjectByName = function (
+        projectName,
+        throwOnNotFound
+    ) {
+        if (!projectName || typeof projectName !== "string") {
+            throw new ReferenceError(
+                "projectName is required and must " +
+                "be of type 'string'"
+            );
+        }
+
+        // Default throwOnNotFound to true
+        throwOnNotFound = throwOnNotFound !== false;
+
+        var projectObj = this.getResourceByName(
+            projectName,
+            "projects",
+            throwOnNotFound
+        );
+
+        return projectObj;
+    };
+
+    /**
+     * Defines the createProject method.
+     * @method
+     * @public
+     * @param {Any} projectSpecification - The Project spec.
+     *
+     * @returns {Any} The project object.
+     */
+
+    GitlabService.prototype.createProject = function (
+        projectSpecification
+    ) {
+        if (!projectSpecification || typeof projectSpecification !== "object") {
+            throw new ReferenceError(
+                "projectSpecification is required and must " +
+                "be of type 'object'"
+            );
+        }
+
+        var uri = this.baseUri + "/projects";
+        var projectObject;
+
+        projectObject = this.post(
+            uri,
+            projectSpecification
+        );
+
+        return projectObject;
+    };
+
+    // ## Backend Methods ##
+
+    /**
+     * Defines the getResourceById method.
+     * @method
+     * @public
+     * @param {string} resourceId - The resource id.
+     * @param {string} resource - The resource URI.
+     * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
+     *
+     * @returns {Any} The resource object.
+     */
+
+    GitlabService.prototype.getResourceById = function (
+        resourceId,
+        resource,
+        throwOnNotFound
+    ) {
+        var uri = this.baseUri + "/" + resource + "/" + resourceId.toString();
+        var resourceObj;
+
+        this.log.debug("Getting resource with ID '" + resourceId.toString() + "'");
+        resourceObj = this.get(uri, null, throwOnNotFound);
+
+        if (resourceObj) {
+            var resourceName = resourceObj.name;
+
+            this.log.debug(
+                "Found resource with name '" + resourceName +
+                "' and id '" + resourceId.toString() + "'"
+            );
+        }
+
+        return resourceObj;
+    };
+
+    /**
+     * Defines the getResourceByName method.
+     * @method
+     * @public
+     * @param {string} resourceName - The resource name.
+     * @param {string} resource - The resource URI.
+     * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
+     *
+     * @returns {Any} The resource object.
+     */
+
+    GitlabService.prototype.getResourceByName = function (
+        resourceName,
+        resource,
+        throwOnNotFound
+    ) {
+        var uri = this.baseUri + "/" + resource + "?search=" + resourceName;
+        var resourceObj;
+        var resourceId;
 
         this.log.debug(
-            "Getting group with name '" + groupName + "'");
+            "Getting resource with name '" + resourceName + "'");
 
         var results = this.get(uri);
         var groupMatchesByName = results.filter(
-            function(group) {
-                return group.name === groupName;
+            function(resource) {
+                return resource.name === resourceName;
             }
         );
 
         if (groupMatchesByName.length > 1) {
             throw new Error(
-                "More than one group found. Unable to determine correct " +
-                "group with name '" + groupName + "'"
+                "More than one resource found. Unable to determine correct " +
+                "resource with name '" + resourceName + "'"
             );
         } else if (groupMatchesByName.length > 0) {
-            groupObj = results[0];
-            groupId = groupObj.id;
+            resourceObj = groupMatchesByName[0];
+            resourceId = resourceObj.id;
 
             this.log.debug(
-                "Found group '" + groupName + "' with " +
-                "id '" + groupId + "'"
+                "Found resource '" + resourceName + "' with " +
+                "id '" + resourceId.toString() + "'"
             );
         } else {
             if (throwOnNotFound) {
                 throw new Error(
-                    "Group not found with name '" +
-                    groupName + "'"
+                    "Resource not found with name '" +
+                    resourceName + "'"
                 );
             } else {
                 this.log.warn(
-                    "Group not found with name '" +
-                    groupName + "'"
+                    "Resource not found with name '" +
+                    resourceName + "'"
                 );
             }
         }
 
-        return groupObj;
+        return resourceObj;
     };
-
-    // ## Backend Methods ##
 
     /**
      * Defines the GET method.
@@ -257,8 +654,12 @@
                 if (throwOnNotFound) throw new Error("No results found");
             }
         } else {
-            if (response.statusCode === "404" && !throwOnNotFound) {
-                result = null;
+            if (response.statusCode === "404") {
+                if (throwOnNotFound) {
+                    throw new Error("No results found");
+                } else {
+                    result = null;
+                }
             } else {
                 result = responseContent;
             }
