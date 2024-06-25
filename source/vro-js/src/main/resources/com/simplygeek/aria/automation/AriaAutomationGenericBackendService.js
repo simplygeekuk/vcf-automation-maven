@@ -6,7 +6,8 @@
     /**
      * Defines the AriaAutomationGenericBackendService class.
      * @class
-     *
+     * @param {REST:RESTHost} restHost - The Aria Automation HTTP REST host.
+     * 
      * @returns {Any} An instance of the AriaAutomationGenericBackendService class.
      */
 
@@ -18,6 +19,11 @@
         }
 
         AriaAutomationAuthenticationService.call(this, restHost);
+
+        this.log = new (System.getModule("com.simplygeek.log").Logger())(
+            "Action",
+            "AriaAutomationGenericBackendService"
+        );
 
         this.rest = new (System.getModule("com.simplygeek.rest").HttpRestClient())(restHost);
         this.mediaType = "application/json";
