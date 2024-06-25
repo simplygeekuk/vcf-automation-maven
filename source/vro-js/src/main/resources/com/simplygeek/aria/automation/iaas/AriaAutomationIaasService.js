@@ -4,15 +4,15 @@
  */
 (function () {
     /**
-     * Defines the AriaAutomationAssemblerIaasApiService class.
+     * Defines the AriaAutomationIaasService class.
      * @class
      * @param {REST:RESTHost} restHost - The Aria Automation HTTP REST host.
      * @param {string} apiToken - The Aria Automation API Token.
      *
-     * @returns {Any} An instance of the AriaAutomationAssemblerIaasApiService class.
+     * @returns {Any} An instance of the AriaAutomationIaasService class.
      */
 
-    function AriaAutomationAssemblerIaasApiService(
+    function AriaAutomationIaasService(
         restHost,
         apiToken
     ) {
@@ -32,7 +32,7 @@
 
         this.log = new (System.getModule("com.simplygeek.log").Logger())(
             "Action",
-            "AriaAutomationAssemblerIaasApiService"
+            "AriaAutomationIaasService"
         );
 
         this.iaasBaseUri = "/iaas/api";
@@ -44,8 +44,8 @@
         "com.simplygeek.aria.automation"
     ).AriaAutomationGenericBackendService();
 
-    AriaAutomationAssemblerIaasApiService.prototype = Object.create(AriaAutomationGenericBackendService.prototype);
-    AriaAutomationAssemblerIaasApiService.prototype.constructor = AriaAutomationAssemblerIaasApiService;
+    AriaAutomationIaasService.prototype = Object.create(AriaAutomationGenericBackendService.prototype);
+    AriaAutomationIaasService.prototype.constructor = AriaAutomationIaasService;
 
     // ## Projects ##
 
@@ -58,7 +58,7 @@
      * @returns {Any} The project zones object.
      */
 
-    AriaAutomationAssemblerIaasApiService.prototype.getProjectZones = function (
+    AriaAutomationIaasService.prototype.getProjectZones = function (
         projectId
     ) {
         if (!projectId || typeof projectId !== "string") {
@@ -78,5 +78,5 @@
         return projectZonesObject;
     };
 
-    return AriaAutomationAssemblerIaasApiService;
+    return AriaAutomationIaasService;
 });
