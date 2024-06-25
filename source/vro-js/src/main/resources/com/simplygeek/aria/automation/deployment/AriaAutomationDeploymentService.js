@@ -37,7 +37,7 @@
 
         this.baseUri = "/deployment/api";
 
-        this.createSessionWithRefreshToken(apiToken);
+        this.createAuthenticatedSession(apiToken);
     }
 
     var AriaAutomationGenericBackendService = System.getModule(

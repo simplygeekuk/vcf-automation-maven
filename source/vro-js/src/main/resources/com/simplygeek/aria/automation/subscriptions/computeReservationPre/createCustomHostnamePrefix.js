@@ -54,7 +54,7 @@
             "com.simplygeek.aria.orchestrator.locking"
         ).LockingService());
 
-    customNamingService.createSessionWithRefreshToken(ariaAutomationApiToken);
+    customNamingService.createAuthenticatedSession(ariaAutomationApiToken);
     var customNamingProfile = customNamingService.getCustomNamingByName(customNamingProfileName);
     var customNamingProfileId = customNamingProfile.id;
     var customNamingStartCounter = 0;

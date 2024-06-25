@@ -6,6 +6,7 @@
     /**
      * Defines the AriaAutomationAuthenticationService class.
      * @class
+     * @param {REST:RESTHost} restHost - The Aria Automation HTTP REST host.
      *
      * @returns {Any} An instance of the AriaAutomationAuthenticationService class.
      */
@@ -17,9 +18,15 @@
             );
         }
 
+        this.log = new (System.getModule("com.simplygeek.log").Logger())(
+            "Action",
+            "AriaAutomationAuthenticationService"
+        );
+
         this.rest = new (System.getModule("com.simplygeek.rest").HttpRestClient())(restHost);
         this.mediaType = "application/json";
         this.iaasBaseUri = "/iaas/api";
+        this.cspBaseUri = "/csp/gateway/am/api";
 
         var headers = new Properties();
 
@@ -27,15 +34,14 @@
     }
 
     /**
-     * Defines the createSessionWithRefreshToken method.
+     * Defines the createAuthenticatedSession method.
      * @method
      * @public
-     * @param {string} refreshToken - The authorization scope.
+     * @param {string} refreshToken - The refresh token.
      *
-     * @returns {Any} The request response object.
      */
 
-    AriaAutomationAuthenticationService.prototype.createSessionWithRefreshToken = function (
+    AriaAutomationAuthenticationService.prototype.createAuthenticatedSession = function (
         refreshToken
     ) {
         if (!refreshToken || typeof refreshToken !== "string") {
@@ -45,7 +51,36 @@
             );
         }
 
-        this.session = {};
+        var session;
+
+        this.log.debug("Creating API session.");
+        session = this.createSession(
+            refreshToken
+        );
+        this.sessionHeaders.put("Authorization", "Bearer " + session.token);
+        this.log.debug("API session created.");
+    };
+
+    /**
+     * Defines the createSession method.
+     * @method
+     * @public
+     * @param {string} refreshToken - The refresh token.
+     *
+     * @returns {Any} The session object.
+     */
+
+    AriaAutomationAuthenticationService.prototype.createSession = function (
+        refreshToken
+    ) {
+        if (!refreshToken || typeof refreshToken !== "string") {
+            throw new ReferenceError(
+                "refreshToken is required and must " +
+                "be of type 'string'"
+            );
+        }
+
+        var session;
         var uri = this.iaasBaseUri + "/login";
         var content = {
             refreshToken: refreshToken
@@ -59,22 +94,24 @@
             this.mediaType
         );
 
-        this.session = JSON.parse(response.contentAsString);
-        this.sessionHeaders.put("Authorization", "Bearer " + this.session.token);
+        session = JSON.parse(response.contentAsString);
+        this.log.debug("API session created.");
+
+        return session;
     };
 
     /**
-     * Defines the createSessionWithRefreshToken method.
+     * Defines the getRefreshToken method.
      * @method
      * @public
-     * @param {string} username - The authorization scope.
-     * @param {SecureString} password - The authorization scope.
-     * @param {string} [domain] - The authorization scope.
+     * @param {string} username - CSP username.
+     * @param {SecureString} password - CSP password.
+     * @param {string} [domain] - CSP domain.
      *
-     * @returns {Any} The request response object.
+     * @returns {string} The refresh token
      */
 
-    AriaAutomationAuthenticationService.prototype.createSessionWithUsernameAndPassword = function (
+    AriaAutomationAuthenticationService.prototype.getRefreshToken = function (
         username,
         password,
         domain
@@ -86,15 +123,18 @@
             );
         }
 
-        this.session = {};
-        var uri = this.iaasBaseUri + "/login";
+        System.log(typeof password);
+
+        var refreshTokenResponse;
+        var refreshToken;
+        var uri = this.cspBaseUri + "/login?access_token";
         var content = {
             username: username,
             password: password,
-            domain: domain
+            domain: domain || "System Domain"
         };
 
-        this.log.debug("Creating API session.");
+        this.log.debug("Creating Refresh token.");
         var response = this.rest.post(
             uri,
             this.mediaType,
@@ -102,8 +142,11 @@
             this.mediaType
         );
 
-        this.session = JSON.parse(response.contentAsString);
-        this.sessionHeaders.put("Authorization", "Bearer " + this.session.token);
+        refreshTokenResponse = JSON.parse(response.contentAsString);
+        refreshToken = refreshTokenResponse.refresh_token;
+        this.log.debug("Refresh token created.");
+
+        return refreshToken;
     };
 
     return AriaAutomationAuthenticationService;

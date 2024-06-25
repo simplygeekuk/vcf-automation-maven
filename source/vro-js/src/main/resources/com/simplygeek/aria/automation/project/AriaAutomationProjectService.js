@@ -29,7 +29,7 @@
         }
 
         AriaAutomationGenericBackendService.call(this, restHost, apiToken);
-        AriaAutomationAssemblerIaasApiService.call(this, restHost, apiToken);
+        AriaAutomationIaasService.call(this, restHost, apiToken);
 
         this.log = new (System.getModule("com.simplygeek.log").Logger())(
             "Action",
@@ -40,7 +40,7 @@
         this.apiVersion = this.about().latestApiVersion;
         this.apiVersionParam = "apiVersion=" + this.apiVersion;
 
-        this.createSessionWithRefreshToken(apiToken);
+        this.createAuthenticatedSession(apiToken);
     }
 
     var AriaAutomationGenericBackendService = System.getModule(
@@ -52,11 +52,11 @@
     );
     AriaAutomationProjectService.prototype.constructor = AriaAutomationProjectService;
 
-    var AriaAutomationAssemblerIaasApiService = System.getModule(
+    var AriaAutomationIaasService = System.getModule(
         "com.simplygeek.aria.automation.iaas"
-    ).AriaAutomationAssemblerIaasApiService();
+    ).AriaAutomationIaasService();
 
-    AriaAutomationProjectService.prototype.getProjectZones = AriaAutomationAssemblerIaasApiService.prototype.getProjectZones;
+    AriaAutomationProjectService.prototype.getProjectZones = AriaAutomationIaasService.prototype.getProjectZones;
 
     /**
      * Defines the getProjects method.
@@ -349,16 +349,16 @@
     };
 
     /**
-     * Defines the updateCustomNaming method.
+     * Defines the updateProject method.
      * @method
      * @public
-     * @param {string} projectId - The custom naming uuid.
-     * @param {Any} updatedObject - The custom naming object to update.
+     * @param {string} projectId - The Project uuid.
+     * @param {Any} updatedObject - The Project object to update.
      *
-     * @returns {Any} The updated custom naming object.
+     * @returns {Any} The updated Project object.
      */
 
-    AriaAutomationProjectService.prototype.updateCustomNaming = function (
+    AriaAutomationProjectService.prototype.updateProject = function (
         projectId,
         updatedObject
     ) {
@@ -375,7 +375,7 @@
             );
         }
 
-        var uri = this.baseUri + "/naming?" + this.apiVersionParam;
+        var uri = this.baseUri + "/projects?" + this.apiVersionParam;
         var updatedprojectObject;
 
         updatedprojectObject = this.put(
