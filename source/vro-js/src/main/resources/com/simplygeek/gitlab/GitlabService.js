@@ -166,6 +166,47 @@
     };
 
     /**
+     * Defines the getSamlGroupLink method.
+     * @method
+     * @public
+     * @param {number} groupId - The group id.
+     * @param {string} samlGroupName - Name of the SAML group.
+     * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
+     *
+     * @returns {Any} The SAML group object.
+     */
+
+    GitlabService.prototype.getSamlGroupLink = function (
+        groupId,
+        samlGroupName,
+        throwOnNotFound
+    ) {
+        if ((!groupId && groupId !== 0) || typeof groupId !== "number") {
+            throw new ReferenceError(
+                "groupId is required and must " +
+                "be of type 'number'"
+            );
+        }
+        if (!samlGroupName || typeof samlGroupName !== "string") {
+            throw new ReferenceError(
+                "samlGroupName is required and must " +
+                "be of type 'string'"
+            );
+        }
+
+        // Default throwOnNotFound to true
+        throwOnNotFound = throwOnNotFound !== false;
+
+        var samlGroupObject = this.getResourceById(
+            samlGroupName,
+            "groups/" + groupId.toString() + "/saml_group_links",
+            throwOnNotFound
+        );
+
+        return samlGroupObject;
+    };
+
+    /**
      * Defines the createSamlGroupLink method.
      * @method
      * @public
@@ -473,7 +514,7 @@
      * Defines the getResourceById method.
      * @method
      * @public
-     * @param {string} resourceId - The resource id.
+     * @param {number} resourceId - The resource id.
      * @param {string} resource - The resource URI.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
      *
