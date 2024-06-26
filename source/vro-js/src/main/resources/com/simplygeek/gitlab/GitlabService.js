@@ -307,7 +307,7 @@
 
         var accessTokenObj = this.getResourceById(
             accessTokenId,
-            "groups/" + groupId.toString(),
+            "groups/" + groupId.toString() + "/access_tokens",
             throwOnNotFound
         );
 
@@ -348,7 +348,7 @@
 
         var accessTokenObj = this.getResourceByName(
             accessTokenName,
-            "groups/" + groupId.toString(),
+            "groups/" + groupId.toString() + "/access_tokens",
             throwOnNotFound
         );
 
