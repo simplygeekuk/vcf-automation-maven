@@ -508,6 +508,44 @@
         return projectObject;
     };
 
+    /**
+     * Defines the updateProject method.
+     * @method
+     * @public
+     * @param {number} projectId - The Project id.
+     * @param {Any} projectSpecification - The updated Project spec.
+     *
+     * @returns {Any} The updated project object.
+     */
+
+    GitlabService.prototype.updateProject = function (
+        projectId,
+        updatedProjectSpecification
+    ) {
+        if ((!projectId && projectId !== 0) || typeof projectId !== "number") {
+            throw new ReferenceError(
+                "projectId is required and must " +
+                "be of type 'number'"
+            );
+        }
+        if (!updatedProjectSpecification || typeof updatedProjectSpecification !== "object") {
+            throw new ReferenceError(
+                "updatedProjectSpecification is required and must " +
+                "be of type 'object'"
+            );
+        }
+
+        var uri = this.baseUri + "/projects/" + projectId;
+        var projectObject;
+
+        projectObject = this.put(
+            uri,
+            updatedProjectSpecification
+        );
+
+        return projectObject;
+    };
+
     // ## Backend Methods ##
 
     /**
