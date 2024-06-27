@@ -1,13 +1,13 @@
 
-//import jsdoc from "eslint-plugin-jsdoc";
-// import js from "@eslint/js";
+import jsdoc from "eslint-plugin-jsdoc";
+import js from "@eslint/js";
 
 export default [
-    // js.configs.recommended,
+    js.configs.recommended,
     {
         files: ["**/*.js", "**/*.ts", "**/*.tsx"],
         plugins: {
-            // jsdoc,
+            jsdoc,
         },
         languageOptions: {
             ecmaVersion: 2015,
@@ -26,7 +26,6 @@ export default [
         },
         rules: {
             // "jsdoc/require-example": "error",
-            // ...js.configs.recommended.rules,
             "indent": [
                 "error",
                 4,
