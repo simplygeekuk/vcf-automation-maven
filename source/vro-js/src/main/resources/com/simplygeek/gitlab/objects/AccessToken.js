@@ -8,7 +8,7 @@
      * @class
      * @param {string} name - Name of the group access token.
      * @param {Array/string} scopes - List of scopes.
-     * @param {Date} expiresAt - Expiration date of the access token in ISO format (YYYY-MM-DD).
+     * @param {Date} [expiresAt] - Expiration date of the access token in ISO format (YYYY-MM-DD).
      * @param {number} [accessLevel] - Role (access_level) for group access token.
      *
      * @returns {Any} Returns an instance of the AccessToken Class.
