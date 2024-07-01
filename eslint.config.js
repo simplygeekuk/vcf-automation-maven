@@ -5,9 +5,12 @@ import js from "@eslint/js";
 export default [
     js.configs.recommended,
     {
-        files: ["**/*.js", "**/*.ts", "**/*.tsx"],
+        files: [
+            "**/*.js"
+        ],
+        // ...jsdoc.configs.recommended,
         plugins: {
-            jsdoc,
+            jsdoc
         },
         languageOptions: {
             ecmaVersion: 2015,
@@ -25,7 +28,8 @@ export default [
             }
         },
         rules: {
-            // "jsdoc/require-example": "error",
+            "jsdoc/check-access": 1,
+            "jsdoc/require-description": "warn",
             "indent": [
                 "error",
                 4,
