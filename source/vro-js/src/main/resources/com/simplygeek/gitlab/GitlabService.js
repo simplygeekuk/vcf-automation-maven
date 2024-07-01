@@ -362,7 +362,7 @@
      * @param {number} groupId - The group id.
      * @param {Any} accessTokenSpecification - The Access Token spec.
      *
-     * @returns {Any} The SAML group link object.
+     * @returns {Any} The group access token object.
      */
 
     GitlabService.prototype.createGroupAccessToken = function (
@@ -391,6 +391,83 @@
         );
 
         return accessTokenObject;
+    };
+
+    /**
+     * Defines the rotateGroupAccessToken method.
+     * @method
+     * @public
+     * @param {number} groupId - The group id.
+     * @param {number} accessTokenId - The group access token id.
+     * @param {Date} [expiresAt] - Expiration date of the access token in ISO format (YYYY-MM-DD).
+     *
+     * @returns {Any} The group access token object.
+     */
+
+    GitlabService.prototype.rotateGroupAccessToken = function (
+        groupId,
+        accessTokenId,
+        expiresAt
+    ) {
+        if ((!groupId && groupId !== 0) || typeof groupId !== "number") {
+            throw new ReferenceError(
+                "groupId is required and must " +
+                "be of type 'number'"
+            );
+        }
+        if ((!accessTokenId && accessTokenId !== 0) || typeof accessTokenId !== "number") {
+            throw new ReferenceError(
+                "accessTokenId is required and must " +
+                "be of type 'number'"
+            );
+        }
+
+        var accessTokenObject;
+        var uri = this.baseUri + "/groups/" + groupId.toString() +
+                                 "/access_tokens/" + accessTokenId.toString() + "/rotate";
+
+        if (expiresAt) {
+            uri += "?expires_at=" + expiresAt;
+        }
+
+        accessTokenObject = this.post(
+            uri,
+            null,
+            [200]
+        );
+
+        return accessTokenObject;
+    };
+
+    /**
+     * Defines the revokeGroupAccessToken method.
+     * @method
+     * @public
+     * @param {number} groupId - The group id.
+     * @param {number} accessTokenId - The group access token id.
+     */
+
+    GitlabService.prototype.revokeGroupAccessToken = function (
+        groupId,
+        accessTokenId
+    ) {
+        if ((!groupId && groupId !== 0) || typeof groupId !== "number") {
+            throw new ReferenceError(
+                "groupId is required and must " +
+                "be of type 'number'"
+            );
+        }
+        if ((!accessTokenId && accessTokenId !== 0) || typeof accessTokenId !== "number") {
+            throw new ReferenceError(
+                "accessTokenId is required and must " +
+                "be of type 'number'"
+            );
+        }
+
+        var uri = this.baseUri + "/groups/" + groupId.toString() +
+                                 "/access_tokens/" + accessTokenId.toString();
+
+        this.delete(uri);
     };
 
     /**
