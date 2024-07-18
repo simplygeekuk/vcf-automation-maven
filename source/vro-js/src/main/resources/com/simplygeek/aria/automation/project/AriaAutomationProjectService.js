@@ -375,15 +375,15 @@
             );
         }
 
-        var uri = this.baseUri + "/projects?" + this.apiVersionParam;
-        var updatedprojectObject;
+        var uri = this.baseUri + "/projects/" + projectId + "?" + this.apiVersionParam;
+        var updatedProjectObject;
 
-        updatedprojectObject = this.put(
+        updatedProjectObject = this.patch(
             uri,
             updatedObject
         );
 
-        return updatedprojectObject;
+        return updatedProjectObject;
     };
 
     return AriaAutomationProjectService;
