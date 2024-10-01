@@ -123,8 +123,6 @@
             );
         }
 
-        System.log(typeof password);
-
         var refreshTokenResponse;
         var refreshToken;
         var uri = this.cspBaseUri + "/login?access_token";
