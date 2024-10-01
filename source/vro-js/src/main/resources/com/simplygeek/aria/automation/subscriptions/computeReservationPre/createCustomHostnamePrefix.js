@@ -11,7 +11,7 @@
     );
     // Get values from Input Properties
     var customProps = inputProperties.get("customProperties");
-    var hostnamePrefix = customProps.get("hostnamePrefix");
+    var hostnamePrefix = customProps.get("hostnamePrefix") + "-";
 
     log.debug("hostnamePrefix: " + hostnamePrefix);
 
@@ -68,8 +68,9 @@
         customNamingProfileId,
         hostnamePrefix)
     ) {
-        this.log.log("The prefix '" + hostnamePrefix + "' already exists");
+        log.log("The prefix '" + hostnamePrefix + "' already exists");
     } else {
+        log.log("The prefix '" + hostnamePrefix + "' does not exist and will be created");
         locking.createLock("customNaming", customNamingProfileId);
         try {
             customNamingService.addCustomNamingPrefixToTemplate(

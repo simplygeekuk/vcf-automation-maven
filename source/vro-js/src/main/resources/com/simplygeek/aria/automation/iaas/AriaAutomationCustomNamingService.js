@@ -220,7 +220,9 @@
         var prefixFound = false;
         var customNamingObject = this.getCustomNamingById(customNamingId);
 
+        this.log.debug("Checking if prefix '" + prefix + "' exists in custom naming profile");
         if (customNamingObject.templates) {
+            this.log.debug("Found " + customNamingObject.templates.length + " naming templates");
             var customNamingTemplates = customNamingObject.templates;
             var templatesWithPrefix = customNamingTemplates.filter(
                 function(template) {
@@ -230,7 +232,9 @@
                 }
             );
 
+            this.log.debug("Found " + templatesWithPrefix.length + " templates matching prefix");
             if (templatesWithPrefix.length > 0) prefixFound = true;
+            this.log.debug("prefixFound: " + prefixFound);
         }
 
         return prefixFound;
