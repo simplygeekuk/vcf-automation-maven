@@ -53,12 +53,10 @@
 
         var session;
 
-        this.log.debug("Creating API session.");
         session = this.createSession(
             refreshToken
         );
         this.sessionHeaders.put("Authorization", "Bearer " + session.token);
-        this.log.debug("API session created.");
     };
 
     /**
