@@ -38,6 +38,8 @@
         this.iaasBaseUri = "/iaas/api";
         this.iaasApiVersion = this.iaasAbout().latestApiVersion;
         this.iaasApiVersionParam = "apiVersion=" + this.iaasApiVersion;
+
+        this.createAuthenticatedSession(apiToken);
     }
 
     var AriaAutomationGenericBackendService = System.getModule(
@@ -46,6 +48,37 @@
 
     AriaAutomationIaasService.prototype = Object.create(AriaAutomationGenericBackendService.prototype);
     AriaAutomationIaasService.prototype.constructor = AriaAutomationIaasService;
+
+    // ## Disks ##
+
+    /**
+     * Defines the getMachineDisks method.
+     * @method
+     * @public
+     * @param {string} machineId - The machine id.
+     *
+     * @returns {Any} The machine disks object.
+     */
+
+    AriaAutomationIaasService.prototype.getMachineDisks = function (
+        machineId
+    ) {
+        if (!machineId || typeof machineId !== "string") {
+            throw new ReferenceError(
+                "machineId is required and must " +
+                "be of type 'string'"
+            );
+        }
+
+        var uri = this.iaasBaseUri + "/machines/" + machineId +
+                                    "/disks?" + this.iaasApiVersionParam;
+        var disksObject;
+
+        this.log.debug("Getting disks for machine with ID '" + machineId + "'");
+        disksObject = this.get(uri);
+
+        return disksObject;
+    };
 
     // ## Projects ##
 
