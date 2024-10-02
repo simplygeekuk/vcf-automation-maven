@@ -197,5 +197,48 @@
         return results;
     };
 
+    /**
+     * Defines the getResourceById method.
+     * @method
+     * @public
+     * @param {string} resourceId - The resource id.
+     * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
+     *
+     * @returns {Any} The resource object.
+     */
+
+    AriaAutomationDeploymentService.prototype.getResourceById = function (
+        resourceId,
+        throwOnNotFound
+    ) {
+        if (!resourceId || typeof resourceId !== "string") {
+            throw new ReferenceError(
+                "resourceId is required and must " +
+                "be of type 'string'"
+            );
+        }
+        // Default throwOnNotFound to true
+        throwOnNotFound = throwOnNotFound !== false;
+
+        var uri = this.baseUri + "/resources/" + resourceId +
+                                 "?expand=project,deployment,currentRequest," +
+                                 "inprogressRequests";
+        var resourceObject;
+
+        this.log.debug("Getting resource with ID '" + resourceId + "'");
+        resourceObject = this.get(uri, null, throwOnNotFound);
+
+        if (resourceObject) {
+            var resourceName = resourceObject.name;
+
+            this.log.debug(
+                "Found resource with name '" + resourceName +
+                "' and id '" + resourceId + "'"
+            );
+        }
+
+        return resourceObject;
+    };
+
     return AriaAutomationDeploymentService;
 });
