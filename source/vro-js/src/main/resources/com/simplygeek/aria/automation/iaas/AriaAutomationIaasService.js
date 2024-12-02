@@ -71,7 +71,7 @@
         }
 
         var uri = this.iaasBaseUri + "/machines/" + machineId +
-                                    "/disks?" + this.iaasApiVersionParam;
+                                     "/disks?" + this.iaasApiVersionParam;
         var disksObject;
 
         this.log.debug("Getting disks for machine with ID '" + machineId + "'");
