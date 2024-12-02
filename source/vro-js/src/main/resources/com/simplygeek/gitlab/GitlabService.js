@@ -166,6 +166,75 @@
     };
 
     /**
+     * Defines the deleteGroup method.
+     * @method
+     * @public
+     * @param {number} groupId - The group ID.
+     * @param {boolean} [permamentlyRemove] - The group ID.
+     * @param {string} [fullPath] - The group ID.
+     *
+     */
+
+    GitlabService.prototype.deleteGroup = function (
+        groupId
+        // permamentlyRemove,
+        // fullPath
+    ) {
+        if (!groupId || typeof groupId !== "number") {
+            throw new ReferenceError(
+                "groupId is required and must " +
+                "be of type 'number'"
+            );
+        }
+
+        this.log.debug("Deleting group with id '" + groupId + "'");
+        var uri = this.baseUri + "/groups/" + groupId.toString();
+
+        this.delete(
+            uri,
+            [202]
+        );
+        // Can't get this to work
+        // if (permamentlyRemove) {
+        //     uri += "?permamently_remove=" + permamentlyRemove +
+        //             "&full_path=" + fullPath;
+        //     this.delete(
+        //         uri,
+        //         [202]
+        //     );
+        // }
+        this.log.debug("Successfully deleted group with id '" + groupId + "'");
+    };
+
+    /**
+     * Defines the restoreGroup method.
+     * @method
+     * @public
+     * @param {number} groupId - The group ID.
+     *
+     */
+
+    GitlabService.prototype.restoreGroup = function (
+        groupId
+    ) {
+        if (!groupId || typeof groupId !== "number") {
+            throw new ReferenceError(
+                "groupId is required and must " +
+                "be of type 'number'"
+            );
+        }
+
+        this.log.debug("Restoring group with id '" + groupId + "'");
+        var uri = this.baseUri + "/groups/" + groupId.toString() + "/restore";
+
+        this.post(
+            uri
+        );
+
+        this.log.debug("Successfully restored group with id '" + groupId + "'");
+    };
+
+    /**
      * Defines the getSamlGroupLink method.
      * @method
      * @public
@@ -399,7 +468,7 @@
      * @public
      * @param {number} groupId - The group id.
      * @param {number} accessTokenId - The group access token id.
-     * @param {Date} [expiresAt] - Expiration date of the access token in ISO format (YYYY-MM-DD).
+     * @param {Date} expiresAt - Expiration date of the access token in ISO format (YYYY-MM-DD).
      *
      * @returns {Any} The group access token object.
      */
@@ -422,17 +491,19 @@
             );
         }
 
-        var accessTokenObject;
         var uri = this.baseUri + "/groups/" + groupId.toString() +
-                                 "/access_tokens/" + accessTokenId.toString() + "/rotate";
+                                "/access_tokens/" + accessTokenId + "/rotate";
+        var content = {};
 
         if (expiresAt) {
-            uri += "?expires_at=" + expiresAt;
+            content.expires_at = expiresAt;
+            //uri += "?expires_at=" + expiresAt;
         }
+        var accessTokenObject;
 
         accessTokenObject = this.post(
             uri,
-            null,
+            content,
             [200]
         );
 
@@ -465,7 +536,7 @@
         }
 
         var uri = this.baseUri + "/groups/" + groupId.toString() +
-                                 "/access_tokens/" + accessTokenId.toString();
+                                "/access_tokens/" + accessTokenId.toString();
 
         this.delete(uri);
     };
@@ -629,7 +700,7 @@
      * Defines the getResourceById method.
      * @method
      * @public
-     * @param {number} resourceId - The resource id.
+     * @param {string} resourceId - The resource id.
      * @param {string} resource - The resource URI.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
      *
@@ -678,22 +749,25 @@
         var uri = this.baseUri + "/" + resource + "?search=" + resourceName;
         var resourceObj;
         var resourceId;
+        var groupMatchesByName = [];
 
         this.log.debug(
             "Getting resource with name '" + resourceName + "'");
 
-        var results = this.get(uri);
-        var groupMatchesByName = results.filter(
-            function(resource) {
-                return resource.name === resourceName;
-            }
-        );
+        var results = this.get(uri, null, throwOnNotFound);
+
+        if (results && Array.isArray(results)) {
+            groupMatchesByName = results.filter(
+                function(resource) {
+                    return resource.name === resourceName;
+                }
+            );
+        } else {
+            groupMatchesByName = results;
+        }
 
         if (groupMatchesByName.length > 1) {
-            throw new Error(
-                "More than one resource found. Unable to determine correct " +
-                "resource with name '" + resourceName + "'"
-            );
+            resourceObj = groupMatchesByName;
         } else if (groupMatchesByName.length > 0) {
             resourceObj = groupMatchesByName[0];
             resourceId = resourceObj.id;
@@ -810,12 +884,8 @@
                 if (throwOnNotFound) throw new Error("No results found");
             }
         } else {
-            if (response.statusCode === "404") {
-                if (throwOnNotFound) {
-                    throw new Error("No results found");
-                } else {
-                    result = null;
-                }
+            if (response.statusCode === 404 && !throwOnNotFound) {
+                result = null;
             } else {
                 result = responseContent;
             }
