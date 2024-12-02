@@ -24,7 +24,8 @@ export default [
                 VcPlugin: "readonly",
                 LockingSystem: "readonly",
                 RESTHostManager: "readonly",
-                RESTAuthenticationManager: "readonly"
+                RESTAuthenticationManager: "readonly",
+                VcVirtualDisk: "readonly"
             }
         },
         rules: {
