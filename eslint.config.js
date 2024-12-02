@@ -25,7 +25,8 @@ export default [
                 LockingSystem: "readonly",
                 RESTHostManager: "readonly",
                 RESTAuthenticationManager: "readonly",
-                VcVirtualDisk: "readonly"
+                VcVirtualDisk: "readonly",
+                AD_HostManager: "readonly"
             }
         },
         rules: {
