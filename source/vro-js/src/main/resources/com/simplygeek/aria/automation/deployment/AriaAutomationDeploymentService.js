@@ -28,7 +28,7 @@
             );
         }
 
-        AriaAutomationGenericBackendService.call(this, restHost, apiToken);
+        AriaAutomationGenericBackendService.call(this, restHost);
 
         this.log = new (System.getModule("com.simplygeek.log").Logger())(
             "Action",
@@ -181,14 +181,54 @@
      * Defines the getResources method.
      * @method
      * @public
+     * @param {boolean} isManaged - If true, return only resources that are managed.
+     * @param {Array/string} resourceTypes - Results must be associated with one of these resource types.
      *
      * @returns {Array/Any} The list of managed resources.
      */
 
-    AriaAutomationDeploymentService.prototype.getResources = function () {
-        var uri = this.baseUri + "/resources?$filter=((origin eq DEPLOYED) or (origin eq ONBOARDED)" +
-                                 " or (origin eq MIGRATED))";
+    AriaAutomationDeploymentService.prototype.getResources = function (
+        isManaged,
+        resourceTypes
+    ) {
+        if (resourceTypes && !Array.isArray(resourceTypes)) {
+            throw new TypeError("resourceTypes not of type 'Array/string'");
+        } else if (resourceTypes && resourceTypes.length > 0) {
+            resourceTypes.forEach(
+                function(item) {
+                    if (typeof item !== "string") {
+                        throw new TypeError("resourceTypes not of type 'Array/string'");
+                    }
+                }
+            );
+        }
+
+        // Default isManaged to true, unless explicitly set to false.
+        isManaged = isManaged !== false;
+
+        var managedOrigins = [
+            "DEPLOYED",
+            "ONBOARDED",
+            "MIGRATED"
+        ];
+
+        if (resourceTypes && resourceTypes.length > 0) {
+            var resourceTypesString = resourceTypes.join(",");
+        }
+
+        var uri = this.baseUri + "/resources";
         var results;
+
+        if (isManaged) {
+            var managedOriginsString = managedOrigins.join(",");
+
+            uri += "?origin=" + managedOriginsString;
+        }
+
+        if (resourceTypesString) {
+            (uri.indexOf("?") > -1) ? uri += "&" : uri += "?";
+            uri += "resourceTypes=" + resourceTypesString;
+        }
 
         this.log.debug("Getting a list of managed resources");
         results = this.get(uri);
