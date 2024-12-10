@@ -20,13 +20,14 @@
          * Defines the createLock method.
          * @method
          * @public
-         * @param {string} lockOwner - param description.
-         * @param {string} lockId - param description.
-         * @param {number} [retryMaxAttempts] - param description.
-         * @param {number} [retryDelay] - param description.
-         * @param {boolean} [autoRemoveLock] - param description.
+         * @param {string} lockOwner - the lock owner.
+         * @param {string} lockId - the unique (per lock) id.
+         * @param {number} [retryMaxAttempts] - The maximum number of attempts to retry lock.
+         * @param {number} [retryDelay] - The delay between retry attempts.
+         * @param {boolean} [autoRemoveLock] - Auto remove the lock if one is already present and
+         *                                     the max retry attempts has been reached.
          *
-         * @returns {boolean} - describe the return type as well
+         * @returns {boolean} - Return the lock status.
          */
 
         this.createLock = function (
@@ -75,6 +76,7 @@
                     lockAcquired = LockingSystem.lock(lockId,lockOwner);
                     if (lockAcquired) {
                         this.log.debug("Lock created successfully");
+                        break;
                     } else {
                         this.log.debug(
                             "Failed to create lock, retrying..." +
@@ -87,7 +89,9 @@
                     );
 
                 }
-                if (retryAttempt < retryMaxAttempts) System.sleep(retryDelay * 1000);
+                if (!lockAcquired && retryAttempt < retryMaxAttempts) {
+                    System.sleep(retryDelay * 1000);
+                }
                 retryAttempt++;
             } while (!lockAcquired && (retryAttempt <= retryMaxAttempts));
 
@@ -131,8 +135,8 @@
          * Defines the removeLock method.
          * @method
          * @public
-         * @param {string} lockOwner - param description.
-         * @param {string} lockId - param description.
+         * @param {string} lockOwner - the lock owner.
+         * @param {string} lockId - the unique (per lock) id.
          */
 
         this.removeLock = function (
