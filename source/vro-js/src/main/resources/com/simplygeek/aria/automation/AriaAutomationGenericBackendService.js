@@ -7,7 +7,7 @@
      * Defines the AriaAutomationGenericBackendService class.
      * @class
      * @param {REST:RESTHost} restHost - The Aria Automation HTTP REST host.
-     * 
+     *
      * @returns {Any} An instance of the AriaAutomationGenericBackendService class.
      */
 
