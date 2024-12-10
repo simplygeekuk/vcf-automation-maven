@@ -7,11 +7,15 @@
      * Defines the AriaAutomationCustomNamingService class.
      * @class
      * @param {REST:RESTHost} restHost - The Aria Automation HTTP REST host.
+     * @param {string} apiToken - The Aria Automation API Token.
      *
      * @returns {Any} An instance of the AriaAutomationCustomNamingService class.
      */
 
-    function AriaAutomationCustomNamingService(restHost) {
+    function AriaAutomationCustomNamingService(
+        restHost,
+        apiToken
+    ) {
         AriaAutomationGenericBackendService.call(this, restHost);
 
         this.log = new (System.getModule("com.simplygeek.log").Logger())(
@@ -22,6 +26,8 @@
         this.baseUri = "/iaas/api";
         this.apiVersion = this.about().latestApiVersion;
         this.apiVersionParam = "apiVersion=" + this.apiVersion;
+
+        this.createAuthenticatedSession(apiToken);
     }
 
     var AriaAutomationGenericBackendService = System.getModule(
