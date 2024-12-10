@@ -26,7 +26,8 @@ export default [
                 RESTHostManager: "readonly",
                 RESTAuthenticationManager: "readonly",
                 VcVirtualDisk: "readonly",
-                AD_HostManager: "readonly"
+                AD_HostManager: "readonly",
+                ActiveDirectory: "readonly"
             }
         },
         rules: {
