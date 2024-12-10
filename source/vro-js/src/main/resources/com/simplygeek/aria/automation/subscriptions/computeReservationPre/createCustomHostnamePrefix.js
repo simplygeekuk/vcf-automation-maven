@@ -1,8 +1,8 @@
 /**
- * Write a brief description of the purpose of the action.
- * @param {Properties} inputProperties - describe each parameter as in JSDoc format.
+ * A subscription Action that creates a custom naming prefix.
+ * @param {Properties} inputProperties - The input properties Subscription payload.
  *
- * @returns {void} - describe the return type as well
+ * @returns {void} - No return value.
  */
 (function (inputProperties) {
     var log = new (System.getModule("com.simplygeek.log").Logger())(
@@ -11,54 +11,40 @@
     );
     // Get values from Input Properties
     var customProps = inputProperties.get("customProperties");
-    var hostnamePrefix = customProps.get("hostnamePrefix") + "-";
+    var hostnamePrefix = customProps.get("hostnamePrefix");
 
     log.debug("hostnamePrefix: " + hostnamePrefix);
 
-    // Get Provisioning Configuration
-    var configService = new (System.getModule(
-        "com.simplygeek.aria.orchestrator.configurations"
-    ).ConfigElementService());
-    var provisioningConfigPath = "Simplygeek/Aria/Automation/Provisioning";
-    var restHostConfigPath = "Simplygeek/Aria/Orchestrator/Resthosts";
-    var provisioningDefaultsConfigElement = configService.getConfigElement(
-        "Defaults", provisioningConfigPath
-    );
-    // Get Custom Naming
-    var customNamingProfileName = configService.getConfigElementAttribute(
-        provisioningDefaultsConfigElement,
-        "customNamingProfile"
-    ).value;
-    // Get Aria Automation Resthost
-    var ariaAutomationRestHostName = configService.getConfigElementAttribute(
-        provisioningDefaultsConfigElement,
-        "ariaAutomationRestHostName"
-    ).value;
-    var ariaAutomationRestHost = System.getModule("com.simplygeek.rest").getRestHost(
-        ariaAutomationRestHostName
-    );
-    var ariaAutomationRestHostConfigElement = configService.getConfigElement(
-        ariaAutomationRestHostName,
-        restHostConfigPath
-    );
-    var ariaAutomationApiToken = configService.getConfigElementAttribute(
-        ariaAutomationRestHostConfigElement,
-        "refreshToken"
-    ).value;
+    var ariaConfigService = new (System.getModule(
+        "com.simplygeek.aria.automation"
+    ).AriaAutomationConfigService());
+    var defaultConfigService = new (System.getModule(
+        "com.simplygeek.aria.automation.provisioning"
+    ).DefaultConfigService());
+    var customNamingConfigService = new (System.getModule(
+        "com.simplygeek.aria.automation.iaas"
+    ).CustomNamingConfigService());
+    var customNamingProfileName = defaultConfigService.getCustomNamingProfileName();
+    var ariaAutomationRestHost = ariaConfigService.getRestHost();
+    var ariaAutomationApiToken = ariaConfigService.getApiToken();
     var customNamingService = new (
         System.getModule(
             "com.simplygeek.aria.automation.iaas"
-        ).AriaAutomationCustomNamingService())(ariaAutomationRestHost);
+        ).AriaAutomationCustomNamingService())(
+        ariaAutomationRestHost,
+        ariaAutomationApiToken
+    );
     var locking = new (
         System.getModule(
             "com.simplygeek.aria.orchestrator.locking"
-        ).LockingService());
-
-    customNamingService.createAuthenticatedSession(ariaAutomationApiToken);
-    var customNamingProfile = customNamingService.getCustomNamingByName(customNamingProfileName);
+        ).LockingService()
+    );
+    var customNamingProfile = customNamingService.getCustomNamingByName(
+        customNamingProfileName
+    );
     var customNamingProfileId = customNamingProfile.id;
-    var customNamingStartCounter = 0;
-    var customNamingIncrementStep = 1;
+    var customNamingStartCounter = customNamingConfigService.getStartCounter();
+    var customNamingIncrementStep = customNamingConfigService.getIncrementStep();
 
     log.log(
         "Adding hostname prefix '" + hostnamePrefix +
@@ -75,7 +61,7 @@
         try {
             customNamingService.addCustomNamingPrefixToTemplate(
                 customNamingProfileId,
-                hostnamePrefix + "-",
+                hostnamePrefix,
                 "COMPUTE",
                 customNamingStartCounter,
                 customNamingIncrementStep
