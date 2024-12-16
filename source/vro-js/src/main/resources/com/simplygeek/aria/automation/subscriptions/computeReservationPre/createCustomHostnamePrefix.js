@@ -43,8 +43,12 @@
         customNamingProfileName
     );
     var customNamingProfileId = customNamingProfile.id;
-    var customNamingStartCounter = customNamingConfigService.getStartCounter();
+    var customNamingStartCounter = customNamingConfigService.getStartCounter() - 1;
     var customNamingIncrementStep = customNamingConfigService.getIncrementStep();
+
+    if (customNamingStartCounter < 0) {
+        customNamingStartCounter = 0;
+    }
 
     log.log(
         "Adding hostname prefix '" + hostnamePrefix +

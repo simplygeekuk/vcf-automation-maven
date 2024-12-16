@@ -128,28 +128,32 @@
         var customNamingFullObject;
 
         this.log.debug(
-            "Getting custom naming with name '" +
+            "Getting custom naming profile with name '" +
             customNamingName + "'"
         );
-        var results = this.get(uri);
+        var results = this.get(
+            uri,
+            null,
+            false
+        );
 
-        if (results.length > 1) {
+        if (results && results.length > 1) {
             throw new Error(
-                "More than one custom naming found. Unable to determine correct custom" +
-                " naming with name '" + customNamingName + "'"
+                "More than one custom naming profile found. Unable to determine correct custom" +
+                " naming profile with name '" + customNamingName + "'"
             );
-        } else if (results.length > 0) {
+        } else if (results && results.length > 0) {
             customNamingObject = results[0];
             customNamingFullObject = this.getCustomNamingById(customNamingObject.id);
         } else {
             if (throwOnNotFound) {
                 throw new Error(
-                    "Custom naming not found with name '" +
+                    "Custom naming profile not found with name '" +
                     customNamingName + "'"
                 );
             } else {
                 this.log.warn(
-                    "Custom naming not found with name '" +
+                    "Custom naming profile not found with name '" +
                     customNamingName + "'"
                 );
             }
