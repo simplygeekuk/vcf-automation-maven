@@ -13,7 +13,7 @@
     function CustomNamingConfigService() {
         ConfigElementService.call(this);
 
-        var CustomNamingConfigPath = "Simplygeek/VCF/Automation";
+        var customNamingConfigPath = "Simplygeek/VCF/Automation";
 
         this.log = new (System.getModule("com.simplygeek.log").Logger())(
             "Action",
@@ -22,7 +22,7 @@
 
         this.customNamingConfigElement = this.getConfigElement(
             "CustomNaming",
-            CustomNamingConfigPath
+            customNamingConfigPath
         );
 
     }
