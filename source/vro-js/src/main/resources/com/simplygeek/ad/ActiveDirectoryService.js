@@ -65,7 +65,10 @@
          * @returns {AD:ComputerAD} Active Directory Computer object.
          */
 
-        this.getComputer = function(computerName, throwOnNotFound) {
+        this.getComputer = function(
+            computerName,
+            throwOnNotFound
+        ) {
             if (!computerName || typeof computerName !== "string") {
                 throw new ReferenceError("computerName is required and must be of type 'string'");
             }
@@ -86,7 +89,11 @@
          * @returns {AD:ComputerAD} Active Directory Computer object.
          */
 
-        this.createComputer = function(computerName, parent, domainName) {
+        this.createComputer = function(
+            computerName,
+            parent,
+            domainName
+        ) {
             if (!computerName || typeof computerName !== "string") {
                 throw new ReferenceError("computerName is required and must be of type 'string'");
             }
@@ -107,7 +114,11 @@
             }
 
             try {
-                parent.createComputer(computerName, domainName);
+                if (domainName) {
+                    parent.createComputer(computerName, domainName);
+                } else {
+                    parent.createComputer(computerName);
+                }
             } catch (e) {
                 throw new Error("Failed to create Computer: " + e);
             }
@@ -143,19 +154,23 @@
          * @method
          * @public
          * @param {string} groupName - Group name.
-         * @param {string} groupDN - Group Distinguished Name.
+         * @param {string} [groupDN] - Group Distinguished Name.
          * @param {boolean} throwOnNotFound - Whether to throw an exception if no
          *                                    object is found.
          *
          * @returns {AD:Group} Active Directory Group object.
          */
 
-        this.getGroup = function(groupName, groupDN, throwOnNotFound) {
+        this.getGroup = function(
+            groupName,
+            groupDN,
+            throwOnNotFound
+        ) {
             if (!groupName || typeof groupName !== "string") {
                 throw new ReferenceError("groupName is required and must be of type 'string'");
             }
-            if (!groupDN || typeof groupDN !== "string") {
-                throw new ReferenceError("groupDN is required and must be of type 'string'");
+            if (groupDN && typeof groupDN !== "string") {
+                throw new ReferenceError("groupDN must be of type 'string'");
             }
 
             var adGroup = findAdObject.call(this, "Group", groupName, groupDN, throwOnNotFound);
@@ -167,20 +182,24 @@
          * Defines the getOrganizationalUnit method.
          * @method
          * @public
-         * @param {string} ouName - OrganizationalUnit name.
-         * @param {string} ouDN - OrganizationalUnit Distinguished Name.
+         * @param {string} ouName - OrganizationalUnit Name.
+         * @param {string} [ouDN] - OrganizationalUnit Distinguished Name.
          * @param {boolean} throwOnNotFound - Whether to throw an exception if no
          *                                    object is found.
          *
          * @returns {AD:OrganizationUnit} Active Directory OU object.
          */
 
-        this.getOrganizationalUnit = function(ouName, ouDN, throwOnNotFound) {
+        this.getOrganizationalUnit = function(
+            ouName,
+            ouDN,
+            throwOnNotFound
+        ) {
             if (!ouName || typeof ouName !== "string") {
                 throw new ReferenceError("ouName is required and must be of type 'string'");
             }
-            if (!ouDN || typeof ouDN !== "string") {
-                throw new ReferenceError("ouDN is required and must be of type 'string'");
+            if (ouDN && typeof ouDN !== "string") {
+                throw new ReferenceError("ouDN must be of type 'string'");
             }
 
             var adOu = findAdObject.call(this, "OrganizationalUnit", ouName, ouDN, throwOnNotFound);
@@ -199,7 +218,10 @@
          * @returns {AD:User} Active Directory User object.
          */
 
-        this.getUser = function(username, throwOnNotFound) {
+        this.getUser = function(
+            username,
+            throwOnNotFound
+        ) {
             if (!username || typeof username !== "string") {
                 throw new ReferenceError("username is required and must be of type 'string'");
             }
@@ -309,7 +331,11 @@
          * @returns {AD:UserGroup} Active Directory UserGroup object.
          */
 
-        this.getUserGroup = function(userGroupName, userGroupDN, throwOnNotFound) {
+        this.getUserGroup = function(
+            userGroupName,
+            userGroupDN,
+            throwOnNotFound
+        ) {
             if (!userGroupName || typeof userGroupName !== "string") {
                 throw new ReferenceError("userGroupName is required and must be of type 'string'");
             }
@@ -331,7 +357,10 @@
          * @return {Array/Any} Array of matched AD user objects.
          */
 
-        this.searchADUsers = function(searchPattern, searchOU) {
+        this.searchADUsers = function(
+            searchPattern,
+            searchOU
+        ) {
             if (!searchPattern || typeof searchPattern !== "string") {
                 throw new Error("searchPattern is required and must be of type 'string'");
             }
@@ -376,12 +405,17 @@
          * @returns {Any} Active Directory object.
          */
 
-        var findAdObject = function(adObjType, adObjName, objDistinguishedName, throwOnNotFound) {
+        var findAdObject = function(
+            adObjType,
+            adObjName,
+            objDistinguishedName,
+            throwOnNotFound
+        ) {
             var adObj;
             var adObjs;
             var adObjsFound;
 
-            // Default throwOnNotFound to true, unless excplicitly set to false.
+            // Default throwOnNotFound to true, unless explicitly set to false.
             throwOnNotFound = throwOnNotFound !== false;
 
             this.log.debug("Finding Active Directory object with name '" + adObjName +
