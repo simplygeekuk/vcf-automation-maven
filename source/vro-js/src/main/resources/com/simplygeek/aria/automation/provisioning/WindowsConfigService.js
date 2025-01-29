@@ -109,6 +109,23 @@
     };
 
     /**
+     * Defines the getAnsibleRestHostName method.
+     * @description Gets the Ansible Rest Host name.
+     * @method
+     * @public
+     *
+     * @returns {string} The Ansible Rest Host name.
+     */
+
+    WindowsConfigService.prototype.getAnsibleRestHostName = function () {
+        var ansibleRestHostName = this.__getConfigValue(
+            "ansibleRestHostName"
+        );
+
+        return ansibleRestHostName;
+    };
+
+    /**
      * Defines the getAnsibleProjectName method.
      * @description Gets the Ansible Project name for Playbook execution.
      * @method
@@ -208,6 +225,40 @@
         );
 
         return ansibleGroupName;
+    };
+
+    /**
+     * Defines the getAnsibleConnection method.
+     * @description Gets the Ansible connection method for connecting to inventory hosts.
+     * @method
+     * @public
+     *
+     * @returns {string} The Ansible group name.
+     */
+
+    WindowsConfigService.prototype.getAnsibleConnection = function () {
+        var ansibleGroupName = this.__getConfigValue(
+            "ansibleGroupName"
+        );
+
+        return ansibleGroupName;
+    };
+
+    /**
+     * Defines the getAnsiblePort method.
+     * @description Gets the port used for the Ansible connection.
+     * @method
+     * @public
+     *
+     * @returns {string} The port used for the Ansible connection.
+     */
+
+    WindowsConfigService.prototype.getAnsiblePort = function () {
+        var ansiblePort = this.__getConfigValue(
+            "ansiblePort"
+        );
+
+        return ansiblePort;
     };
 
     /**

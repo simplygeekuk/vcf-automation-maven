@@ -29,6 +29,7 @@
         this.activeDirectoryDomainName = this.getActiveDirectoryDomainName();
         this.activeDirectoryDNSSuffix = this.getActiveDirectoryDNSSuffix();
         this.activeDirectoryServerOUDN = this.getActiveDirectoryServerOUDN();
+        this.ansibleRestHostName = this.getAnsibleRestHostName();
     }
 
     // Extends the ConfigElementService
@@ -111,6 +112,24 @@
         ).value;
 
         return activeDirectoryServerOUDN;
+    };
+
+    /**
+     * Defines the getAnsibleRestHostName method.
+     * @description Gets the Ansible Rest Host name.
+     * @method
+     * @public
+     *
+     * @returns {string} The Ansible Rest Host name.
+     */
+
+    DefaultConfigService.prototype.getAnsibleRestHostName = function () {
+        var ansibleRestHostName = this.getConfigElementAttribute(
+            this.defaultsConfigElement,
+            "ansibleRestHostName"
+        ).value;
+
+        return ansibleRestHostName;
     };
 
     return DefaultConfigService;
