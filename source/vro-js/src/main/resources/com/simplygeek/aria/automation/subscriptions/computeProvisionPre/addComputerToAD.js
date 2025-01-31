@@ -1,5 +1,5 @@
 /**
- * A subscription Action that creates a custom naming prefix.
+ * A subscription to add an Active Directory computer account.
  * @param {Properties} inputProperties - The input properties Subscription payload.
  *
  * @returns {Properties} - The updated Custom Properties.
@@ -24,10 +24,6 @@
     var osType = customProps.get("osType");
 
     log.debug("osType: " + osType);
-
-    var osTier = customProps.get("tier");
-
-    log.debug("osTier: " + osTier);
 
     // Get Configuration
     var windowsConfigService = new (
