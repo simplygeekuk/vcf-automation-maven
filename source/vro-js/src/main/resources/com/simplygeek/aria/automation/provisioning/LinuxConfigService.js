@@ -40,6 +40,10 @@
     );
     LinuxConfigService.prototype.constructor = LinuxConfigService;
 
+    // ###################################
+    // ## Aria Automation Configuration ##
+    // ###################################
+
     /**
      * Defines the getCustomNamingProfileName method.
      * @description Gets the Custom Naming profile name used for machine naming.
@@ -56,6 +60,10 @@
 
         return customNamingProfileName;
     };
+
+    // ####################################
+    // ## Active Directory Configuration ##
+    // ####################################
 
     /**
      * Defines the getActiveDirectoryDomainName method.
@@ -107,6 +115,10 @@
 
         return activeDirectoryServerOUDN;
     };
+
+    // ###########################
+    // ## Ansible Configuration ##
+    // ###########################
 
     /**
      * Defines the getAnsibleRestHostName method.

@@ -40,6 +40,48 @@
     );
     WindowsConfigService.prototype.constructor = WindowsConfigService;
 
+    // #########################
+    // ## Machine Credentials ##
+    // #########################
+
+    /**
+     * Defines the getUsername method.
+     * @description Gets the username used for machine login.
+     * @method
+     * @public
+     *
+     * @returns {string} The username used for machine login.
+     */
+
+    WindowsConfigService.prototype.getUsername = function () {
+        var username = this.__getConfigValue(
+            "username"
+        );
+
+        return username;
+    };
+
+    /**
+     * Defines the getPassword method.
+     * @description Gets the password used for machine login.
+     * @method
+     * @public
+     *
+     * @returns {string} The password used for machine login.
+     */
+
+    WindowsConfigService.prototype.getUsername = function () {
+        var password = this.__getConfigValue(
+            "password"
+        );
+
+        return password;
+    };
+
+    // ###################################
+    // ## Aria Automation Configuration ##
+    // ###################################
+
     /**
      * Defines the getCustomNamingProfileName method.
      * @description Gets the Custom Naming profile name used for machine naming.
@@ -56,6 +98,10 @@
 
         return customNamingProfileName;
     };
+
+    // ####################################
+    // ## Active Directory Configuration ##
+    // ####################################
 
     /**
      * Defines the getActiveDirectoryDomainName method.
@@ -107,6 +153,27 @@
 
         return activeDirectoryServerOUDN;
     };
+
+    /**
+     * Defines the getActiveDirectoryServerOUDN method.
+     * @description Gets the Active Directory Server OU Distinguished Name.
+     * @method
+     * @public
+     *
+     * @returns {string} The Active Directory Server OU Distinguished Name.
+     */
+
+    WindowsConfigService.prototype.getActiveDirectoryServerOUDN = function () {
+        var activeDirectoryServerOUDN = this.__getConfigValue(
+            "activeDirectoryServerOUDN"
+        );
+
+        return activeDirectoryServerOUDN;
+    };
+
+    // ###########################
+    // ## Ansible Configuration ##
+    // ###########################
 
     /**
      * Defines the getAnsibleRestHostName method.
