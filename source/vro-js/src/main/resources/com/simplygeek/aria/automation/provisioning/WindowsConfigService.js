@@ -70,7 +70,7 @@
      * @returns {string} The password used for machine login.
      */
 
-    WindowsConfigService.prototype.getUsername = function () {
+    WindowsConfigService.prototype.getPassword = function () {
         var password = this.__getConfigValue(
             "password"
         );
