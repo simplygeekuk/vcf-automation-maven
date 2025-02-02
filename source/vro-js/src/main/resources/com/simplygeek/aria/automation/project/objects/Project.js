@@ -152,9 +152,9 @@
                 }
             );
         }
-        if (operationTimeout && typeof operationTimeout !== "string") {
+        if (operationTimeout && typeof operationTimeout !== "number") {
             throw new ReferenceError(
-                "operationTimeout must be of type 'string'"
+                "operationTimeout must be of type 'number'"
             );
         }
 
