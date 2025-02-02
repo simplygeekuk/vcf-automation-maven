@@ -43,7 +43,7 @@
         log.log("Removing Active Directory computer account '" + vmName + "'.");
         var adService = new (
             System.getModule(
-                "com.vattenfall.ad"
+                "com.simplygeek.ad"
             ).ActiveDirectoryService())(activeDirectoryDomainName);
         var adComputer = adService.getComputer(
             vmName,
@@ -52,7 +52,7 @@
 
         if (adComputer) {
             adService.removeComputer(adComputer); // void
-            log.log("Successfully removed computer account from Active Directory.");
+            log.log("Successfully removed Active Directory computer account.");
         } else {
             log.log("No computer object found, nothing to remove.");
         }

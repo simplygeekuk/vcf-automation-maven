@@ -56,7 +56,7 @@
 
         var adService = new (
             System.getModule(
-                "com.vattenfall.ad"
+                "com.simplygeek.ad"
             ).ActiveDirectoryService())(activeDirectoryDomainName);
         var adOrganizationalUnit = adService.getOrganizationalUnit(
             activeDirectoryServerOUName,
