@@ -17,12 +17,10 @@
     // Get values from Input Properties
     var resourceNames = inputProperties.get("resourceNames");
     var vmName = resourceNames[0];
-
-    log.debug("vmName: " + vmName);
-
     var customProps = inputProperties.get("customProperties");
     var osType = customProps.get("osType");
 
+    log.debug("vmName: " + vmName);
     log.debug("osType: " + osType);
 
     // Get Configuration

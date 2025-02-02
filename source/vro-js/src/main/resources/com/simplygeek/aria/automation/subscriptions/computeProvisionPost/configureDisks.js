@@ -1,6 +1,6 @@
 /**
  * Write a brief description of the purpose of the action.
- * @param {Properties} inputProperties - describe each parameter as in JSDoc format.
+ * @param {Properties} inputProperties - The input properties Subscription payload.
  *
  * @returns {void} - describe the return type as well
  */
