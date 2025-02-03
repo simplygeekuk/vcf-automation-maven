@@ -1,0 +1,101 @@
+formatVersion: 1
+inputs:
+  osFlavor:
+    type: string
+    description: Select Operating System variant
+    title: Operating System
+    enum:
+      - Windows Server 2022
+  cpuCount:
+    type: integer
+    title: CPU Cores
+    description: Number of virtual processors
+    default: 1
+    minimum: 1
+    maximum: 16
+  totalMemoryGB:
+    type: integer
+    title: Memory in GB
+    description: Machine virtual memory size in GB
+    default: 2
+    maximum: 64
+    minimum: 2
+  application:
+    type: string
+    title: Application
+    description: Select Application
+    oneOf:
+      - title: Active Directory
+        const: ad
+      - title: GS
+        const: gs
+      - title: Custom
+        const: custom
+  applicationCustom:
+    type: string
+    title: Enter Application Prefix e.g 'ad'
+    description: Provide a custom application prefix
+    minLength: 1
+    maxLength: 4
+    default: ' '
+  serverCategory:
+    type: string
+    title: Server Category
+    description: Select server category
+    enum:
+      - Active Directory & DNS
+      - Backup
+      - Certificate Servers
+      - CICD
+      - Exchange
+      - File Services
+      - IP Tools
+      - k8s
+      - Network Management
+      - Network VMs
+      - NTP Servers
+      - Password Management
+      - Update Services
+  networkLabel:
+    type: string
+    title: Network
+    description: Select Network
+    enum:
+      - DevOps
+      - Kubernetes
+      - Management
+      - Network Services
+resources:
+  Cloud_vSphere_Machine_1:
+    type: Cloud.vSphere.Machine
+    metadata:
+      layoutPosition:
+        - 1
+        - 0
+    properties:
+      allocatePerInstance: true
+      customizeGuestOs: true
+      customizationSpec: win-2022-domain
+      hostnamePrefix: flc${input.application != 'custom' ? input.application :to_lower(trim(input.applicationCustom))}
+      name: ${self.hostnamePrefix}
+      image: ${input.osFlavor}
+      count: 1
+      osFlavor: ${input.osFlavor}
+      osType: WINDOWS
+      cpuCount: ${input.cpuCount}
+      totalMemoryMB: ${input.totalMemoryGB * 1024}
+      serverCategory: ${input.serverCategory}
+      networks:
+        - network: ${resource.Cloud_NSX_Network_1.id}
+          assignment: static
+  Cloud_NSX_Network_1:
+    type: Cloud.NSX.Network
+    metadata:
+      layoutPosition:
+        - 0
+        - 0
+    properties:
+      networkType: existing
+      constraints:
+        - tag: Network_Zone:Internal
+        - tag: Network:${input.networkLabel}

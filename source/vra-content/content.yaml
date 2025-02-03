@@ -27,24 +27,34 @@
 #     - policy name 2
 
 blueprint:
-  - Volume
-subscription: []
+  - Windows (All Editions)
+  - Ubuntu Linux
+  - Rocky Linux
+  - Redhat Enterprise Linux
+subscription:
+  - Custom Naming - Create Hostname Prefix
+  - Active Directory - Add Computer
+  - Active Directory - Remove Computer
+  - VM - Group Policy Update (Windows)
 flavor-mapping:
   - small
   - medium
-image-mapping: []
-storage-profile: []
-region-mapping:
-  cloud-account-tags:
-    export-tag: "env:dev"
-    import-tags: ["env:dev", "env:test"]
+image-mapping:
+  - Redhat Enterprise Linux 8
+  - Redhat Enterprise Linux 9
+  - RHEL9_NODISK
+  - Rocky Linux 8
+  - Rocky Linux 9
+  - Ubuntu 2204
+  - Windows Server 2022
 catalog-item: []
 custom-resource: []
 resource-action: []
 catalog-entitlement: []
-
 property-group: []
 policy:
-  content-sharing: []
-
-content-source: []
+  content-sharing:
+    - FLC Content
+content-source:
+  - VM Templates
+  - vro

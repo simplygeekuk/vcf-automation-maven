@@ -1,0 +1,39 @@
+{
+  "createdAt": "2024-04-19T08:44:17.233943Z",
+  "createdBy": "stephensg",
+  "lastUpdatedAt": "2025-02-02T20:11:34.070200Z",
+  "lastUpdatedBy": "stephensg",
+  "config": {
+    "workflows": [
+      {
+        "id": "ba933450-ae46-4559-ab04-b7ccb0243c06",
+        "name": "Order AD Group",
+        "version": "1.0.0",
+        "integration": {
+          "name": "External-vRO",
+          "endpointUri": "https://flcvrodev.freelancercolo.local:443",
+          "endpointConfigurationLink": "/resources/endpoints/39e8dff3-1ebf-4ac1-b40c-1f414cfe91eb"
+        }
+      },
+      {
+        "id": "bfa42b08-5eac-46ed-ad9d-d91feaa76ed0",
+        "name": "Deploy Virtual Machine (from ISO)",
+        "version": "0.0.0",
+        "integration": {
+          "name": "External-vRO",
+          "endpointUri": "https://flcvrodev.freelancercolo.local:443",
+          "endpointConfigurationLink": "/resources/endpoints/39e8dff3-1ebf-4ac1-b40c-1f414cfe91eb"
+        }
+      }
+    ]
+  },
+  "lastImportStartedAt": "2025-02-02T20:11:33.366573Z",
+  "lastImportCompletedAt": "2025-02-02T20:11:34.070047Z",
+  "id": "73d9d473-df3a-42d1-b741-fd09844ee664",
+  "name": "vro",
+  "description": null,
+  "typeId": "com.vmw.vro.workflow",
+  "itemsImported": 2,
+  "itemsFound": 2,
+  "global": true
+}
