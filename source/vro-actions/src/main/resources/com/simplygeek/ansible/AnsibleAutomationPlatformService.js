@@ -35,7 +35,9 @@
     );
     AnsibleAutomationPlatformService.prototype.constructor = AnsibleAutomationPlatformService;
 
+    // ####################
     // ## Authentication ##
+    // ####################
 
     /**
      * Defines the createSession method.
@@ -115,7 +117,9 @@
         }
     };
 
+    // ##################
     // ## Applications ##
+    // ##################
 
     /**
      * Defines the getApplicationById method.
@@ -179,7 +183,9 @@
         return applicationObject;
     };
 
+    // ###################
     // ## Organizations ##
+    // ###################
 
     /**
      * Defines the getOrganizations method.
@@ -263,7 +269,9 @@
 
     };
 
+    // #################
     // ## Credentials ##
+    // #################
 
     /**
      * Defines the getCredentials method.
@@ -417,7 +425,9 @@
         return updatedCredentialObject;
     };
 
+    // ######################
     // ## Credential Types ##
+    // ######################
 
     /**
      * Defines the getCredentialTypes method.
@@ -501,7 +511,9 @@
         return credentialTypeObject;
     };
 
+    // ###########
     // ## Teams ##
+    // ###########
 
     /**
      * Defines the getTeams method.
@@ -665,7 +677,9 @@
         return roleObject;
     };
 
+    // ###########
     // ## Roles ##
+    // ###########
 
     /**
      * Defines the getRoles method.
@@ -766,7 +780,9 @@
         return roleObject;
     };
 
+    // ###############
     // ## Inventory ##
+    // ###############
 
     /**
      * Defines the getInventories method.
@@ -883,7 +899,9 @@
         return inventoryObject;
     };
 
+    // #####################
     // ## Inventory Hosts ##
+    // #####################
 
     /**
      * Defines the getInventoryHosts method.
