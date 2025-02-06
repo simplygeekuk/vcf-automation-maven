@@ -353,7 +353,6 @@
             if (e.message.indexOf("No Configuration Element Attribute found") !== -1) {
                 this.log.log("No " + configKey + " found, getting default value");
                 try {
-                    // configValue = this.defaultConfigService[method]();
                     configValue = this.defaultConfigService[configKey];
                     this.log.log("Found " + configKey + ": " + configValue);
                 } catch (e) {
