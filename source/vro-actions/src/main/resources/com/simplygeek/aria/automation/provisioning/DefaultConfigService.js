@@ -20,7 +20,7 @@
             "DefaultConfigService"
         );
 
-        this.defaultsConfigElement = this.getConfigElement(
+        this.configElement = this.getConfigElement(
             "Default",
             provisioningConfigPath
         );
@@ -57,7 +57,7 @@
 
     DefaultConfigService.prototype.getCustomNamingProfileName = function () {
         var customNamingProfileName = this.getConfigElementAttribute(
-            this.defaultsConfigElement,
+            this.configElement,
             "customNamingProfileName"
         ).value;
 
@@ -79,7 +79,7 @@
 
     DefaultConfigService.prototype.getActiveDirectoryDomainName = function () {
         var activeDirectoryDomainName = this.getConfigElementAttribute(
-            this.defaultsConfigElement,
+            this.configElement,
             "activeDirectoryDomainName"
         ).value;
 
@@ -97,7 +97,7 @@
 
     DefaultConfigService.prototype.getActiveDirectoryDNSSuffix = function () {
         var activeDirectoryDNSSuffix = this.getConfigElementAttribute(
-            this.defaultsConfigElement,
+            this.configElement,
             "activeDirectoryDNSSuffix"
         ).value;
 
@@ -115,7 +115,7 @@
 
     DefaultConfigService.prototype.getActiveDirectoryServerOUDN = function () {
         var activeDirectoryServerOUDN = this.getConfigElementAttribute(
-            this.defaultsConfigElement,
+            this.configElement,
             "activeDirectoryServerOUDN"
         ).value;
 
@@ -137,7 +137,7 @@
 
     DefaultConfigService.prototype.getAnsibleRestHostName = function () {
         var ansibleRestHostName = this.getConfigElementAttribute(
-            this.defaultsConfigElement,
+            this.configElement,
             "ansibleRestHostName"
         ).value;
 

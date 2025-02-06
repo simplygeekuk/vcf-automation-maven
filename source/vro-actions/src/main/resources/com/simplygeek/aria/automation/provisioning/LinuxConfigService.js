@@ -24,7 +24,7 @@
             "com.simplygeek.aria.automation.provisioning"
         ).DefaultConfigService());
 
-        this.provisioningLinuxConfigElement = this.getConfigElement(
+        this.configElement = this.getConfigElement(
             "Linux",
             provisioningConfigPath
         );
@@ -290,7 +290,7 @@
         try {
             this.log.log("Get " + configKey);
             configValue = this.getConfigElementAttribute(
-                this.provisioningLinuxConfigElement,
+                this.configElement,
                 configKey
             ).value;
             this.log.log("Found " + configKey + ": " + configValue);
