@@ -56,10 +56,9 @@
      */
 
     DefaultConfigService.prototype.getCustomNamingProfileName = function () {
-        var customNamingProfileName = this.getConfigElementAttribute(
-            this.configElement,
+        var customNamingProfileName = this.__getConfigValue(
             "customNamingProfileName"
-        ).value;
+        );
 
         return customNamingProfileName;
     };
@@ -78,10 +77,9 @@
      */
 
     DefaultConfigService.prototype.getActiveDirectoryDomainName = function () {
-        var activeDirectoryDomainName = this.getConfigElementAttribute(
-            this.configElement,
+        var activeDirectoryDomainName = this.__getConfigValue(
             "activeDirectoryDomainName"
-        ).value;
+        );
 
         return activeDirectoryDomainName;
     };
@@ -96,10 +94,9 @@
      */
 
     DefaultConfigService.prototype.getActiveDirectoryDNSSuffix = function () {
-        var activeDirectoryDNSSuffix = this.getConfigElementAttribute(
-            this.configElement,
+        var activeDirectoryDNSSuffix = this.__getConfigValue(
             "activeDirectoryDNSSuffix"
-        ).value;
+        );
 
         return activeDirectoryDNSSuffix;
     };
@@ -114,10 +111,9 @@
      */
 
     DefaultConfigService.prototype.getActiveDirectoryServerOUDN = function () {
-        var activeDirectoryServerOUDN = this.getConfigElementAttribute(
-            this.configElement,
+        var activeDirectoryServerOUDN = this.__getConfigValue(
             "activeDirectoryServerOUDN"
-        ).value;
+        );
 
         return activeDirectoryServerOUDN;
     };
@@ -136,12 +132,30 @@
      */
 
     DefaultConfigService.prototype.getAnsibleRestHostName = function () {
-        var ansibleRestHostName = this.getConfigElementAttribute(
-            this.configElement,
+        var ansibleRestHostName = this.__getConfigValue(
             "ansibleRestHostName"
-        ).value;
+        );
 
         return ansibleRestHostName;
+    };
+
+    DefaultConfigService.prototype.__getConfigValue = function (
+        configKey
+    ) {
+        var configValue;
+        var configElementAttribute;
+
+        configElementAttribute = this.getConfigElementAttribute(
+            this.configElement,
+            configKey
+        );
+        if (configElementAttribute.type === "SecureString") {
+            configValue = "******";
+        } else {
+            configValue = configElementAttribute.value;
+        }
+
+        return configValue;
     };
 
     return DefaultConfigService;
