@@ -5,7 +5,7 @@
  * @returns {void} - No return value.
  */
 (function (inputProperties) {
-    var log = new (System.getModule("com.simplygeek.log").Logger())(
+    var log = new (System.getModule("com.simplygeek.aria.orchestrator.logging").Logger())(
         "Action",
         "forceGroupPolicyUpdate"
     );
@@ -36,7 +36,7 @@
 
     // Run command in guest
     try {
-        log.log("Running command to update Group Policies.");
+        log.info("Running command to update Group Policies.");
         System.getModule("com.simplygeek.vcenter.vm").runCommandInGuest(
             vcVm,
             guestUername,
@@ -44,9 +44,9 @@
             commandPath,
             commandArguments
         );
-        log.log("Waiting 2 minutes for policies to fully apply.");
+        log.info("Waiting 2 minutes for policies to fully apply.");
         System.sleep(120 * 1000);
-        log.log("Group Policies updated successfully.");
+        log.info("Group Policies updated successfully.");
     } catch (e) {
         throw new Error("Failed to update Group Policies: " + e);
     }

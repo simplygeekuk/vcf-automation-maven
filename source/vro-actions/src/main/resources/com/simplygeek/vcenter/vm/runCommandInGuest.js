@@ -63,7 +63,7 @@
         throw new Error("VMware Tools is not running on the VM. Ensure it is installed and operational.");
     }
 
-    var log = new (System.getModule("com.simplygeek.log").Logger())(
+    var log = new (System.getModule("com.simplygeek.aria.orchestrator.logging").Logger())(
         "Action",
         "runCommandInGuest"
     );
@@ -102,12 +102,12 @@
 
         try {
             pid = processManager.startProgramInGuest(vcVirtualMachine, guestAuth, guestProgramSpec);
-            log.log("Command executed successfully. Process ID: " + pid);
+            log.info("Command executed successfully. Process ID: " + pid);
         } catch (e) {
             throw new Error(e.message);
         }
 
-        log.log("Waiting for process " + pid + " to complete...");
+        log.info("Waiting for process " + pid + " to complete...");
         while (elapsedTime < maxWaitTime) {
             var processes = processManager.listProcessesInGuest(vcVirtualMachine, guestAuth, [pid]);
 
@@ -115,7 +115,7 @@
                 var process = processes[0];
 
                 if (process.endTime !== null) {
-                    log.log("Process completed with exit code: " + process.exitCode);
+                    log.info("Process completed with exit code: " + process.exitCode);
                     log.debug(process);
                     if (process.exitCode !== expectedExitCode) {
                         throw new Error("Unexpected exit code: " + process.exitCode);
@@ -127,7 +127,7 @@
                 break;
             }
 
-            log.log("Process " + pid + " is still running...");
+            log.info("Process " + pid + " is still running...");
             System.sleep(sleepInterval * 1000);
             elapsedTime += sleepInterval;
         }

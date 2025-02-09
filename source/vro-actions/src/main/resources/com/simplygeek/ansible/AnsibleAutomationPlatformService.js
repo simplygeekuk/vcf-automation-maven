@@ -20,7 +20,7 @@
 
         AnsibleAutomationBackendService.call(this, restHost);
 
-        this.log = new (System.getModule("com.simplygeek.log").Logger())(
+        this.log = new (System.getModule("com.simplygeek.aria.orchestrator.logging").Logger())(
             "Action",
             "AnsibleAutomationPlatformService"
         );
@@ -961,7 +961,7 @@
             );
         }
 
-        this.log.log("Get inventory host with name '" + hostName + "'");
+        this.log.info("Get inventory host with name '" + hostName + "'");
         var resourceType = "inventories/" + inventoryId.toString() + "/hosts";
         var inventoryHostObject = this.getResourceByName(
             hostName,
@@ -969,7 +969,7 @@
             throwOnNotFound
         );
 
-        if (inventoryHostObject) this.log.log("Found inventory host with name '" + hostName + "'");
+        if (inventoryHostObject) this.log.info("Found inventory host with name '" + hostName + "'");
 
         return inventoryHostObject;
     };

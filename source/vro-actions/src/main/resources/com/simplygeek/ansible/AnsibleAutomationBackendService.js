@@ -20,7 +20,7 @@
             );
         }
 
-        this.log = new (System.getModule("com.simplygeek.log").Logger())(
+        this.log = new (System.getModule("com.simplygeek.aria.orchestrator.logging").Logger())(
             "Action",
             "AnsibleAutomationBackendService"
         );
@@ -69,7 +69,7 @@
         var uri = this.baseUri + "/" + resourceType.toLowerCase() + "/" + resourceId.toString() + "/";
         var resourceObject;
 
-        this.log.log("Get resource '" + resourceType + "' with id '" + resourceId + "'");
+        this.log.info("Get resource '" + resourceType + "' with id '" + resourceId + "'");
         resourceObject = this.get(
             uri,
             [200, 404]
@@ -78,7 +78,7 @@
         if (resourceObject.id) {
             var resourceName = resourceObject.name;
 
-            this.log.log(
+            this.log.info(
                 "Found resource '" + resourceType + "' with name '" + resourceName +
                 "' and id '" + resourceId + "'"
             );
@@ -130,7 +130,7 @@
         var uri = this.baseUri + "/" + resourceType + "/?search=" + resourceName;
         var resourceObject;
 
-        this.log.log("Get resource '" + resourceType + "' with name '" + resourceName + "'");
+        this.log.info("Get resource '" + resourceType + "' with name '" + resourceName + "'");
         var results = this.get(
             uri,
             [200, 404]
@@ -145,7 +145,7 @@
             resourceObject = results[0];
             var resourceId = resourceObject.id;
 
-            this.log.log(
+            this.log.info(
                 "Found resource '" + resourceType + "' with name '" + resourceName +
                 "' and id '" + resourceId + "'"
             );

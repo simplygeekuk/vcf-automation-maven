@@ -15,7 +15,7 @@
 
         var provisioningConfigPath = "Simplygeek/VCF/Automation/Provisioning";
 
-        this.log = new (System.getModule("com.simplygeek.log").Logger())(
+        this.log = new (System.getModule("com.simplygeek.aria.orchestrator.logging").Logger())(
             "Action",
             "LinuxConfigService"
         );
@@ -289,7 +289,7 @@
         var configElementAttribute;
 
         try {
-            this.log.log("Get " + configKey);
+            this.log.info("Get " + configKey);
             configElementAttribute = this.getConfigElementAttribute(
                 this.configElement,
                 configKey
@@ -299,13 +299,13 @@
             } else {
                 configValue = configElementAttribute.value;
             }
-            this.log.log("Found " + configKey + ": " + configValue);
+            this.log.info("Found " + configKey + ": " + configValue);
         } catch (e) {
             if (e.message.indexOf("No Configuration Element Attribute found") !== -1) {
-                this.log.log("No " + configKey + " found, getting default value");
+                this.log.info("No " + configKey + " found, getting default value");
                 try {
                     configValue = this.defaultConfigService[configKey];
-                    this.log.log("Found " + configKey + ": " + configValue);
+                    this.log.info("Found " + configKey + ": " + configValue);
                 } catch (e) {
                     this.log.warn("Failed to get any value for " + configKey);
                     throw new Error(e);

@@ -20,7 +20,7 @@
 
         AriaAutomationAuthenticationService.call(this, restHost);
 
-        this.log = new (System.getModule("com.simplygeek.log").Logger())(
+        this.log = new (System.getModule("com.simplygeek.aria.orchestrator.logging").Logger())(
             "Action",
             "AriaAutomationGenericBackendService"
         );

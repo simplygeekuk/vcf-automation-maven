@@ -5,7 +5,7 @@
  * @returns {void} - No return value.
  */
 (function (inputProperties) {
-    var log = new (System.getModule("com.simplygeek.log").Logger())(
+    var log = new (System.getModule("com.simplygeek.aria.orchestrator.logging").Logger())(
         "Action",
         "createCustomHostnamePrefix"
     );
@@ -50,7 +50,7 @@
         customNamingStartCounter = 0;
     }
 
-    log.log(
+    log.info(
         "Adding hostname prefix '" + hostnamePrefix +
         " to custom naming profile '" + customNamingProfile.name + "'"
     );
@@ -58,9 +58,9 @@
         customNamingProfileId,
         hostnamePrefix)
     ) {
-        log.log("The prefix '" + hostnamePrefix + "' already exists");
+        log.info("The prefix '" + hostnamePrefix + "' already exists");
     } else {
-        log.log("The prefix '" + hostnamePrefix + "' does not exist and will be created");
+        log.info("The prefix '" + hostnamePrefix + "' does not exist and will be created");
         locking.createLock("customNaming", customNamingProfileId);
         try {
             customNamingService.addCustomNamingPrefixToTemplate(
@@ -71,7 +71,7 @@
                 customNamingIncrementStep
             );
 
-            log.log("Hostname prefix successfully added");
+            log.info("Hostname prefix successfully added");
 
         } catch (e) {
             throw new Error("Unexpected error creating custom naming prefix: " + e);

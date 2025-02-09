@@ -5,7 +5,7 @@
  * @returns {void} - describe the return type as well
  */
 (function (inputProperties) {
-    var log = new (System.getModule("com.simplygeek.log").Logger())(
+    var log = new (System.getModule("com.simplygeek.aria.orchestrator.logging").Logger())(
         "Action",
         "configureDisks"
     );
@@ -107,5 +107,5 @@
         }
     );
 
-    log.log(JSON.stringify(ansibleDisks));
+    log.info(JSON.stringify(ansibleDisks));
 });

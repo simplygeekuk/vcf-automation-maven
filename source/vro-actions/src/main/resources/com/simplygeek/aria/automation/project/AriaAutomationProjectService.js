@@ -31,7 +31,7 @@
         AriaAutomationGenericBackendService.call(this, restHost);
         AriaAutomationIaasService.call(this, restHost, apiToken);
 
-        this.log = new (System.getModule("com.simplygeek.log").Logger())(
+        this.log = new (System.getModule("com.simplygeek.aria.orchestrator.logging").Logger())(
             "Action",
             "AriaAutomationProjectService"
         );

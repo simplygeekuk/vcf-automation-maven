@@ -11,7 +11,7 @@
         throw new ReferenceError("vcHostInstanceUuid is required and must be of type 'string'");
     }
 
-    var log = new (System.getModule("com.simplygeek.log").Logger())(
+    var log = new (System.getModule("com.simplygeek.aria.orchestrator.logging").Logger())(
         "Action",
         "getVcServer"
     );
@@ -21,7 +21,7 @@
     var vCenterSdksFiltered = [];
 
     try {
-        log.log("Locating vCenter Server with instance uuid: " + vcHostInstanceUuid);
+        log.info("Locating vCenter Server with instance uuid: " + vcHostInstanceUuid);
         allVcenterSdks = VcPlugin.allSdkConnections;
         vCenterSdksFiltered = allVcenterSdks.filter(
             function(vcHost) {
@@ -32,7 +32,7 @@
         if (vCenterSdksFiltered.length > 0) {
             vCenterSdkConnection = vCenterSdksFiltered[0];
             vCenterSdkName = vCenterSdkConnection.name;
-            log.log("Found vCenter Server '" + vCenterSdkName + "'");
+            log.info("Found vCenter Server '" + vCenterSdkName + "'");
         } else {
             throw new Error(
                 "The vCenter Server could not be found" +

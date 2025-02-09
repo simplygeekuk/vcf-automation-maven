@@ -5,7 +5,7 @@
  * @returns {void} - No return value.
  */
 (function (inputProperties) {
-    var log = new (System.getModule("com.simplygeek.log").Logger())(
+    var log = new (System.getModule("com.simplygeek.aria.orchestrator.logging").Logger())(
         "Action",
         "removeComputerFromAD"
     );
@@ -38,7 +38,7 @@
 
     // Remove Computer from AD
     try {
-        log.log("Removing Active Directory computer account '" + vmName + "'.");
+        log.info("Removing Active Directory computer account '" + vmName + "'.");
         var adService = new (
             System.getModule(
                 "com.simplygeek.ad"
@@ -50,9 +50,9 @@
 
         if (adComputer) {
             adService.removeComputer(adComputer); // void
-            log.log("Successfully removed Active Directory computer account.");
+            log.info("Successfully removed Active Directory computer account.");
         } else {
-            log.log("No computer object found, nothing to remove.");
+            log.info("No computer object found, nothing to remove.");
         }
     } catch (e) {
         log.warn("Failed to remove Active Directory computer account. " + e);

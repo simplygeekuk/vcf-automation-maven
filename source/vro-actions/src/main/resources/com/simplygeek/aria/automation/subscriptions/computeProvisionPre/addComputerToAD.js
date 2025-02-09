@@ -5,7 +5,7 @@
  * @returns {Properties} - The updated Custom Properties.
  */
 (function (inputProperties) {
-    var log = new (System.getModule("com.simplygeek.log").Logger())(
+    var log = new (System.getModule("com.simplygeek.aria.orchestrator.logging").Logger())(
         "Action",
         "addComputerToAD"
     );
@@ -43,13 +43,13 @@
 
     activeDirectoryServerOUName = activeDirectoryServerOUDN.match(ouNameRegex)[1];
 
-    log.log("activeDirectoryDomainName: " + activeDirectoryDomainName);
-    log.log("activeDirectoryServerOUDN: " + activeDirectoryServerOUDN);
-    log.log("activeDirectoryServerOUName: " + activeDirectoryServerOUName);
+    log.info("activeDirectoryDomainName: " + activeDirectoryDomainName);
+    log.info("activeDirectoryServerOUDN: " + activeDirectoryServerOUDN);
+    log.info("activeDirectoryServerOUName: " + activeDirectoryServerOUName);
 
     // Create Computer in AD
     try {
-        log.log("Creating Active Directory computer account '" + vmName +
+        log.info("Creating Active Directory computer account '" + vmName +
                    "' in OU path '" + activeDirectoryServerOUDN + "'");
 
         var adService = new (
@@ -65,7 +65,7 @@
 
         addUpdateCustomProperties.put("activeDirectoryJoinEnabled", true);
         addUpdateCustomProperties.put("activeDirectoryDomainName", activeDirectoryDomainName);
-        log.log("Successfully created Active Directory computer account.");
+        log.info("Successfully created Active Directory computer account.");
     } catch (e) {
         var errorMessage = "Failed to create Active Directory computer account: " + e;
 
