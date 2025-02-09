@@ -16,7 +16,7 @@
             throw new ReferenceError("adHostName is required and must be of type 'string'");
         }
 
-        this.log = new (System.getModule("com.simplygeek.aria.orchestrator.logging").Logger())(
+        this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
             "Action",
             "ActiveDirectoryService"
         );

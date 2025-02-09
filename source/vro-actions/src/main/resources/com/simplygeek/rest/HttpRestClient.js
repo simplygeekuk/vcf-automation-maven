@@ -26,7 +26,7 @@
             );
         }
 
-        this.log = new (System.getModule("com.simplygeek.aria.orchestrator.logging").Logger())(
+        this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
             "Action",
             "HttpRestClient"
         );

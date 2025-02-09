@@ -20,7 +20,7 @@
         );
     }
 
-    var log = new (System.getModule("com.simplygeek.aria.orchestrator.logging").Logger())(
+    var log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
         "Action",
         "shutdownVM"
     );

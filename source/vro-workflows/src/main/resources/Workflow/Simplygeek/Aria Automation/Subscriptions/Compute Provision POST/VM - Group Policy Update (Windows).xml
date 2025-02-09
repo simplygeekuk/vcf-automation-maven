@@ -9,10 +9,10 @@
     <in-binding/>
     <position y="50.0" x="300.0"/>
   </workflow-item>
-  <workflow-item name="item1" out-name="item0" type="task" script-module="com.simplygeek.aria.automation.subscriptions.computeProvisionPost/forceGroupPolicyUpdate">
+  <workflow-item name="item1" out-name="item0" type="task" script-module="com.simplygeek.vcf.automation.subscriptions.computeProvisionPost/forceGroupPolicyUpdate">
     <display-name><![CDATA[forceGroupPolicyUpdate]]></display-name>
     <script encoded="false"><![CDATA[//Auto generated script, cannot be modified !
-System.getModule("com.simplygeek.aria.automation.subscriptions.computeProvisionPost").forceGroupPolicyUpdate(inputProperties);
+System.getModule("com.simplygeek.vcf.automation.subscriptions.computeProvisionPost").forceGroupPolicyUpdate(inputProperties);
 ]]></script>
     <in-binding>
       <bind name="inputProperties" type="Properties" export-name="inputProperties">

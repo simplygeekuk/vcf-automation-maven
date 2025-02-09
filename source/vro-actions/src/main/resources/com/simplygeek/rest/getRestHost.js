@@ -9,7 +9,7 @@
         throw new ReferenceError("restHostName is required and must be of type 'string'");
     }
 
-    var log = new (System.getModule("com.simplygeek.aria.orchestrator.logging").Logger())(
+    var log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
         "Action",
         "getRestHost"
     );

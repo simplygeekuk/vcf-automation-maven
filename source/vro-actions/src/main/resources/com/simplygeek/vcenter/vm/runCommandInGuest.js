@@ -63,7 +63,7 @@
         throw new Error("VMware Tools is not running on the VM. Ensure it is installed and operational.");
     }
 
-    var log = new (System.getModule("com.simplygeek.aria.orchestrator.logging").Logger())(
+    var log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
         "Action",
         "runCommandInGuest"
     );

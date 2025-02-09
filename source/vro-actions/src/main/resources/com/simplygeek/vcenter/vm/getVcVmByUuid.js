@@ -16,7 +16,7 @@
         throw new ReferenceError("vCenterSdkConnection must be of type 'VC:SdkConnection'");
     }
 
-    var log = new (System.getModule("com.simplygeek.aria.orchestrator.logging").Logger())(
+    var log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
         "Action",
         "getVcVmByUuid"
     );

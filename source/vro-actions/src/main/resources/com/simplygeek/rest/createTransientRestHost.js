@@ -23,7 +23,7 @@
     basicPassword,
     apiToken
 ) {
-    var log = new (System.getModule("com.simplygeek.aria.orchestrator.logging").Logger())(
+    var log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
         "Action",
         "AriaAutomationDeploymentService"
     );
@@ -61,7 +61,7 @@
         throw new Error("An API Token must be provided to use OAuth2 authentication");
     }
 
-    this.log = new (System.getModule("com.simplygeek.aria.orchestrator.logging").Logger())(
+    this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
         "Action",
         "createTransientRestHost"
     );
