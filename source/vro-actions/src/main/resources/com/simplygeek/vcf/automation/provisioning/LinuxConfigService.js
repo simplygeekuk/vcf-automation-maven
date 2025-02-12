@@ -41,7 +41,7 @@
     LinuxConfigService.prototype.constructor = LinuxConfigService;
 
     // ###################################
-    // ## Aria Automation Configuration ##
+    // ## VCF Automation Configuration ##
     // ###################################
 
     /**

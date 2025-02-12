@@ -79,7 +79,7 @@
     };
 
     // ###################################
-    // ## Aria Automation Configuration ##
+    // ## VCF Automation Configuration ##
     // ###################################
 
     /**

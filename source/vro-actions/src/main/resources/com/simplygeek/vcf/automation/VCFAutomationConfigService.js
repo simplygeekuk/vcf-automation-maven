@@ -4,13 +4,13 @@
  */
 (function () {
     /**
-     * Defines the AriaAutomationConfigService class.
+     * Defines The VCFAutomationConfigService class.
      * @class
      *
-     * @returns {Any} An instance of the AriaAutomationConfigService class.
+     * @returns {Any} An instance of The VCFAutomationConfigService class.
      */
 
-    function AriaAutomationConfigService() {
+    function VCFAutomationConfigService() {
         ConfigElementService.call(this);
 
         var vcfAutomationConfigPath = "Simplygeek/VCF/Automation";
@@ -18,7 +18,7 @@
 
         this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
             "Action",
-            "AriaAutomationConfigService"
+            "VCFAutomationConfigService"
         );
 
         this.vcfAutomationConfigElement = this.getConfigElement(
@@ -37,10 +37,10 @@
         "com.simplygeek.vcf.orchestrator.configurations"
     ).ConfigElementService();
 
-    AriaAutomationConfigService.prototype = Object.create(
+    VCFAutomationConfigService.prototype = Object.create(
         ConfigElementService.prototype
     );
-    AriaAutomationConfigService.prototype.constructor = AriaAutomationConfigService;
+    VCFAutomationConfigService.prototype.constructor = VCFAutomationConfigService;
 
     /**
      * Defines the getRestHostName method.
@@ -50,7 +50,7 @@
      * @returns {REST:RESTHost} The VCF Automation REST host name.
      */
 
-    AriaAutomationConfigService.prototype.getRestHostName = function () {
+    VCFAutomationConfigService.prototype.getRestHostName = function () {
         var vcfAutomationRestHostName = this.getConfigElementAttribute(
             this.vcfAutomationConfigElement,
             "restHostName"
@@ -67,7 +67,7 @@
      * @returns {REST:RESTHost} The VCF Automation REST Host
      */
 
-    AriaAutomationConfigService.prototype.getRestHost = function () {
+    VCFAutomationConfigService.prototype.getRestHost = function () {
         var vcfAutomationRestHost = System.getModule("com.simplygeek.rest").getRestHost(
             this.getRestHostName()
         );
@@ -83,7 +83,7 @@
      * @returns {string} The VCF Automation API Token
      */
 
-    AriaAutomationConfigService.prototype.getApiToken = function () {
+    VCFAutomationConfigService.prototype.getApiToken = function () {
         var vcfAutomationApiToken = this.getConfigElementAttribute(
             this.vcfAutomationRestHostConfigElement,
             "refreshToken"
@@ -100,7 +100,7 @@
      * @returns {string} The VCF Automation Username
      */
 
-    AriaAutomationConfigService.prototype.getUsername = function () {
+    VCFAutomationConfigService.prototype.getUsername = function () {
         var vcfAutomationUsername = this.getConfigElementAttribute(
             this.vcfAutomationRestHostConfigElement,
             "username"
@@ -117,7 +117,7 @@
      * @returns {string} The VCF Automation Password
      */
 
-    AriaAutomationConfigService.prototype.getPassword = function () {
+    VCFAutomationConfigService.prototype.getPassword = function () {
         var vcfAutomationPassword = this.getConfigElementAttribute(
             this.vcfAutomationRestHostConfigElement,
             "password"
@@ -134,7 +134,7 @@
      * @returns {string} The VCF Automation URL
      */
 
-    AriaAutomationConfigService.prototype.getUrl = function () {
+    VCFAutomationConfigService.prototype.getUrl = function () {
         var vcfAutomationUrl = this.getConfigElementAttribute(
             this.vcfAutomationRestHostConfigElement,
             "url"
@@ -143,5 +143,5 @@
         return vcfAutomationUrl;
     };
 
-    return AriaAutomationConfigService;
+    return VCFAutomationConfigService;
 });

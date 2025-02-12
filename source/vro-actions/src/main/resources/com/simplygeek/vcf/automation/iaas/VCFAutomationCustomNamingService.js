@@ -4,23 +4,23 @@
  */
 (function () {
     /**
-     * Defines the AriaAutomationCustomNamingService class.
+     * Defines the VCFAutomationCustomNamingService class.
      * @class
-     * @param {REST:RESTHost} restHost - The Aria Automation HTTP REST host.
-     * @param {string} apiToken - The Aria Automation API Token.
+     * @param {REST:RESTHost} restHost - The VCF Automation HTTP REST host.
+     * @param {string} apiToken - The VCF Automation API Token.
      *
-     * @returns {Any} An instance of the AriaAutomationCustomNamingService class.
+     * @returns {Any} An instance of the VCFAutomationCustomNamingService class.
      */
 
-    function AriaAutomationCustomNamingService(
+    function VCFAutomationCustomNamingService(
         restHost,
         apiToken
     ) {
-        AriaAutomationGenericBackendService.call(this, restHost);
+        VCFAutomationGenericBackendService.call(this, restHost);
 
         this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
             "Action",
-            "AriaAutomationCustomNamingService"
+            "VCFAutomationCustomNamingService"
         );
 
         this.baseUri = "/iaas/api";
@@ -30,14 +30,14 @@
         this.createAuthenticatedSession(apiToken);
     }
 
-    var AriaAutomationGenericBackendService = System.getModule(
+    var VCFAutomationGenericBackendService = System.getModule(
         "com.simplygeek.vcf.automation"
-    ).AriaAutomationGenericBackendService();
+    ).VCFAutomationGenericBackendService();
 
-    AriaAutomationCustomNamingService.prototype = Object.create(
-        AriaAutomationGenericBackendService.prototype
+    VCFAutomationCustomNamingService.prototype = Object.create(
+        VCFAutomationGenericBackendService.prototype
     );
-    AriaAutomationCustomNamingService.prototype.constructor = AriaAutomationCustomNamingService;
+    VCFAutomationCustomNamingService.prototype.constructor = VCFAutomationCustomNamingService;
 
     /**
      * Defines the getCustomNames method.
@@ -47,7 +47,7 @@
      * @returns {Array/Any} The list of custom names.
      */
 
-    AriaAutomationCustomNamingService.prototype.getCustomNames = function () {
+    VCFAutomationCustomNamingService.prototype.getCustomNames = function () {
         var uri = this.baseUri + "/naming?" + this.apiVersionParam;
         var results;
 
@@ -68,7 +68,7 @@
      * @returns {Any} The custom naming object.
      */
 
-    AriaAutomationCustomNamingService.prototype.getCustomNamingById = function (
+    VCFAutomationCustomNamingService.prototype.getCustomNamingById = function (
         customNamingId,
         throwOnNotFound
     ) {
@@ -109,7 +109,7 @@
      * @returns {Any} The custom naming object.
      */
 
-    AriaAutomationCustomNamingService.prototype.getCustomNamingByName = function (
+    VCFAutomationCustomNamingService.prototype.getCustomNamingByName = function (
         customNamingName,
         throwOnNotFound
     ) {
@@ -172,7 +172,7 @@
      * @returns {Any} The updated custom naming object.
      */
 
-    AriaAutomationCustomNamingService.prototype.updateCustomNaming = function (
+    VCFAutomationCustomNamingService.prototype.updateCustomNaming = function (
         customNamingId,
         updatedObject
     ) {
@@ -210,7 +210,7 @@
      * @returns {boolean} Whether the prefix was found.
      */
 
-    AriaAutomationCustomNamingService.prototype.checkCustomNamingPrefixExists = function (
+    VCFAutomationCustomNamingService.prototype.checkCustomNamingPrefixExists = function (
         customNamingId,
         prefix
     ) {
@@ -263,7 +263,7 @@
      * @returns {Any} The updated Custom Naming object.
      */
 
-    AriaAutomationCustomNamingService.prototype.addCustomNamingPrefixToTemplate = function (
+    VCFAutomationCustomNamingService.prototype.addCustomNamingPrefixToTemplate = function (
         customNamingId,
         prefix,
         resourceType,
@@ -354,5 +354,5 @@
         return updatedCustomNamingObject;
     };
 
-    return AriaAutomationCustomNamingService;
+    return VCFAutomationCustomNamingService;
 });

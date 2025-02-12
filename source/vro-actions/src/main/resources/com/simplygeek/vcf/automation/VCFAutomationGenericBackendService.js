@@ -4,39 +4,39 @@
  */
 (function () {
     /**
-     * Defines the AriaAutomationGenericBackendService class.
+     * Defines The VCFAutomationGenericBackendService class.
      * @class
-     * @param {REST:RESTHost} restHost - The Aria Automation HTTP REST host.
+     * @param {REST:RESTHost} restHost - The VCF Automation HTTP REST host.
      *
-     * @returns {Any} An instance of the AriaAutomationGenericBackendService class.
+     * @returns {Any} An instance of The VCFAutomationGenericBackendService class.
      */
 
-    function AriaAutomationGenericBackendService(restHost) {
+    function VCFAutomationGenericBackendService(restHost) {
         if (!restHost || System.getObjectType(restHost) !== "REST:RESTHost") {
             throw new ReferenceError(
                 "restHost is required and must be of type 'REST:RESTHost'"
             );
         }
 
-        AriaAutomationAuthenticationService.call(this, restHost);
+        VCFAutomationAuthenticationService.call(this, restHost);
 
         this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
             "Action",
-            "AriaAutomationGenericBackendService"
+            "VCFAutomationGenericBackendService"
         );
 
         this.rest = new (System.getModule("com.simplygeek.rest").HttpRestClient())(restHost);
         this.mediaType = "application/json";
     }
 
-    var AriaAutomationAuthenticationService = System.getModule(
+    var VCFAutomationAuthenticationService = System.getModule(
         "com.simplygeek.vcf.automation"
-    ).AriaAutomationAuthenticationService();
+    ).VCFAutomationAuthenticationService();
 
-    AriaAutomationGenericBackendService.prototype = Object.create(
-        AriaAutomationAuthenticationService.prototype
+    VCFAutomationGenericBackendService.prototype = Object.create(
+        VCFAutomationAuthenticationService.prototype
     );
-    AriaAutomationGenericBackendService.prototype.constructor = AriaAutomationGenericBackendService;
+    VCFAutomationGenericBackendService.prototype.constructor = VCFAutomationGenericBackendService;
 
     // ## Methods ##
 
@@ -46,7 +46,7 @@
      * @returns {Any} The API About object.
      */
 
-    AriaAutomationGenericBackendService.prototype.about = function () {
+    VCFAutomationGenericBackendService.prototype.about = function () {
         var response = this.get(
             this.baseUri + "/about"
         );
@@ -60,7 +60,7 @@
      * @returns {Any} The API About object.
      */
 
-    AriaAutomationGenericBackendService.prototype.iaasAbout = function () {
+    VCFAutomationGenericBackendService.prototype.iaasAbout = function () {
         var response = this.get(
             this.iaasBaseUri + "/about"
         );
@@ -79,7 +79,7 @@
      * @returns {Any||Array/Any} The response result or results.
      */
 
-    AriaAutomationGenericBackendService.prototype.get = function (
+    VCFAutomationGenericBackendService.prototype.get = function (
         uri,
         expectedResponseCodes,
         throwOnNotFound
@@ -177,7 +177,7 @@
      * @returns {Any} The response content object.
      */
 
-    AriaAutomationGenericBackendService.prototype.post = function (
+    VCFAutomationGenericBackendService.prototype.post = function (
         uri,
         content,
         expectedResponseCodes
@@ -215,7 +215,7 @@
      * @returns {Any} The response content object.
      */
 
-    AriaAutomationGenericBackendService.prototype.put = function (
+    VCFAutomationGenericBackendService.prototype.put = function (
         uri,
         content,
         expectedResponseCodes
@@ -257,7 +257,7 @@
      * @returns {Any} The response content object.
      */
 
-    AriaAutomationGenericBackendService.prototype.patch = function (
+    VCFAutomationGenericBackendService.prototype.patch = function (
         uri,
         content,
         expectedResponseCodes
@@ -296,7 +296,7 @@
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
      */
 
-    AriaAutomationGenericBackendService.prototype.delete = function (
+    VCFAutomationGenericBackendService.prototype.delete = function (
         uri,
         expectedResponseCodes
     ) {
@@ -317,5 +317,5 @@
         );
     };
 
-    return AriaAutomationGenericBackendService;
+    return VCFAutomationGenericBackendService;
 });

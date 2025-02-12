@@ -43,7 +43,7 @@
     DefaultConfigService.prototype.constructor = DefaultConfigService;
 
     // ###################################
-    // ## Aria Automation Configuration ##
+    // ## VCF Automation Configuration ##
     // ###################################
 
     /**

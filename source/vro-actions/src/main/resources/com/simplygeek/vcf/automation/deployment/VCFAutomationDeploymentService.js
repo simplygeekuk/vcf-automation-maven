@@ -4,15 +4,15 @@
  */
 (function () {
     /**
-     * Defines the AriaAutomationDeploymentService class.
+     * Defines the VCFAutomationDeploymentService class.
      * @class
-     * @param {REST:RESTHost} restHost - The Aria Automation HTTP REST host.
-     * @param {string} apiToken - The Aria Automation API Token.
+     * @param {REST:RESTHost} restHost - The VCF Automation HTTP REST host.
+     * @param {string} apiToken - The VCF Automation API Token.
      *
-     * @returns {Any} An instance of the AriaAutomationDeploymentService class.
+     * @returns {Any} An instance of the VCFAutomationDeploymentService class.
      */
 
-    function AriaAutomationDeploymentService(
+    function VCFAutomationDeploymentService(
         restHost,
         apiToken
     ) {
@@ -28,11 +28,11 @@
             );
         }
 
-        AriaAutomationGenericBackendService.call(this, restHost);
+        VCFAutomationGenericBackendService.call(this, restHost);
 
         this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
             "Action",
-            "AriaAutomationDeploymentService"
+            "VCFAutomationDeploymentService"
         );
 
         this.baseUri = "/deployment/api";
@@ -40,14 +40,14 @@
         this.createAuthenticatedSession(apiToken);
     }
 
-    var AriaAutomationGenericBackendService = System.getModule(
+    var VCFAutomationGenericBackendService = System.getModule(
         "com.simplygeek.vcf.automation"
-    ).AriaAutomationGenericBackendService();
+    ).VCFAutomationGenericBackendService();
 
-    AriaAutomationDeploymentService.prototype = Object.create(
-        AriaAutomationGenericBackendService.prototype
+    VCFAutomationDeploymentService.prototype = Object.create(
+        VCFAutomationGenericBackendService.prototype
     );
-    AriaAutomationDeploymentService.prototype.constructor = AriaAutomationDeploymentService;
+    VCFAutomationDeploymentService.prototype.constructor = VCFAutomationDeploymentService;
 
     /**
      * Defines the getDeployments method.
@@ -57,7 +57,7 @@
      * @returns {Array/Any} The list of deployments.
      */
 
-    AriaAutomationDeploymentService.prototype.getDeployments = function () {
+    VCFAutomationDeploymentService.prototype.getDeployments = function () {
         var uri = this.baseUri + "/deployments?expand=blueprint,catalog," +
                                  "lastRequest,project,resources,inprogressRequests";
         var results;
@@ -79,7 +79,7 @@
      * @returns {Any} The deployment object.
      */
 
-    AriaAutomationDeploymentService.prototype.getDeploymentById = function (
+    VCFAutomationDeploymentService.prototype.getDeploymentById = function (
         deploymentId,
         throwOnNotFound
     ) {
@@ -123,7 +123,7 @@
      * @returns {Any} The deployment object.
      */
 
-    AriaAutomationDeploymentService.prototype.getDeploymentByName = function (
+    VCFAutomationDeploymentService.prototype.getDeploymentByName = function (
         deploymentName,
         throwOnNotFound
     ) {
@@ -187,7 +187,7 @@
      * @returns {Array/Any} The list of managed resources.
      */
 
-    AriaAutomationDeploymentService.prototype.getResources = function (
+    VCFAutomationDeploymentService.prototype.getResources = function (
         isManaged,
         resourceTypes
     ) {
@@ -247,7 +247,7 @@
      * @returns {Any} The resource object.
      */
 
-    AriaAutomationDeploymentService.prototype.getResourceById = function (
+    VCFAutomationDeploymentService.prototype.getResourceById = function (
         resourceId,
         throwOnNotFound
     ) {
@@ -280,5 +280,5 @@
         return resourceObject;
     };
 
-    return AriaAutomationDeploymentService;
+    return VCFAutomationDeploymentService;
 });

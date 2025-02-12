@@ -4,15 +4,15 @@
  */
 (function () {
     /**
-     * Defines the AriaAutomationProjectService class.
+     * Defines the VCFAutomationProjectService class.
      * @class
-     * @param {REST:RESTHost} restHost - The Aria Automation HTTP REST host.
-     * @param {string} apiToken - The Aria Automation API Token.
+     * @param {REST:RESTHost} restHost - The VCF Automation HTTP REST host.
+     * @param {string} apiToken - The VCF Automation API Token.
      *
-     * @returns {Any} An instance of the AriaAutomationProjectService class.
+     * @returns {Any} An instance of the VCFAutomationProjectService class.
      */
 
-    function AriaAutomationProjectService(
+    function VCFAutomationProjectService(
         restHost,
         apiToken
     ) {
@@ -28,12 +28,12 @@
             );
         }
 
-        AriaAutomationGenericBackendService.call(this, restHost);
-        AriaAutomationIaasService.call(this, restHost, apiToken);
+        VCFAutomationGenericBackendService.call(this, restHost);
+        VCFAutomationIaasService.call(this, restHost, apiToken);
 
         this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
             "Action",
-            "AriaAutomationProjectService"
+            "VCFAutomationProjectService"
         );
 
         this.baseUri = "/project-service/api";
@@ -43,20 +43,20 @@
         this.createAuthenticatedSession(apiToken);
     }
 
-    var AriaAutomationGenericBackendService = System.getModule(
+    var VCFAutomationGenericBackendService = System.getModule(
         "com.simplygeek.vcf.automation"
-    ).AriaAutomationGenericBackendService();
+    ).VCFAutomationGenericBackendService();
 
-    AriaAutomationProjectService.prototype = Object.create(
-        AriaAutomationGenericBackendService.prototype
+    VCFAutomationProjectService.prototype = Object.create(
+        VCFAutomationGenericBackendService.prototype
     );
-    AriaAutomationProjectService.prototype.constructor = AriaAutomationProjectService;
+    VCFAutomationProjectService.prototype.constructor = VCFAutomationProjectService;
 
-    var AriaAutomationIaasService = System.getModule(
+    var VCFAutomationIaasService = System.getModule(
         "com.simplygeek.vcf.automation.iaas"
-    ).AriaAutomationIaasService();
+    ).VCFAutomationIaasService();
 
-    AriaAutomationProjectService.prototype.getProjectZones = AriaAutomationIaasService.prototype.getProjectZones;
+    VCFAutomationProjectService.prototype.getProjectZones = VCFAutomationIaasService.prototype.getProjectZones;
 
     /**
      * Defines the getProjects method.
@@ -66,7 +66,7 @@
      * @returns {Array/Any} The list of projects.
      */
 
-    AriaAutomationProjectService.prototype.getProjects = function () {
+    VCFAutomationProjectService.prototype.getProjects = function () {
         var uri = this.baseUri + "/projects?" + this.apiVersionParam;
         var results;
 
@@ -87,7 +87,7 @@
      * @returns {Any} The project object.
      */
 
-    AriaAutomationProjectService.prototype.getProjectById = function (
+    VCFAutomationProjectService.prototype.getProjectById = function (
         projectId,
         throwOnNotFound
     ) {
@@ -130,7 +130,7 @@
      * @returns {Any} The project object.
      */
 
-    AriaAutomationProjectService.prototype.getProjectByName = function (
+    VCFAutomationProjectService.prototype.getProjectByName = function (
         projectName,
         throwOnNotFound
     ) {
@@ -193,7 +193,7 @@
      * @returns {Array/Any} The projects matching the provided name prefix.
      */
 
-    AriaAutomationProjectService.prototype.getProjectsWithPrefix = function (
+    VCFAutomationProjectService.prototype.getProjectsWithPrefix = function (
         projectNamePrefix
     ) {
         if (!projectNamePrefix || typeof projectNamePrefix !== "string") {
@@ -224,7 +224,7 @@
      * @returns {Any} The new project object.
      */
 
-    AriaAutomationProjectService.prototype.createProject = function (
+    VCFAutomationProjectService.prototype.createProject = function (
         projectSpecification
     ) {
         if (!projectSpecification || typeof projectSpecification !== "object") {
@@ -268,7 +268,7 @@
      * @returns {Array/Any} The project tags list.
      */
 
-    AriaAutomationProjectService.prototype.getProjectTags = function (
+    VCFAutomationProjectService.prototype.getProjectTags = function (
         projectId
     ) {
         if (!projectId || typeof projectId !== "string") {
@@ -306,7 +306,7 @@
      * @returns {Array/Any} The project tags list.
      */
 
-    AriaAutomationProjectService.prototype.createProjectTags = function (
+    VCFAutomationProjectService.prototype.createProjectTags = function (
         projectId,
         tags
     ) {
@@ -358,7 +358,7 @@
      * @returns {Any} The updated Project object.
      */
 
-    AriaAutomationProjectService.prototype.updateProject = function (
+    VCFAutomationProjectService.prototype.updateProject = function (
         projectId,
         updatedObject
     ) {
@@ -386,5 +386,5 @@
         return updatedProjectObject;
     };
 
-    return AriaAutomationProjectService;
+    return VCFAutomationProjectService;
 });

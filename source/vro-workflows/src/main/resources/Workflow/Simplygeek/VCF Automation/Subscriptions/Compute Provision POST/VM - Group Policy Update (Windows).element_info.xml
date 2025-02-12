@@ -2,7 +2,7 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
   <comment>UTF-16</comment>
-  <entry key="categoryPath">Simplygeek.Aria Automation.Subscriptions.Compute Provision POST</entry>
+  <entry key="categoryPath">Simplygeek.VCF Automation.Subscriptions.Compute Provision POST</entry>
   <entry key="name">VM - Group Policy Update (Windows)</entry>
   <entry key="type">Workflow</entry>
   <entry key="id">c30515d4-0a1d-473b-bd65-2fe9e075e59a</entry>

@@ -15,9 +15,9 @@
 
     log.debug("hostnamePrefix: " + hostnamePrefix);
 
-    var ariaConfigService = new (System.getModule(
+    var vcfConfigService = new (System.getModule(
         "com.simplygeek.vcf.automation"
-    ).AriaAutomationConfigService());
+    ).VCFAutomationConfigService());
     var defaultConfigService = new (System.getModule(
         "com.simplygeek.vcf.automation.provisioning"
     ).DefaultConfigService());
@@ -25,14 +25,14 @@
         "com.simplygeek.vcf.automation.iaas"
     ).CustomNamingConfigService());
     var customNamingProfileName = defaultConfigService.getCustomNamingProfileName();
-    var ariaAutomationRestHost = ariaConfigService.getRestHost();
-    var ariaAutomationApiToken = ariaConfigService.getApiToken();
+    var vcfAutomationRestHost = vcfConfigService.getRestHost();
+    var vcfAutomationApiToken = vcfConfigService.getApiToken();
     var customNamingService = new (
         System.getModule(
             "com.simplygeek.vcf.automation.iaas"
-        ).AriaAutomationCustomNamingService())(
-        ariaAutomationRestHost,
-        ariaAutomationApiToken
+        ).VCFAutomationCustomNamingService())(
+        vcfAutomationRestHost,
+        vcfAutomationApiToken
     );
     var locking = new (
         System.getModule(

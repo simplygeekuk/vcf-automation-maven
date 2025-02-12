@@ -6,7 +6,7 @@
     /**
      * Defines the GitlabService class.
      * @class
-     * @param {REST:RESTHost} restHost - The Aria Automation HTTP REST host.
+     * @param {REST:RESTHost} restHost - The Gitlab HTTP REST host.
      * @param {string} accessToken -  Personal Access Token for authentication.
      *
      * @returns {Any} An instance of the GitlabService class.

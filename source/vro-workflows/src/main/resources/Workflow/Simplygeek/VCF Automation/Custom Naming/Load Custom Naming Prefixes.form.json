@@ -1,0 +1,43 @@
+{
+    "layout": {
+        "pages": [
+            {
+                "id": "page_763by1pk",
+                "sections": [
+                    {
+                        "id": "section_69u5oxfq",
+                        "fields": [
+                            {
+                                "id": "managedOnly",
+                                "display": "checkbox",
+                                "signpostPosition": "right-middle",
+                                "state": {
+                                    "visible": true,
+                                    "read-only": false
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "title": "General"
+            }
+        ]
+    },
+    "schema": {
+        "managedOnly": {
+            "id": "managedOnly",
+            "type": {
+                "dataType": "boolean"
+            },
+            "label": "Load Only Managed VMs?",
+            "constraints": {
+                "required": false
+            },
+            "default": true
+        }
+    },
+    "options": {
+        "externalValidations": []
+    },
+    "itemId": ""
+}

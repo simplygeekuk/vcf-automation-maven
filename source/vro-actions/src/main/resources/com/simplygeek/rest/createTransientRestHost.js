@@ -25,7 +25,7 @@
 ) {
     var log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
         "Action",
-        "AriaAutomationDeploymentService"
+        "VCFAutomationDeploymentService"
     );
     // eslint-disable-next-line no-useless-escape
     var urlRegex = /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\/?$/i;

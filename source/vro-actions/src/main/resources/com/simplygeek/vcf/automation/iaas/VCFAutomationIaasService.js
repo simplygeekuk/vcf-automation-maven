@@ -4,15 +4,15 @@
  */
 (function () {
     /**
-     * Defines the AriaAutomationIaasService class.
+     * Defines the VCFAutomationIaasService class.
      * @class
-     * @param {REST:RESTHost} restHost - The Aria Automation HTTP REST host.
-     * @param {string} apiToken - The Aria Automation API Token.
+     * @param {REST:RESTHost} restHost - The VCF Automation HTTP REST host.
+     * @param {string} apiToken - The VCF Automation API Token.
      *
-     * @returns {Any} An instance of the AriaAutomationIaasService class.
+     * @returns {Any} An instance of the VCFAutomationIaasService class.
      */
 
-    function AriaAutomationIaasService(
+    function VCFAutomationIaasService(
         restHost,
         apiToken
     ) {
@@ -28,11 +28,11 @@
             );
         }
 
-        AriaAutomationGenericBackendService.call(this, restHost);
+        VCFAutomationGenericBackendService.call(this, restHost);
 
         this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
             "Action",
-            "AriaAutomationIaasService"
+            "VCFAutomationIaasService"
         );
 
         this.iaasBaseUri = "/iaas/api";
@@ -42,12 +42,12 @@
         this.createAuthenticatedSession(apiToken);
     }
 
-    var AriaAutomationGenericBackendService = System.getModule(
+    var VCFAutomationGenericBackendService = System.getModule(
         "com.simplygeek.vcf.automation"
-    ).AriaAutomationGenericBackendService();
+    ).VCFAutomationGenericBackendService();
 
-    AriaAutomationIaasService.prototype = Object.create(AriaAutomationGenericBackendService.prototype);
-    AriaAutomationIaasService.prototype.constructor = AriaAutomationIaasService;
+    VCFAutomationIaasService.prototype = Object.create(VCFAutomationGenericBackendService.prototype);
+    VCFAutomationIaasService.prototype.constructor = VCFAutomationIaasService;
 
     // ## Disks ##
 
@@ -60,7 +60,7 @@
      * @returns {Any} The machine disks object.
      */
 
-    AriaAutomationIaasService.prototype.getMachineDisks = function (
+    VCFAutomationIaasService.prototype.getMachineDisks = function (
         machineId
     ) {
         if (!machineId || typeof machineId !== "string") {
@@ -91,7 +91,7 @@
      * @returns {Any} The project zones object.
      */
 
-    AriaAutomationIaasService.prototype.getProjectZones = function (
+    VCFAutomationIaasService.prototype.getProjectZones = function (
         projectId
     ) {
         if (!projectId || typeof projectId !== "string") {
@@ -111,5 +111,5 @@
         return projectZonesObject;
     };
 
-    return AriaAutomationIaasService;
+    return VCFAutomationIaasService;
 });

@@ -4,14 +4,14 @@
  */
 (function () {
     /**
-     * Defines the AriaAutomationAuthenticationService class.
+     * Defines The VCFAutomationAuthenticationService class.
      * @class
-     * @param {REST:RESTHost} restHost - The Aria Automation HTTP REST host.
+     * @param {REST:RESTHost} restHost - The VCF Automation HTTP REST host.
      *
-     * @returns {Any} An instance of the AriaAutomationAuthenticationService class.
+     * @returns {Any} An instance of The VCFAutomationAuthenticationService class.
      */
 
-    function AriaAutomationAuthenticationService(restHost) {
+    function VCFAutomationAuthenticationService(restHost) {
         if (!restHost || System.getObjectType(restHost) !== "REST:RESTHost") {
             throw new ReferenceError(
                 "restHost is required and must be of type 'REST:RESTHost'"
@@ -20,7 +20,7 @@
 
         this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
             "Action",
-            "AriaAutomationAuthenticationService"
+            "VCFAutomationAuthenticationService"
         );
 
         this.rest = new (System.getModule("com.simplygeek.rest").HttpRestClient())(restHost);
@@ -41,7 +41,7 @@
      *
      */
 
-    AriaAutomationAuthenticationService.prototype.createAuthenticatedSession = function (
+    VCFAutomationAuthenticationService.prototype.createAuthenticatedSession = function (
         refreshToken
     ) {
         if (!refreshToken || typeof refreshToken !== "string") {
@@ -68,7 +68,7 @@
      * @returns {Any} The session object.
      */
 
-    AriaAutomationAuthenticationService.prototype.createSession = function (
+    VCFAutomationAuthenticationService.prototype.createSession = function (
         refreshToken
     ) {
         if (!refreshToken || typeof refreshToken !== "string") {
@@ -109,7 +109,7 @@
      * @returns {string} The refresh token
      */
 
-    AriaAutomationAuthenticationService.prototype.getRefreshToken = function (
+    VCFAutomationAuthenticationService.prototype.getRefreshToken = function (
         username,
         password,
         domain
@@ -145,5 +145,5 @@
         return refreshToken;
     };
 
-    return AriaAutomationAuthenticationService;
+    return VCFAutomationAuthenticationService;
 });

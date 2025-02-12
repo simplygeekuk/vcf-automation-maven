@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item1" object-name="workflow:name=generic" id="08b42491-fc67-43df-81ed-0366266edd53" version="1.0.0" api-version="6.0.0" allowed-operations="vef" editor-version="2.0" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[Load Custom Naming Prefixes]]></display-name>
+  <position y="50.0" x="100.0"/>
+  <input>
+    <param name="managedOnly" type="boolean"/>
+  </input>
+  <workflow-item name="item0" type="end" end-mode="0">
+    <in-binding/>
+    <position y="50.0" x="300.0"/>
+  </workflow-item>
+  <workflow-item name="item1" out-name="item0" type="task">
+    <display-name><![CDATA[Scriptable task]]></display-name>
+    <script encoded="false"><![CDATA[var log = new (System.getModule("com.simplygeek.log").Logger())(
+    "Action",
+    "LoadCustomNamingPrefixes"
+);
+var arrayUtils = new (System.getModule(
+    "com.simplygeek.utils"
+).ArrayUtils());
+
+var ariaConfigService = new (System.getModule(
+    "com.simplygeek.vcf.automation"
+).AriaAutomationConfigService());
+var defaultConfigService = new (System.getModule(
+    "com.simplygeek.vcf.automation.provisioning"
+).DefaultConfigService());
+var customNamingConfigService = new (System.getModule(
+    "com.simplygeek.vcf.automation.iaas"
+).CustomNamingConfigService());
+var customNamingProfileName = defaultConfigService.getCustomNamingProfileName();
+var ariaAutomationRestHost = ariaConfigService.getRestHost();
+var ariaAutomationApiToken = ariaConfigService.getApiToken();
+var customNamingService = new (
+    System.getModule(
+        "com.simplygeek.vcf.automation.iaas"
+    ).AriaAutomationCustomNamingService())(
+    ariaAutomationRestHost,
+    ariaAutomationApiToken
+);
+
+var ariaAutomationRestHostName = ariaConfigService.getRestHostName();
+var ariaAutomationApiToken = ariaConfigService.getApiToken();
+var ariaAutomationRestHost = System.getModule("com.simplygeek.rest").getRestHost(
+    ariaAutomationRestHostName
+);
+
+var ariaDeploymentService = new (
+    System.getModule(
+        "com.simplygeek.vcf.automation.deployment"
+    ).AriaAutomationDeploymentService())(
+        ariaAutomationRestHost,
+        ariaAutomationApiToken
+    );
+
+var customNamingProfile = customNamingService.getCustomNamingByName(
+    customNamingProfileName
+);
+var customNamingProfileId = customNamingProfile.id;
+
+
+// Load Prefixes
+var resourceTypes = ["Cloud.vSphere.Machine"];
+var resources = ariaDeploymentService.getResources(
+    managedOnly,
+    resourceTypes
+);
+
+var resourceNames = resources.map(
+    function(resource) {
+        return resource.name;
+    }
+);
+var resourceNames =  [
+        "sa1d-testa-01",
+        "sa1d-testb-05",
+        "sa1d-testb-06",
+        "sa1d-testa-03",
+        "sa1d-testb-45"
+    ]
+log.log(JSON.stringify(resourceNames));
+
+var prefixPattern = /^([a-zA-Z0-9]{4}-[a-zA-Z0-9]{1,10}-)(\d+)$/;
+var highestNamesWithPrefix = arrayUtils.getHighestStringPerPrefix(
+    // resourceNames,
+    resourceNames,
+    prefixPattern
+);
+
+log.log(JSON.stringify(highestNamesWithPrefix));
+
+highestNamesWithPrefix.forEach(
+    function(prefix) {
+        var match = prefix.match(prefixPattern);
+
+        // Check if the string matches the prefixPattern
+        if (match) {
+            var prefix = match[1]; // Extract the prefix
+            var prefixNumber = parseInt(match[2], 10); // Extract the numeric part
+        }
+        if (customNamingService.checkCustomNamingPrefixExists(
+            customNamingProfileId,
+            prefix)
+        ) {
+            log.log("The prefix '" + prefix + "' already exists");
+        } else {
+            log.log(
+                "The prefix '" + prefix + "' does not exist and will be created, with starting" +
+                " increment " + prefixNumber
+            );
+            // customNamingService.addCustomNamingPrefixToTemplate(
+            //     customNamingProfileId,
+            //     prefix,
+            //     "COMPUTE",
+            //     prefixNumber,
+            //     1
+            // );
+
+            log.log("Hostname prefix successfully added");
+        }
+    }
+)]]></script>
+    <in-binding>
+      <bind name="managedOnly" type="boolean" export-name="managedOnly"/>
+    </in-binding>
+    <out-binding/>
+    <description><![CDATA[Simple task with custom script capability.]]></description>
+    <position y="60.0" x="160.0"/>
+  </workflow-item>
+  <presentation/>
+</workflow>

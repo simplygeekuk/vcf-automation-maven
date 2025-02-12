@@ -31,32 +31,32 @@
     var configService = new (System.getModule(
         "com.simplygeek.vcf.orchestrator.configurations"
     ).ConfigElementService());
-    var provisioningConfigPath = "Simplygeek/Aria/Automation/Provisioning";
-    var restHostConfigPath = "Simplygeek/Aria/Orchestrator/Resthosts";
+    var provisioningConfigPath = "Simplygeek/VCF/Automation/Provisioning";
+    var restHostConfigPath = "Simplygeek/VCF/Orchestrator/Resthosts";
     var provisioningDefaultsConfigElement = configService.getConfigElement(
         "Defaults", provisioningConfigPath
     );
-    // Get Aria Automation Resthost
-    var ariaAutomationRestHostName = configService.getConfigElementAttribute(
+    // Get VCF Automation Resthost
+    var vcfAutomationRestHostName = configService.getConfigElementAttribute(
         provisioningDefaultsConfigElement,
-        "ariaAutomationRestHostName"
+        "vcfAutomationRestHostName"
     ).value;
-    var ariaAutomationRestHost = System.getModule("com.simplygeek.rest").getRestHost(
-        ariaAutomationRestHostName
+    var vcfAutomationRestHost = System.getModule("com.simplygeek.rest").getRestHost(
+        vcfAutomationRestHostName
     );
-    var ariaAutomationRestHostConfigElement = configService.getConfigElement(
-        ariaAutomationRestHostName,
+    var vcfAutomationRestHostConfigElement = configService.getConfigElement(
+        vcfAutomationRestHostName,
         restHostConfigPath
     );
-    var ariaAutomationApiToken = configService.getConfigElementAttribute(
-        ariaAutomationRestHostConfigElement,
+    var vcfAutomationApiToken = configService.getConfigElementAttribute(
+        vcfAutomationRestHostConfigElement,
         "refreshToken"
     ).value;
-    var ariaIaasService = new (
+    var vcfIaasService = new (
         System.getModule(
             "com.simplygeek.vcf.automation.iaas"
-        ).AriaAutomationIaasService())(ariaAutomationRestHost, ariaAutomationApiToken);
-    var machineDisks = ariaIaasService.getMachineDisks(machineResourceId);
+        ).VCFAutomationIaasService())(vcfAutomationRestHost, vcfAutomationApiToken);
+    var machineDisks = vcfIaasService.getMachineDisks(machineResourceId);
     var additionalDisks = machineDisks.filter(
         function(disk) {
             return disk.type === "HDD" &&
