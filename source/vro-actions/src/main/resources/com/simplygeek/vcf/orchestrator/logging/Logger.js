@@ -6,26 +6,26 @@
     /**
      * Logger class used for sending standard log messages to the console.
      * @class
-     * @param {string} logType - The log type. Valid types are Action or Workflow.
+     * @param {string} logSource - The log source. Valid sources are Action or Workflow.
      * @param {string} logName - The name of the Action or Workflow sending the log message.
      */
 
     function Logger(
-        logType,
+        logSource,
         logName
     ) {
-        var validTypes = [
+        var validSources = [
             "action",
             "workflow"
         ];
 
-        if (logType && typeof logType !== "string") {
-            throw new TypeError("logType not of type 'string'");
-        } else if (logType && validTypes.indexOf(logType.toLowerCase()) < 0) {
-            throw new ReferenceError("Unsupported type '" + logType + "'." +
-                                     " Supported types: " + validTypes.join(", "));
+        if (logSource && typeof logSource !== "string") {
+            throw new TypeError("logSource not of type 'string'");
+        } else if (logSource && validSources.indexOf(logSource.toLowerCase()) < 0) {
+            throw new ReferenceError("Unsupported source '" + logSource + "'." +
+                                     " Supported sources: " + validSources.join(", "));
         }
-        this.type = logType;
+        this.type = logSource;
         this.name = logName;
     }
 
