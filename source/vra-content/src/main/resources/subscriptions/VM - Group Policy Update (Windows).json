@@ -1,0 +1,22 @@
+{
+  "id": "sub_1738501194615",
+  "type": "RUNNABLE",
+  "eventTopicId": "compute.provision.post",
+  "name": "VM - Group Policy Update (Windows)",
+  "ownerId": "stephensg",
+  "subscriberId": "vro-gateway-hbqKR8GZGlTNnRWa",
+  "blocking": true,
+  "description": "",
+  "criteria": "event.data.customProperties.osType \u003d\u003d \u0027WINDOWS\u0027",
+  "constraints": {
+    "projectId": null
+  },
+  "timeout": 0,
+  "broadcast": false,
+  "priority": 5,
+  "disabled": false,
+  "system": false,
+  "contextual": false,
+  "runnableType": "extensibility.vro",
+  "runnableId": "c30515d4-0a1d-473b-bd65-2fe9e075e59a"
+}

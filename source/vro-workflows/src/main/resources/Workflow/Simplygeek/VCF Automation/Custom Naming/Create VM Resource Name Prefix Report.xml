@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item1" object-name="workflow:name=generic" id="ab9e51ae-8a60-46c8-9b84-4fa14bba29dd" version="1.0.0" api-version="6.0.0" allowed-operations="vef" editor-version="2.0" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[Create VM Resource Name Prefix Report]]></display-name>
+  <position y="50.0" x="100.0"/>
+  <attrib name="restHost" type="REST:RESTHost" read-only="false">
+    <value encoded="n"><![CDATA[dunes://service.dunes.ch/CustomSDKObject?id='b7911fe1-6a09-42ce-bee5-2c1d439530fa'&dunesName='REST:RESTHost']]></value>
+  </attrib>
+  <workflow-item name="item0" type="end" end-mode="0">
+    <in-binding/>
+    <position y="50.0" x="300.0"/>
+  </workflow-item>
+  <workflow-item name="item1" out-name="item0" type="task">
+    <display-name><![CDATA[Scriptable task]]></display-name>
+    <script encoded="false"><![CDATA[var arrayUtils = new (System.getModule(
+    "com.simplygeek.utils"
+).ArrayUtils());
+
+var ariaConfigService = new (System.getModule(
+    "com.simplygeek.vcf.automation"
+).AriaAutomationConfigService());
+
+var ariaAutomationRestHostName = ariaConfigService.getRestHostName();
+var ariaAutomationApiToken = ariaConfigService.getApiToken();
+var ariaAutomationRestHost = System.getModule("com.simplygeek.rest").getRestHost(
+    ariaAutomationRestHostName
+);
+
+var ariaDeploymentService = new (
+    System.getModule(
+        "com.simplygeek.vcf.automation.deployment"
+    ).AriaAutomationDeploymentService())(
+        ariaAutomationRestHost,
+        ariaAutomationApiToken
+    );
+
+var resourceTypes = ["Cloud.vSphere.Machine"];
+var resources = ariaDeploymentService.getResources(
+    true,
+    resourceTypes
+);
+
+var resourceNames = resources.map(
+    function(resource) {
+        return resource.name;
+    }
+);
+
+System.log(JSON.stringify(resourceNames));
+
+var pattern = /^([a-zA-Z0-9]{4}-[a-zA-Z0-9]{1,10}-)(\d+)$/;
+var highestNamesWithPrefix = arrayUtils.getHighestStringPerPrefix(
+    // resourceNames
+    //["sa1d-gstest-03", "sa1d-gstest-01"]
+    ["sa1d-gstest-01", "sa1d-test-05", "sa1d-test-06", "sa1d-gstest-03", "sa1d-test-45"],
+    pattern
+);
+
+System.log(JSON.stringify(highestNamesWithPrefix));
+]]></script>
+    <in-binding/>
+    <out-binding/>
+    <description><![CDATA[Simple task with custom script capability.]]></description>
+    <position y="60.0" x="160.0"/>
+  </workflow-item>
+  <presentation/>
+</workflow>

@@ -1,0 +1,13 @@
+{
+  "projectId": "34dd216c-fc39-4a34-8371-c17de8f50e58",
+  "config": {
+    "sourceProjectId": "34dd216c-fc39-4a34-8371-c17de8f50e58"
+  },
+  "id": "6f04baea-e0c6-42fb-b748-47143f4eb62c",
+  "name": "VM Templates",
+  "description": null,
+  "typeId": "com.vmw.blueprint",
+  "itemsImported": 2,
+  "itemsFound": 2,
+  "global": true
+}
