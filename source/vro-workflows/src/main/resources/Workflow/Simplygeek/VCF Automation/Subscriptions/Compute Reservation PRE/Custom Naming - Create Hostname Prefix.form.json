@@ -1,0 +1,56 @@
+{
+    "schema": {
+        "inputProperties": {
+            "id": "inputProperties",
+            "type": {
+                "dataType": "complex",
+                "isMultiple": true,
+                "fields": [
+                    {
+                        "id": "key",
+                        "type": {
+                            "dataType": "string"
+                        },
+                        "label": "key"
+                    },
+                    {
+                        "id": "value",
+                        "type": {
+                            "dataType": "string"
+                        },
+                        "label": "value"
+                    }
+                ]
+            },
+            "label": "inputProperties",
+            "constraints": {
+                "required": false
+            }
+        }
+    },
+    "layout": {
+        "pages": [
+            {
+                "id": "page_necso0he",
+                "title": "General",
+                "sections": [
+                    {
+                        "id": "section_u9piew27",
+                        "fields": [
+                            {
+                                "id": "inputProperties",
+                                "display": "datagrid",
+                                "signpostPosition": "right-middle",
+                                "state": {
+                                    "visible": true,
+                                    "read-only": false
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "itemId": ""
+}

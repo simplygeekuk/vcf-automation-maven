@@ -1,0 +1,10 @@
+---
+name: CustomNaming
+path: Simplygeek/VCF/Automation
+attributes:
+  startCounter:
+    type: number
+    value: 1
+  incrementStep:
+    type: number
+    value: 1

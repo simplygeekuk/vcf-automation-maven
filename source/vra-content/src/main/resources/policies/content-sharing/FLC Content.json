@@ -1,0 +1,31 @@
+{
+  "id": "79c8fead-2b02-4866-a658-0809240e3b7f",
+  "name": "FLC Content",
+  "typeId": "com.vmware.policy.catalog.entitlement",
+  "scope": "FLC Default Project",
+  "organization": "tenant-dev",
+  "enforcementType": "HARD",
+  "definition": {
+    "entitledUsers": [
+      {
+        "items": [
+          {
+            "name": "vro",
+            "type": "CATALOG_SOURCE_IDENTIFIER"
+          },
+          {
+            "name": "VM Templates",
+            "type": "CATALOG_SOURCE_IDENTIFIER"
+          }
+        ],
+        "userType": "USER",
+        "principals": [
+          {
+            "type": "PROJECT",
+            "referenceId": ""
+          }
+        ]
+      }
+    ]
+  }
+}

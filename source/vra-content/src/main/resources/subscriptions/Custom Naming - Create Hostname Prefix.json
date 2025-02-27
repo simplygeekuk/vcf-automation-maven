@@ -1,0 +1,22 @@
+{
+  "id": "72945d04-16c5-4c3d-b1ee-c72e6ef84762-sub_1715277408352",
+  "type": "RUNNABLE",
+  "eventTopicId": "compute.reservation.pre",
+  "name": "Custom Naming - Create Hostname Prefix",
+  "ownerId": "stephensg",
+  "subscriberId": "vro-gateway-hbqKR8GZGlTNnRWa",
+  "blocking": true,
+  "description": "",
+  "criteria": "",
+  "constraints": {
+    "projectId": null
+  },
+  "timeout": 0,
+  "broadcast": false,
+  "priority": 5,
+  "disabled": false,
+  "system": false,
+  "contextual": false,
+  "runnableType": "extensibility.vro",
+  "runnableId": "d2119038-1db3-48ff-afbc-7fc5308c201d"
+}
