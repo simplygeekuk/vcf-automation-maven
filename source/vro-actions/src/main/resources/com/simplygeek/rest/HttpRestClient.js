@@ -1,6 +1,6 @@
 /**
- * Write a brief description of the purpose of the action.
- * @returns {Any} - describe the return type as well
+ * HttpRestClient interacts with webservices over a RESTHost.
+ * @returns {Any} - Returns an instance of the HttpRestClient class.
  */
 (function () {
     /**
@@ -24,6 +24,12 @@
             throw new ReferenceError(
                 "restHost is required and must be of type 'REST:RESTHost'"
             );
+        }
+        if (retryMaxAttempts && typeof retryMaxAttempts !== "number") {
+            throw new TypeError("retryMaxAttempts must be of type 'number'");
+        }
+        if (retryDelay && typeof retryDelay !== "number") {
+            throw new TypeError("retryDelay must be of type 'number'");
         }
 
         this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
