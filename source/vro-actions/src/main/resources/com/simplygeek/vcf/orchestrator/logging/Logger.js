@@ -38,6 +38,10 @@
     Logger.prototype.info = function (
         message
     ) {
+        if (!message || typeof message !== "string") {
+            throw new ReferenceError("message is required and must be of type 'string'");
+        }
+
         System.log("[" + this.type + ": " + this.name + "] " + message);
     };
 
@@ -50,6 +54,10 @@
     Logger.prototype.warn = function (
         message
     ) {
+        if (!message || typeof message !== "string") {
+            throw new ReferenceError("message is required and must be of type 'string'");
+        }
+
         System.warn("[" + this.type + ": " + this.name + "] " + message);
     };
 
@@ -62,6 +70,10 @@
     Logger.prototype.error = function (
         message
     ) {
+        if (!message || typeof message !== "string") {
+            throw new ReferenceError("message is required and must be of type 'string'");
+        }
+
         System.error("[" + this.type + ": " + this.name + "] " + message);
     };
 
@@ -74,6 +86,10 @@
     Logger.prototype.debug = function (
         message
     ) {
+        if (!message || typeof message !== "string") {
+            throw new ReferenceError("message is required and must be of type 'string'");
+        }
+
         System.debug("[" + this.type + ": " + this.name + "] " + message);
     };
 
