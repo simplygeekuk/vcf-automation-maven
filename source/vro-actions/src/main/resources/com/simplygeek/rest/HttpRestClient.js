@@ -43,182 +43,9 @@
         this.retryOn500 = retryOn500 !== false;
 
         /**
-         * Defines the GET method.
+         * A method that invokes the request.
          * @method
-         * @public
-         * @param {string} uri - The request uri.
-         * @param {string} [acceptType] - The encoding format to accept.
-         * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
-         * @param {Properties} [headers] - A key/value set of headers to include in the request.
-         *
-         * @returns {Any} The request response object.
-         */
-
-        this.get = function (
-            uri,
-            acceptType,
-            expectedResponseCodes,
-            headers
-        ) {
-            var response = invokeRequest.call(
-                this,
-                "GET",
-                uri,
-                acceptType,
-                null,
-                null,
-                expectedResponseCodes,
-                headers
-            );
-
-            return response;
-        };
-
-        /**
-         * Defines the POST method.
-         * @method
-         * @public
-         * @param {string} uri - The request uri.
-         * @param {string} [acceptType] - The encoding format to accept.
-         * @param {Any} [content] - The request content.
-         * @param {string} [contentType] - The encoding for content.
-         * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
-         * @param {Properties} [headers] - A key/value set of headers to include in the request.
-         *
-         * @returns {Any} The request response object.
-         */
-
-        this.post = function (
-            uri,
-            acceptType,
-            content,
-            contentType,
-            expectedResponseCodes,
-            headers
-        ) {
-            content = content || {};
-
-            var response = invokeRequest.call(
-                this,
-                "POST",
-                uri,
-                acceptType,
-                content,
-                contentType,
-                expectedResponseCodes,
-                headers
-            );
-
-            return response;
-        };
-
-        /**
-         * Defines the PUT method.
-         * @method
-         * @public
-         * @param {string} uri - The request uri.
-         * @param {string} [acceptType] - The encoding format to accept.
-         * @param {Any} content - The request content.
-         * @param {string} [contentType] - The encoding for content.
-         * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
-         * @param {Properties} [headers] - A key/value set of headers to include in the request.
-         *
-         * @returns {Any} The request response object.
-         */
-
-        this.put = function (
-            uri,
-            acceptType,
-            content,
-            contentType,
-            expectedResponseCodes,
-            headers
-        ) {
-            var response = invokeRequest.call(
-                this,
-                "PUT",
-                uri,
-                acceptType,
-                content,
-                contentType,
-                expectedResponseCodes,
-                headers
-            );
-
-            return response;
-        };
-
-        /**
-         * Defines the PATCH method.
-         * @method
-         * @public
-         * @param {string} uri - The request uri.
-         * @param {string} [acceptType] - The encoding format to accept.
-         * @param {Any} content - The request content.
-         * @param {string} [contentType] - The encoding for content.
-         * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
-         * @param {Properties} [headers] - A key/value set of headers to include in the request.
-         *
-         * @returns {Any} The request response object.
-         */
-
-        this.patch = function (
-            uri,
-            acceptType,
-            content,
-            contentType,
-            expectedResponseCodes,
-            headers
-        ) {
-            var response = invokeRequest.call(
-                this,
-                "PATCH",
-                uri,
-                acceptType,
-                content,
-                contentType,
-                expectedResponseCodes,
-                headers
-            );
-
-            return response;
-        };
-
-        /**
-         * Defines the DELETE method.
-         * @method
-         * @public
-         * @param {string} uri - The request uri.
-         * @param {string} [acceptType] - The encoding format to accept.
-         * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
-         * @param {Properties} [headers] - A key/value set of headers to include in the request.
-         *
-         * @returns {Any} The request response object.
-         */
-
-        this.delete = function (
-            uri,
-            acceptType,
-            expectedResponseCodes,
-            headers
-        ) {
-            var response = invokeRequest.call(
-                this,
-                "DELETE",
-                uri,
-                acceptType,
-                null,
-                null,
-                expectedResponseCodes,
-                headers
-            );
-
-            return response;
-        };
-
-        /**
-         * A function that invokes the request.
-         * @function
+         * @private
          * @param {string} restMethod - The request method.
          * @param {string} uri - The request uri.
          * @param {string} [acceptType] - The encoding format to accept.
@@ -230,7 +57,7 @@
          * @returns {Any} The request response object.
          */
 
-        var invokeRequest = function (
+        this.invokeRequest = function (
             restMethod,
             uri,
             acceptType,
@@ -302,8 +129,7 @@
                 expectedResponseCodes = [200];
             }
 
-            createRequest.call(
-                this,
+            this.createRequest(
                 restMethod,
                 uri,
                 acceptType,
@@ -374,7 +200,8 @@
 
         /**
          * A function that creates the request.
-         * @function
+         * @method
+         * @private
          * @param {string} restMethod - The request method.
          * @param {string} uri - The request uri.
          * @param {string} [acceptType] - The encoding format to accept.
@@ -385,8 +212,7 @@
          * @returns {Any} The request response object.
          */
 
-        // eslint-disable-next-line padding-line-between-statements
-        var createRequest = function (
+        this.createRequest = function (
             restMethod,
             uri,
             acceptType,
@@ -427,7 +253,7 @@
                     this.request = this.restHost.createRequest(
                         restMethod,
                         uri,
-                        xwwwformurlencoder.call(this, content)
+                        this.xwwwformurlencoder(content)
                     );
                     this.request.contentType = this.contentType;
                 } else {
@@ -441,7 +267,7 @@
             }
 
             this.log.debug("Setting headers...");
-            setHeaders.call(this, headers);
+            this.setHeaders(headers);
         };
 
         /**
@@ -450,8 +276,7 @@
          * @param {Properties} [headers] - A key/value set of headers to include in the request.
          */
 
-        // eslint-disable-next-line padding-line-between-statements
-        var setHeaders = function (
+        this.setHeaders = function (
             headers
         ) {
             this.log.debug("Adding Header: Accept: " + this.acceptType);
@@ -472,12 +297,12 @@
 
         /**
          * A function that converts a JSON body to a form-url-encoded string
-         * @function
+         * @method
+         * @private
          * @param {Any} [content] - The request content.
          */
 
-        // eslint-disable-next-line padding-line-between-statements
-        var xwwwformurlencoder = function (
+        this.xwwwformurlencoder = function (
             content
         ) {
             this.log.debug("Performing Form URL Encoding");
@@ -500,6 +325,175 @@
             return contentUrlEncoded;
         };
     }
+
+    /**
+     * Defines the GET method.
+     * @method
+     * @public
+     * @param {string} uri - The request uri.
+     * @param {string} [acceptType] - The encoding format to accept.
+     * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
+     * @param {Properties} [headers] - A key/value set of headers to include in the request.
+     *
+     * @returns {Any} The request response object.
+     */
+
+    HttpRestClient.prototype.get = function (
+        uri,
+        acceptType,
+        expectedResponseCodes,
+        headers
+    ) {
+        var response = this.invokeRequest(
+            "GET",
+            uri,
+            acceptType,
+            null,
+            null,
+            expectedResponseCodes,
+            headers
+        );
+
+        return response;
+    };
+
+    /**
+     * Defines the POST method.
+     * @method
+     * @public
+     * @param {string} uri - The request uri.
+     * @param {string} [acceptType] - The encoding format to accept.
+     * @param {Any} [content] - The request content.
+     * @param {string} [contentType] - The encoding for content.
+     * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
+     * @param {Properties} [headers] - A key/value set of headers to include in the request.
+     *
+     * @returns {Any} The request response object.
+     */
+
+    HttpRestClient.prototype.post = function (
+        uri,
+        acceptType,
+        content,
+        contentType,
+        expectedResponseCodes,
+        headers
+    ) {
+        content = content || {};
+
+        var response = this.invokeRequest(
+            "POST",
+            uri,
+            acceptType,
+            content,
+            contentType,
+            expectedResponseCodes,
+            headers
+        );
+
+        return response;
+    };
+
+    /**
+     * Defines the PUT method.
+     * @method
+     * @public
+     * @param {string} uri - The request uri.
+     * @param {string} [acceptType] - The encoding format to accept.
+     * @param {Any} content - The request content.
+     * @param {string} [contentType] - The encoding for content.
+     * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
+     * @param {Properties} [headers] - A key/value set of headers to include in the request.
+     *
+     * @returns {Any} The request response object.
+     */
+
+    HttpRestClient.prototype.put = function (
+        uri,
+        acceptType,
+        content,
+        contentType,
+        expectedResponseCodes,
+        headers
+    ) {
+        var response = this.invokeRequest(
+            "PUT",
+            uri,
+            acceptType,
+            content,
+            contentType,
+            expectedResponseCodes,
+            headers
+        );
+
+        return response;
+    };
+
+    /**
+     * Defines the PATCH method.
+     * @method
+     * @public
+     * @param {string} uri - The request uri.
+     * @param {string} [acceptType] - The encoding format to accept.
+     * @param {Any} content - The request content.
+     * @param {string} [contentType] - The encoding for content.
+     * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
+     * @param {Properties} [headers] - A key/value set of headers to include in the request.
+     *
+     * @returns {Any} The request response object.
+     */
+
+    HttpRestClient.prototype.patch = function (
+        uri,
+        acceptType,
+        content,
+        contentType,
+        expectedResponseCodes,
+        headers
+    ) {
+        var response = this.invokeRequest(
+            "PATCH",
+            uri,
+            acceptType,
+            content,
+            contentType,
+            expectedResponseCodes,
+            headers
+        );
+
+        return response;
+    };
+
+    /**
+     * Defines the DELETE method.
+     * @method
+     * @public
+     * @param {string} uri - The request uri.
+     * @param {string} [acceptType] - The encoding format to accept.
+     * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
+     * @param {Properties} [headers] - A key/value set of headers to include in the request.
+     *
+     * @returns {Any} The request response object.
+     */
+
+    HttpRestClient.prototype.delete = function (
+        uri,
+        acceptType,
+        expectedResponseCodes,
+        headers
+    ) {
+        var response = this.invokeRequest(
+            "DELETE",
+            uri,
+            acceptType,
+            null,
+            null,
+            expectedResponseCodes,
+            headers
+        );
+
+        return response;
+    };
 
     return HttpRestClient;
 });
