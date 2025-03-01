@@ -495,5 +495,36 @@
         return response;
     };
 
+    /**
+     * Defines the HEAD method.
+     * @method
+     * @public
+     * @param {string} uri - The request uri.
+     * @param {string} [acceptType] - The encoding format to accept.
+     * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
+     * @param {Properties} [headers] - A key/value set of headers to include in the request.
+     *
+     * @returns {Any} The request response object.
+     */
+
+    HttpRestClient.prototype.head = function (
+        uri,
+        acceptType,
+        expectedResponseCodes,
+        headers
+    ) {
+        var response = this.invokeRequest(
+            "HEAD",
+            uri,
+            acceptType,
+            null,
+            null,
+            expectedResponseCodes,
+            headers
+        );
+
+        return response;
+    };
+
     return HttpRestClient;
 });
