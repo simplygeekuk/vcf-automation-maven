@@ -106,7 +106,7 @@
             if (!expectedResponseCodes ||
                 (Array.isArray(expectedResponseCodes) &&
                 expectedResponseCodes.length < 1)) {
-                expectedResponseCodes = [200];
+                expectedResponseCodes = [200, 201, 204];
             }
 
             this.createRequest(
