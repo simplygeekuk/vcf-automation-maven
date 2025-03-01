@@ -68,20 +68,6 @@
         ) {
             // eslint-disable-next-line no-useless-escape
             var uriRegex = /^[-a-zA-Z0-9()@:%_$,.~#?&\|\'\"\+\/\/=\s]*$/i;
-            var validAcceptTypes = [
-                "*/*",
-                "application/json",
-                "application/json; charset=utf-8",
-                "application/xml",
-                "text/plain"
-            ];
-            var validContentTypes = [
-                "application/json",
-                "application/json; charset=utf-8",
-                "application/xml",
-                "text/plain",
-                "application/x-www-form-urlencoded"
-            ];
 
             if (!uri || typeof uri !== "string") {
                 throw new ReferenceError("uri is required and must be of type 'string'");
@@ -90,15 +76,9 @@
             }
             if (acceptType && typeof acceptType !== "string") {
                 throw new TypeError("acceptType must be of type 'string'");
-            } else if (acceptType && validAcceptTypes.indexOf(acceptType.toLowerCase()) < 0) {
-                throw new ReferenceError("Invalid Accept type '" + acceptType + "'." +
-                " Supported Accept types: " + validAcceptTypes.join(", "));
             }
             if (contentType && typeof contentType !== "string") {
                 throw new TypeError("contentType must be of type 'string'");
-            } else if (contentType && validContentTypes.indexOf(contentType.toLowerCase()) < 0) {
-                throw new ReferenceError("Invalid Content type '" + contentType + "'." +
-                " Supported Content types: " + validContentTypes.join(", "));
             }
             if (content && typeof content !== "object") {
                 throw new TypeError("content must be of type 'object'");
