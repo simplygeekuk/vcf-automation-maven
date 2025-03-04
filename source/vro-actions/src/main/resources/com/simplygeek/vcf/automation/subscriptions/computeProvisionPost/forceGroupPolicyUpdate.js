@@ -1,5 +1,5 @@
 /**
- * Write a brief description of the purpose of the action.
+ * Runs command on a virtual machine using VMware Tools to update Group policies.
  * @param {Properties} inputProperties - The input properties Subscription payload.
  *
  * @returns {void} - No return value.
