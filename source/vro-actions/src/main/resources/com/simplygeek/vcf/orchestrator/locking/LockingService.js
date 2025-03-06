@@ -1,13 +1,11 @@
 /**
- * Write a brief description of the purpose of the action.
- * @returns {Any} - describe the return type as well
+ * Creates and removes Orchestrator process locks.
+ * @returns {Any} An instance of the LockingService class.
  */
 (function () {
     /**
      * Defines the LockingService class.
      * @class
-     *
-     * @returns {Any} An instance of the LockingService class.
      */
 
     function LockingService() {
@@ -22,10 +20,10 @@
          * @public
          * @param {string} lockOwner - the lock owner.
          * @param {string} lockId - the unique (per lock) id.
-         * @param {number} [retryMaxAttempts] - The maximum number of attempts to retry lock.
-         * @param {number} [retryDelay] - The delay between retry attempts.
+         * @param {number} [retryMaxAttempts] - The maximum number of attempts to retry lock (default 5).
+         * @param {number} [retryDelay] - The delay between retry attempts (default 60 seconds).
          * @param {boolean} [autoRemoveLock] - Auto remove the lock if one is already present and
-         *                                     the max retry attempts has been reached.
+         *                                     the max retry attempts has been reached (default true).
          *
          * @returns {boolean} - Return the lock status.
          */
@@ -34,7 +32,8 @@
             lockOwner,
             lockId,
             retryMaxAttempts,
-            retryDelay
+            retryDelay,
+            autoRemoveLock
         ) {
             if (!lockOwner || typeof lockOwner !== "string") {
                 throw new ReferenceError(
@@ -63,8 +62,8 @@
 
             retryMaxAttempts = retryMaxAttempts || 5;
             retryDelay = retryDelay || 60;
+            autoRemoveLock = autoRemoveLock !== false;
             var lockAcquired = false;
-            var autoRemoveLock = autoRemoveLock !== false;
             var retryAttempt = 1;
 
             do {
