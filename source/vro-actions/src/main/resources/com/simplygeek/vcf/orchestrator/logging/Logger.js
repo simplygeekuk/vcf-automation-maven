@@ -38,8 +38,8 @@
     Logger.prototype.info = function (
         message
     ) {
-        if (!message || typeof message !== "string") {
-            throw new ReferenceError("message is required and must be of type 'string'");
+        if (!message) {
+            throw new ReferenceError("message is required");
         }
 
         System.log("[" + this.type + ": " + this.name + "] " + message);
@@ -54,8 +54,8 @@
     Logger.prototype.warn = function (
         message
     ) {
-        if (!message || typeof message !== "string") {
-            throw new ReferenceError("message is required and must be of type 'string'");
+        if (!message) {
+            throw new ReferenceError("message is required");
         }
 
         System.warn("[" + this.type + ": " + this.name + "] " + message);
@@ -70,8 +70,8 @@
     Logger.prototype.error = function (
         message
     ) {
-        if (!message || typeof message !== "string") {
-            throw new ReferenceError("message is required and must be of type 'string'");
+        if (!message) {
+            throw new ReferenceError("message is required");
         }
 
         System.error("[" + this.type + ": " + this.name + "] " + message);
@@ -86,8 +86,8 @@
     Logger.prototype.debug = function (
         message
     ) {
-        if (!message || typeof message !== "string") {
-            throw new ReferenceError("message is required and must be of type 'string'");
+        if (!message) {
+            throw new ReferenceError("message is required");
         }
 
         System.debug("[" + this.type + ": " + this.name + "] " + message);
