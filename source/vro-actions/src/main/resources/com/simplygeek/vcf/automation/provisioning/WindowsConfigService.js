@@ -155,20 +155,20 @@
     };
 
     /**
-     * Defines the getActiveDirectoryServerOUDN method.
-     * @description Gets the Active Directory Server OU Distinguished Name.
+     * Defines the getActiveDirectoryGroupPolicyUpdateWaitTime method.
+     * @description Gets the Active Directory Group Policy update wait time.
      * @method
      * @public
      *
-     * @returns {string} The Active Directory Server OU Distinguished Name.
+     * @returns {number} The time to wait for Group Policy updates to apply (in mins).
      */
 
-    WindowsConfigService.prototype.getActiveDirectoryServerOUDN = function () {
-        var activeDirectoryServerOUDN = this.__getConfigValue(
-            "activeDirectoryServerOUDN"
+    WindowsConfigService.prototype.getActiveDirectoryGroupPolicyUpdateWaitTime = function () {
+        var activeDirectoryGroupPolicyUpdateWaitTime = this.__getConfigValue(
+            "activeDirectoryGroupPolicyUpdateWaitTime"
         );
 
-        return activeDirectoryServerOUDN;
+        return activeDirectoryGroupPolicyUpdateWaitTime;
     };
 
     // ###########################
@@ -349,20 +349,18 @@
                 this.configElement,
                 configKey
             );
+            configValue = configElementAttribute.value;
             if (configElementAttribute.type === "SecureString") {
-                configValue = "******";
+                this.log.info("Found " + configKey + ": " + "******");
             } else {
-                configValue = configElementAttribute.value;
+                this.log.info("Found " + configKey + ": " + configValue);
             }
-            this.log.info("Found " + configKey + ": " + configValue);
         } catch (e) {
             if (e.message.indexOf("No Configuration Element Attribute found") !== -1) {
                 this.log.info("No " + configKey + " found, getting default value");
                 try {
                     configValue = this.defaultConfigService[configKey];
-                    this.log.info("Found " + configKey + ": " + configValue);
                 } catch (e) {
-                    this.log.warn("Failed to get any value for " + configKey);
                     throw new Error(e);
                 }
             } else {

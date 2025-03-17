@@ -139,6 +139,15 @@
         return ansibleRestHostName;
     };
 
+    /**
+     * Defines the __getConfigValue method.
+     * @description Gets a configuration value.
+     * @method
+     * @private
+     *
+     * @returns {Any} The configuration value
+     */
+
     DefaultConfigService.prototype.__getConfigValue = function (
         configKey
     ) {
@@ -149,10 +158,11 @@
             this.configElement,
             configKey
         );
+        configValue = configElementAttribute.value;
         if (configElementAttribute.type === "SecureString") {
-            configValue = "******";
+            this.log.info("Found " + configKey + ": " + "******");
         } else {
-            configValue = configElementAttribute.value;
+            this.log.info("Found " + configKey + ": " + configValue);
         }
 
         return configValue;

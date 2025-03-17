@@ -30,7 +30,7 @@
         );
     }
 
-    // Extends the ConfigElementService
+    // Extends ConfigElementService
     var ConfigElementService = System.getModule(
         "com.simplygeek.vcf.orchestrator.configurations"
     ).ConfigElementService();
@@ -294,12 +294,12 @@
                 this.configElement,
                 configKey
             );
+            configValue = configElementAttribute.value;
             if (configElementAttribute.type === "SecureString") {
-                configValue = "******";
+                this.log.info("Found " + configKey + ": " + "******");
             } else {
-                configValue = configElementAttribute.value;
+                this.log.info("Found " + configKey + ": " + configValue);
             }
-            this.log.info("Found " + configKey + ": " + configValue);
         } catch (e) {
             if (e.message.indexOf("No Configuration Element Attribute found") !== -1) {
                 this.log.info("No " + configKey + " found, getting default value");
