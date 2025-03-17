@@ -25,7 +25,6 @@
             "VCFAutomationGenericBackendService"
         );
 
-        this.rest = new (System.getModule("com.simplygeek.rest").HttpRestClient())(restHost);
         this.mediaType = "application/json";
     }
 
@@ -100,7 +99,7 @@
         }
 
         var result;
-        var response = this.rest.get(
+        var response = this.httpGet(
             uri,
             this.mediaType,
             expectedResponseCodes,
@@ -136,7 +135,7 @@
                         this.log.debug("Getting additional results");
                         var uriParam1 = "$skip=" + numResultsOnPage;
                         var uriWithParams = uri + uriParam1;
-                        var extraResponse = this.rest.get(
+                        var extraResponse = this.httpGet(
                             uriWithParams,
                             this.mediaType,
                             expectedResponseCodes,
@@ -191,7 +190,7 @@
         }
 
         var responseContent;
-        var response = this.rest.post(
+        var response = this.httpPost(
             uri,
             this.mediaType,
             content,
@@ -233,7 +232,7 @@
         }
 
         var responseContent;
-        var response = this.rest.put(
+        var response = this.httpPut(
             uri,
             this.mediaType,
             content,
@@ -275,7 +274,7 @@
         }
 
         var responseContent;
-        var response = this.rest.patch(
+        var response = this.httpPatch(
             uri,
             this.mediaType,
             content,
@@ -309,7 +308,7 @@
             expectedResponseCodes = [204];
         }
 
-        this.rest.delete(
+        this.httpDelete(
             uri,
             this.mediaType,
             expectedResponseCodes,

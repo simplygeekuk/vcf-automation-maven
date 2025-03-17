@@ -18,12 +18,13 @@
             );
         }
 
+        HttpRestClient.call(this, restHost);
+
         this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
             "Action",
             "VCFAutomationAuthenticationService"
         );
 
-        this.rest = new (System.getModule("com.simplygeek.rest").HttpRestClient())(restHost);
         this.mediaType = "application/json";
         this.iaasBaseUri = "/iaas/api";
         this.cspBaseUri = "/csp/gateway/am/api";
@@ -32,6 +33,15 @@
 
         this.sessionHeaders = headers;
     }
+
+    var HttpRestClient = System.getModule(
+        "com.simplygeek.rest"
+    ).HttpRestClient();
+
+    VCFAutomationAuthenticationService.prototype = Object.create(
+        HttpRestClient.prototype
+    );
+    VCFAutomationAuthenticationService.prototype.constructor = VCFAutomationAuthenticationService;
 
     /**
      * Defines the createAuthenticatedSession method.
@@ -85,7 +95,7 @@
         };
 
         this.log.debug("Creating API session.");
-        var response = this.rest.post(
+        var response = this.httpPost(
             uri,
             this.mediaType,
             content,
@@ -131,7 +141,7 @@
         };
 
         this.log.debug("Creating Refresh token.");
-        var response = this.rest.post(
+        var response = this.httpPost(
             uri,
             this.mediaType,
             content,
