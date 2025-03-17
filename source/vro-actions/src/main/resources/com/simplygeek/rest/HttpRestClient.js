@@ -307,7 +307,7 @@
     }
 
     /**
-     * Defines the GET method.
+     * Defines the httpGet method.
      * @method
      * @public
      * @param {string} uri - The request uri.
@@ -318,7 +318,7 @@
      * @returns {Any} The request response object.
      */
 
-    HttpRestClient.prototype.get = function (
+    HttpRestClient.prototype.httpGet = function (
         uri,
         acceptType,
         expectedResponseCodes,
@@ -338,7 +338,7 @@
     };
 
     /**
-     * Defines the POST method.
+     * Defines the httpPost method.
      * @method
      * @public
      * @param {string} uri - The request uri.
@@ -351,7 +351,7 @@
      * @returns {Any} The request response object.
      */
 
-    HttpRestClient.prototype.post = function (
+    HttpRestClient.prototype.httpPost = function (
         uri,
         acceptType,
         content,
@@ -375,7 +375,7 @@
     };
 
     /**
-     * Defines the PUT method.
+     * Defines the httpPut method.
      * @method
      * @public
      * @param {string} uri - The request uri.
@@ -388,7 +388,7 @@
      * @returns {Any} The request response object.
      */
 
-    HttpRestClient.prototype.put = function (
+    HttpRestClient.prototype.httpPut = function (
         uri,
         acceptType,
         content,
@@ -410,7 +410,7 @@
     };
 
     /**
-     * Defines the PATCH method.
+     * Defines the httpPatch method.
      * @method
      * @public
      * @param {string} uri - The request uri.
@@ -423,7 +423,7 @@
      * @returns {Any} The request response object.
      */
 
-    HttpRestClient.prototype.patch = function (
+    HttpRestClient.prototype.httpPatch = function (
         uri,
         acceptType,
         content,
@@ -445,7 +445,7 @@
     };
 
     /**
-     * Defines the DELETE method.
+     * Defines the httpDelete method.
      * @method
      * @public
      * @param {string} uri - The request uri.
@@ -456,7 +456,7 @@
      * @returns {Any} The request response object.
      */
 
-    HttpRestClient.prototype.delete = function (
+    HttpRestClient.prototype.httpDelete = function (
         uri,
         acceptType,
         expectedResponseCodes,
@@ -476,7 +476,7 @@
     };
 
     /**
-     * Defines the HEAD method.
+     * Defines the httpHead method.
      * @method
      * @public
      * @param {string} uri - The request uri.
@@ -487,7 +487,7 @@
      * @returns {Any} The request response object.
      */
 
-    HttpRestClient.prototype.head = function (
+    HttpRestClient.prototype.httpHead = function (
         uri,
         acceptType,
         expectedResponseCodes,
