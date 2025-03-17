@@ -33,6 +33,7 @@
         ).WindowsConfigService());
     var guestUername = windowsConfigService.getUsername();
     var guestPassword = windowsConfigService.getPassword();
+    var groupPolicyWaitTime = windowsConfigService.getActiveDirectoryGroupPolicyUpdateWaitTime();
 
     // Run command in guest
     try {
@@ -44,8 +45,8 @@
             commandPath,
             commandArguments
         );
-        log.info("Waiting 2 minutes for policies to fully apply.");
-        System.sleep(120 * 1000);
+        log.info("Waiting " + groupPolicyWaitTime + " minutes for policies to fully apply.");
+        System.sleep((groupPolicyWaitTime * 120) * 1000);
         log.info("Group Policies updated successfully.");
     } catch (e) {
         throw new Error("Failed to update Group Policies: " + e);
