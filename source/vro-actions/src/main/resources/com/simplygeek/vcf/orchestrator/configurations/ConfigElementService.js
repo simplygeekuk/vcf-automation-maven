@@ -145,7 +145,7 @@
          * @param {ConfigurationElement} configElement - Configuration Element Object.
          * @param {string} attributeName - Configuration Element Attribute Name.
          *
-         * @returns {Any} Configuration Elemenet Attribute.
+         * @returns {Any} Configuration Element Attribute.
          */
 
         this.getConfigElementAttribute = function (
