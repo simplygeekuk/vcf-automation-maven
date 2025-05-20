@@ -6,24 +6,12 @@
     /**
      * Defines The VCFAutomationGenericBackendService class.
      * @class
-     * @param {REST:RESTHost} restHost - The VCF Automation HTTP REST host.
      *
      * @returns {Any} An instance of The VCFAutomationGenericBackendService class.
      */
 
-    function VCFAutomationGenericBackendService(restHost) {
-        if (!restHost || System.getObjectType(restHost) !== "REST:RESTHost") {
-            throw new ReferenceError(
-                "restHost is required and must be of type 'REST:RESTHost'"
-            );
-        }
-
-        VCFAutomationAuthenticationService.call(this, restHost);
-
-        this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
-            "Action",
-            "VCFAutomationGenericBackendService"
-        );
+    function VCFAutomationGenericBackendService() {
+        VCFAutomationAuthenticationService.call(this, this.restHost);
 
         this.mediaType = "application/json";
     }
@@ -111,7 +99,7 @@
         if (responseContent.totalElements || responseContent.totalElements === 0) {
             var numTotalResults = responseContent.totalElements;
             var results = responseContent.content;
-            var numResultsOnPage = responseContent.numberOfElements || responseContent.size;
+            var numResultsOnPage = responseContent.numberOfElements; // || responseContent.size;
 
             this.log.debug(
                 "Found " + numResultsOnPage + " of " +
@@ -152,11 +140,19 @@
                     } while (results.length < numTotalResults);
                 }
             } else {
-                if (throwOnNotFound) throw new Error("No results found");
+                if (throwOnNotFound) {
+                    throw new Error("No results found.");
+                } else {
+                    this.log.warn("No results found.");
+                }
             }
         } else {
-            if (response.statusCode === "404" && !throwOnNotFound) {
-                result = null;
+            if (response.statusCode === "404") {
+                if (throwOnNotFound) {
+                    throw new Error("No results found.");
+                } else {
+                    this.log.warn("No results found.");
+                }
             } else {
                 result = responseContent;
             }
