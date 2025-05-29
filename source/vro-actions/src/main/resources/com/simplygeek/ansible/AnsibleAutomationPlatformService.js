@@ -11,14 +11,39 @@
      * @returns {Any} An instance of the AnsibleAutomationPlatformService class.
      */
 
-    function AnsibleAutomationPlatformService(restHost) {
+    function AnsibleAutomationPlatformService(
+        restHost,
+        username,
+        password
+    ) {
         if (!restHost || System.getObjectType(restHost) !== "REST:RESTHost") {
             throw new ReferenceError(
                 "restHost is required and must be of type 'REST:RESTHost'"
             );
         }
 
-        AnsibleAutomationBackendService.call(this, restHost);
+        // This RESTHost Authentication block allows a username and password to be used
+        // for Basic Auth that is not configured on the host in the inventory. This allows
+        // Credentials to be used from Config Elements or other sources.
+        var basicAuth = RESTAuthenticationManager.createAuthentication(
+            "Basic",
+            ["Shared Session", username, password]
+        );
+
+        restHost.authentication = basicAuth;
+        var restHostWithBasicAuth = RESTHostManager.createTransientHostFrom(restHost);
+
+        RESTHostManager.reloadConfiguration();
+
+        this.restHost = restHostWithBasicAuth;
+        this.mediaType = "application/json";
+        this.baseUri = "/api/v2";
+
+        var headers = new Properties();
+
+        this.sessionHeaders = headers;
+
+        AnsibleAutomationBackendService.call(this, this.restHost);
 
         this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
             "Action",
@@ -83,7 +108,7 @@
         };
 
         this.log.debug("Creating API session.");
-        var response = this.rest.post(
+        var response = this.httpPost(
             uri,
             this.mediaType,
             content,
@@ -106,7 +131,7 @@
 
         this.log.debug("Closing API session.");
         try {
-            this.rest.delete(
+            this.httpDelete(
                 uri,
                 this.mediaType,
                 [204],
