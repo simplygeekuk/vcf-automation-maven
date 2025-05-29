@@ -28,8 +28,10 @@
             );
         }
 
-        VCFAutomationGenericBackendService.call(this, restHost);
-        VCFAutomationIaasService.call(this, restHost, apiToken);
+        this.restHost = restHost;
+
+        VCFAutomationGenericBackendService.call(this);
+        VCFAutomationIaasService.call(this, this.restHost, apiToken);
 
         this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
             "Action",
@@ -40,7 +42,7 @@
         this.apiVersion = this.about().latestApiVersion;
         this.apiVersionParam = "apiVersion=" + this.apiVersion;
 
-        this.createAuthenticatedSession(apiToken);
+        //this.createAuthenticatedSession(apiToken);
     }
 
     var VCFAutomationGenericBackendService = System.getModule(
@@ -69,9 +71,10 @@
     VCFAutomationProjectService.prototype.getProjects = function () {
         var uri = this.baseUri + "/projects?" + this.apiVersionParam;
         var results;
+        var throwOnNotFound = false;
 
         this.log.debug("Getting a list of Projects");
-        results = this.get(uri);
+        results = this.get(uri, null, throwOnNotFound);
         this.log.debug("Found " + results.length + " Projects");
 
         return results;
@@ -384,6 +387,33 @@
         );
 
         return updatedProjectObject;
+    };
+
+    /**
+     * Defines the deleteProject method.
+     * @method
+     * @public
+     * @param {string} projectId - The Project uuid.
+     */
+
+    VCFAutomationProjectService.prototype.deleteProject = function (
+        projectId
+    ) {
+        if (!projectId || typeof projectId !== "string") {
+            throw new ReferenceError(
+                "projectId is required and must " +
+                "be of type 'string'"
+            );
+        }
+
+        this.log.info("Deleting project with id '" + projectId + "'");
+        var uri = this.baseUri + "/projects/" + projectId + "?" + this.apiVersionParam;
+
+        this.delete(
+            uri,
+            [200]
+        );
+        this.log.info("Successfully deleted project");
     };
 
     return VCFAutomationProjectService;
