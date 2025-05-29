@@ -6,33 +6,22 @@
     /**
      * Defines the AnsibleAutomationBackendService class.
      * @class
-     * @param {REST:RESTHost} restHost - The Ansible HTTP REST host.
      *
      * @returns {Any} An instance of the AnsibleAutomationBackendService class.
      */
 
-    function AnsibleAutomationBackendService(
-        restHost
-    ) {
-        if (!restHost || System.getObjectType(restHost) !== "REST:RESTHost") {
-            throw new ReferenceError(
-                "restHost is required and must be of type 'REST:RESTHost'"
-            );
-        }
-
-        this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
-            "Action",
-            "AnsibleAutomationBackendService"
-        );
-
-        this.rest = new (System.getModule("com.simplygeek.rest").HttpRestClient())(restHost);
-        this.mediaType = "application/json";
-        this.baseUri = "/api/v2";
-
-        var headers = new Properties();
-
-        this.sessionHeaders = headers;
+    function AnsibleAutomationBackendService() {
+        HttpRestClient.call(this, this.restHost);
     }
+
+    var HttpRestClient = System.getModule(
+        "com.simplygeek.rest"
+    ).HttpRestClient();
+
+    AnsibleAutomationBackendService.prototype = Object.create(
+        HttpRestClient.prototype
+    );
+    AnsibleAutomationBackendService.prototype.constructor = AnsibleAutomationBackendService;
 
     /**
      * Defines the getResourceById method.
@@ -185,7 +174,7 @@
         }
 
         var result;
-        var response = this.rest.get(
+        var response = this.httpGet(
             uri,
             this.mediaType,
             expectedResponseCodes,
@@ -220,7 +209,7 @@
                         var uriParam2 = "page=" + nextPage;
                         var uriWithParams = uri + uriParam1 + "&" + uriParam2;
 
-                        response = this.rest.get(
+                        response = this.httpGet(
                             uriWithParams,
                             this.mediaType,
                             expectedResponseCodes,
@@ -268,7 +257,7 @@
         }
 
         var responseContent;
-        var response = this.rest.post(
+        var response = this.httpPost(
             uri,
             this.mediaType,
             content,
@@ -310,7 +299,7 @@
             expectedResponseCodes = [200];
         }
 
-        var response = this.rest.put(
+        var response = this.httpPut(
             uri,
             this.mediaType,
             content,
@@ -351,7 +340,7 @@
             expectedResponseCodes = [200];
         }
 
-        var response = this.rest.patch(
+        var response = this.httpPatch(
             uri,
             this.mediaType,
             content,
@@ -385,7 +374,7 @@
             expectedResponseCodes = [204];
         }
 
-        this.rest.delete(
+        this.httpDelete(
             uri,
             this.mediaType,
             expectedResponseCodes,
