@@ -68,8 +68,7 @@
 
     VCFAutomationGenericBackendService.prototype.get = function (
         uri,
-        expectedResponseCodes,
-        throwOnNotFound
+        expectedResponseCodes
     ) {
         if (!uri || typeof uri !== "string") {
             throw new ReferenceError("uri is required and must be of type 'string'");
@@ -77,13 +76,6 @@
         if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
             expectedResponseCodes.length < 1)) {
             expectedResponseCodes = [200];
-        }
-
-        // Default throwOnNotFound to true, unless explicitly set to false.
-        throwOnNotFound = throwOnNotFound !== false;
-
-        if (!throwOnNotFound) {
-            expectedResponseCodes.push(404);
         }
 
         var result;
@@ -139,20 +131,10 @@
                         numResultsOnPage += pageSize;
                     } while (results.length < numTotalResults);
                 }
-            } else {
-                if (throwOnNotFound) {
-                    throw new Error("No results found.");
-                } else {
-                    this.log.warn("No results found.");
-                }
             }
         } else {
-            if (response.statusCode === "404") {
-                if (throwOnNotFound) {
-                    throw new Error("No results found.");
-                } else {
-                    this.log.warn("No results found.");
-                }
+            if (response.statusCode === 404) {
+                result = null;
             } else {
                 result = responseContent;
             }
