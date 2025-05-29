@@ -1,35 +1,39 @@
 
 import jsdoc from "eslint-plugin-jsdoc";
+import jasmine from "eslint-plugin-jasmine";
 import js from "@eslint/js";
 
 export default [
     js.configs.recommended,
+    jasmine.configs.recommended,
     {
         files: [
             "**/*.js"
         ],
         // ...jsdoc.configs.recommended,
         plugins: {
-            jsdoc
+            jsdoc,
+            jasmine
         },
         languageOptions: {
             ecmaVersion: 2015,
             globals: {
                 node: true,
-                Atomics: "readonly",
-                SharedArrayBuffer: "readonly",
-                System: "readonly",
-                Server: "readonly",
-                Properties: "readonly",
-                VcPlugin: "readonly",
-                LockingSystem: "readonly",
-                RESTHostManager: "readonly",
-                RESTAuthenticationManager: "readonly",
-                VcVirtualDisk: "readonly",
-                AD_HostManager: "readonly",
-                ActiveDirectory: "readonly",
-                VcNamePasswordAuthentication: "readonly",
-                VcGuestProgramSpec: "readonly"
+                jasmine: true,
+                Atomics: "writable",
+                SharedArrayBuffer: "writable",
+                System: "writable",
+                Server: "writable",
+                Properties: "writable",
+                VcPlugin: "writable",
+                LockingSystem: "writable",
+                RESTHostManager: "writable",
+                RESTAuthenticationManager: "writable",
+                VcVirtualDisk: "writable",
+                AD_HostManager: "writable",
+                ActiveDirectory: "writable",
+                VcNamePasswordAuthentication: "writable",
+                VcGuestProgramSpec: "writable"
             }
         },
         rules: {
