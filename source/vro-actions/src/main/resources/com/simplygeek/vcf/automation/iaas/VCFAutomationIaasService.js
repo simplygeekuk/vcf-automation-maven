@@ -28,7 +28,9 @@
             );
         }
 
-        VCFAutomationGenericBackendService.call(this, restHost);
+        this.restHost = restHost;
+
+        VCFAutomationGenericBackendService.call(this);
 
         this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
             "Action",
