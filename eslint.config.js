@@ -1,25 +1,28 @@
 
 import jsdoc from "eslint-plugin-jsdoc";
-import jasmine from "eslint-plugin-jasmine";
+//import jasmine from "eslint-plugin-jasmine";
 import js from "@eslint/js";
 
 export default [
     js.configs.recommended,
-    jasmine.configs.recommended,
+    //jasmine.configs.recommended,
     {
         files: [
             "**/*.js"
         ],
+        ignores: [
+            "**/*.test.js"
+        ],
         // ...jsdoc.configs.recommended,
         plugins: {
-            jsdoc,
-            jasmine
+            jsdoc
+            //jasmine
         },
         languageOptions: {
             ecmaVersion: 2015,
             globals: {
                 node: true,
-                jasmine: true,
+                //jasmine: true,
                 Atomics: "writable",
                 SharedArrayBuffer: "writable",
                 System: "writable",
@@ -82,6 +85,14 @@ export default [
                     "maxEOF": 0
                 }
             ],
+            "no-multi-spaces": [
+                "error",
+                {
+                    exceptions: {
+                        "Property": false
+                    }
+                }
+            ],
             "space-unary-ops": [
                 2,
                 {
@@ -111,7 +122,7 @@ export default [
             "padding-line-between-statements": [
                 "error",
                 { "blankLine": "always", "prev": ["const", "let", "var"], "next": "*"},
-                { "blankLine": "never",  "prev": ["const", "let", "var"], "next": ["const", "let", "var"]},
+                { "blankLine": "never", "prev": ["const", "let", "var"], "next": ["const", "let", "var"]},
                 { "blankLine": "always", "prev": "function", "next": "*"},
                 { "blankLine": "always", "prev": "*", "next": "return" }
             ],
