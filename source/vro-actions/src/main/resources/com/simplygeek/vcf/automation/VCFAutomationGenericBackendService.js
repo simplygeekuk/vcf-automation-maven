@@ -75,7 +75,7 @@
         }
         if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
             expectedResponseCodes.length < 1)) {
-            expectedResponseCodes = [200];
+            expectedResponseCodes = [200, 201, 204];
         }
 
         var result;
@@ -164,7 +164,7 @@
         }
         if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
             expectedResponseCodes.length < 1)) {
-            expectedResponseCodes = [201];
+            expectedResponseCodes = [200, 201];
         }
 
         var responseContent;
@@ -206,7 +206,7 @@
 
         if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
             expectedResponseCodes.length < 1)) {
-            expectedResponseCodes = [200];
+            expectedResponseCodes = [200, 201];
         }
 
         var responseContent;
@@ -248,7 +248,7 @@
 
         if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
             expectedResponseCodes.length < 1)) {
-            expectedResponseCodes = [200];
+            expectedResponseCodes = [200, 201];
         }
 
         var responseContent;
