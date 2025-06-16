@@ -4,13 +4,13 @@
  */
 (function () {
     /**
-     * Defines The VCFAutomationGenericBackendService class.
+     * Defines The VCFAutomationBackend class.
      * @class
      *
-     * @returns {Any} An instance of The VCFAutomationGenericBackendService class.
+     * @returns {Any} An instance of The VCFAutomationBackend class.
      */
 
-    function VCFAutomationGenericBackendService() {
+    function VCFAutomationBackend() {
         VCFAutomationAuthenticationService.call(this, this.restHost);
 
         this.mediaType = "application/json";
@@ -20,10 +20,10 @@
         "com.simplygeek.vcf.automation"
     ).VCFAutomationAuthenticationService();
 
-    VCFAutomationGenericBackendService.prototype = Object.create(
+    VCFAutomationBackend.prototype = Object.create(
         VCFAutomationAuthenticationService.prototype
     );
-    VCFAutomationGenericBackendService.prototype.constructor = VCFAutomationGenericBackendService;
+    VCFAutomationBackend.prototype.constructor = VCFAutomationBackend;
 
     // ## Methods ##
 
@@ -33,7 +33,7 @@
      * @returns {Any} The API About object.
      */
 
-    VCFAutomationGenericBackendService.prototype.about = function () {
+    VCFAutomationBackend.prototype.about = function () {
         var response = this.get(
             this.baseUri + "/about"
         );
@@ -47,7 +47,7 @@
      * @returns {Any} The API About object.
      */
 
-    VCFAutomationGenericBackendService.prototype.iaasAbout = function () {
+    VCFAutomationBackend.prototype.iaasAbout = function () {
         var response = this.get(
             this.iaasBaseUri + "/about"
         );
@@ -66,7 +66,7 @@
      * @returns {Any||Array/Any} The response result or results.
      */
 
-    VCFAutomationGenericBackendService.prototype.get = function (
+    VCFAutomationBackend.prototype.get = function (
         uri,
         expectedResponseCodes
     ) {
@@ -154,7 +154,7 @@
      * @returns {Any} The response content object.
      */
 
-    VCFAutomationGenericBackendService.prototype.post = function (
+    VCFAutomationBackend.prototype.post = function (
         uri,
         content,
         expectedResponseCodes
@@ -192,7 +192,7 @@
      * @returns {Any} The response content object.
      */
 
-    VCFAutomationGenericBackendService.prototype.put = function (
+    VCFAutomationBackend.prototype.put = function (
         uri,
         content,
         expectedResponseCodes
@@ -234,7 +234,7 @@
      * @returns {Any} The response content object.
      */
 
-    VCFAutomationGenericBackendService.prototype.patch = function (
+    VCFAutomationBackend.prototype.patch = function (
         uri,
         content,
         expectedResponseCodes
@@ -273,7 +273,7 @@
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
      */
 
-    VCFAutomationGenericBackendService.prototype.delete = function (
+    VCFAutomationBackend.prototype.delete = function (
         uri,
         expectedResponseCodes
     ) {
@@ -294,5 +294,5 @@
         );
     };
 
-    return VCFAutomationGenericBackendService;
+    return VCFAutomationBackend;
 });

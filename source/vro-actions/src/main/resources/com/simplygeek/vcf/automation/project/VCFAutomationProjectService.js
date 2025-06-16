@@ -30,7 +30,7 @@
 
         this.restHost = restHost;
 
-        VCFAutomationGenericBackendService.call(this);
+        VCFAutomationBackend.call(this);
         VCFAutomationIaasService.call(this, this.restHost, apiToken);
 
         this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
@@ -45,12 +45,12 @@
         //this.createAuthenticatedSession(apiToken);
     }
 
-    var VCFAutomationGenericBackendService = System.getModule(
+    var VCFAutomationBackend = System.getModule(
         "com.simplygeek.vcf.automation"
-    ).VCFAutomationGenericBackendService();
+    ).VCFAutomationBackend();
 
     VCFAutomationProjectService.prototype = Object.create(
-        VCFAutomationGenericBackendService.prototype
+        VCFAutomationBackend.prototype
     );
     VCFAutomationProjectService.prototype.constructor = VCFAutomationProjectService;
 

@@ -30,7 +30,7 @@
 
         this.restHost = restHost;
 
-        VCFAutomationGenericBackendService.call(this);
+        VCFAutomationBackend.call(this);
 
         this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
             "Action",
@@ -44,11 +44,11 @@
         this.createAuthenticatedSession(apiToken);
     }
 
-    var VCFAutomationGenericBackendService = System.getModule(
+    var VCFAutomationBackend = System.getModule(
         "com.simplygeek.vcf.automation"
-    ).VCFAutomationGenericBackendService();
+    ).VCFAutomationBackend();
 
-    VCFAutomationIaasService.prototype = Object.create(VCFAutomationGenericBackendService.prototype);
+    VCFAutomationIaasService.prototype = Object.create(VCFAutomationBackend.prototype);
     VCFAutomationIaasService.prototype.constructor = VCFAutomationIaasService;
 
     // ## Disks ##
