@@ -1,28 +1,33 @@
-
-import jsdoc from "eslint-plugin-jsdoc";
-//import jasmine from "eslint-plugin-jasmine";
 import js from "@eslint/js";
+import jsdoc from "eslint-plugin-jsdoc";
+import jasmine from "eslint-plugin-jasmine";
 
 export default [
-    js.configs.recommended,
-    //jasmine.configs.recommended,
+    // Ignore files globally
     {
-        files: [
-            "**/*.js"
-        ],
         ignores: [
-            "**/*.test.js"
+            "node_modules/**",
+            "dist/**",
+            "**/target/**",
+            "**/scripts/**",
+            "eslint.config.js"
+        ]
+    },
+    
+    // Base config for normal JS files (non-test)
+    {
+        ...js.configs.recommended,
+        ...jsdoc.configs.recommended,
+        files: [
+            ["**/*.js", "!**/*.test.js"]
         ],
-        // ...jsdoc.configs.recommended,
+        
         plugins: {
             jsdoc
-            //jasmine
         },
         languageOptions: {
             ecmaVersion: 2015,
             globals: {
-                node: true,
-                //jasmine: true,
                 Atomics: "writable",
                 SharedArrayBuffer: "writable",
                 System: "writable",
@@ -40,8 +45,12 @@ export default [
             }
         },
         rules: {
-            "jsdoc/check-access": 1,
+            ...js.configs.recommended.rules,
+            ...jsdoc.configs.recommended.rules,
+            "jsdoc/check-access": "warn",
             "jsdoc/require-description": "warn",
+            "jsdoc/valid-types": "off",
+            "jsdoc/no-undefined-types": "off",
             "indent": [
                 "error",
                 4,
@@ -129,6 +138,30 @@ export default [
             "no-caller": [
                 "error"
             ]
+        }
+    },
+
+    // Jasmine config for test files
+    {
+        files: ["**/*.test.js", "**/*.spec.js"],
+        plugins: {
+            jasmine
+        },
+        languageOptions: {
+            ecmaVersion: 2015,
+            globals: {
+                jasmine: true,
+                describe: "readonly",
+                it: "readonly",
+                expect: "readonly",
+                beforeEach: "readonly",
+                afterEach: "readonly"
+            }
+        },
+        rules: {
+            ...jasmine.configs.recommended.rules,
+            "no-console": "off", // example override
+            "no-undef": "off" // if Jasmine globals conflict
         }
     }
 ];
