@@ -7,10 +7,10 @@
      * Defines the AnsibleAutomationPlatformService class.
      * @class
      * @param {REST:RESTHost} restHost - The AAP HTTP REST host.
-     *
+     * @param {string} username - The basic auth username.
+     * @param {string} password - The basic auth password.
      * @returns {Any} An instance of the AnsibleAutomationPlatformService class.
      */
-
     function AnsibleAutomationPlatformService(
         restHost,
         username,
@@ -66,11 +66,10 @@
 
     /**
      * Defines the createSession method.
-     * @method
+     * @function
      * @public
      * @param {number} applicationId - The Ansible Application ID.
      * @param {string} scope - The authorization scope.
-     *
      * @returns {Any} The request response object.
      */
 
@@ -122,7 +121,7 @@
 
     /**
      * Defines the closeSession method.
-     * @method
+     * @function
      * @public
      */
 
@@ -148,11 +147,10 @@
 
     /**
      * Defines the getApplicationById method.
-     * @method
+     * @function
      * @public
      * @param {number} applicationId - The application ID.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The application object.
      */
 
@@ -179,11 +177,10 @@
 
     /**
      * Defines the getApplicationByName method.
-     * @method
+     * @function
      * @public
      * @param {number} applicationName - The application name.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The application object.
      */
 
@@ -214,9 +211,8 @@
 
     /**
      * Defines the getOrganizations method.
-     * @method
+     * @function
      * @public
-     *
      * @returns {Array/Any} The list of organizations.
      */
 
@@ -233,11 +229,10 @@
 
     /**
      * Defines the getOrganizationById method.
-     * @method
+     * @function
      * @public
      * @param {number} organizationId - The organization ID.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The organization object.
      */
 
@@ -264,11 +259,10 @@
 
     /**
      * Defines the getOrganizationByName method.
-     * @method
+     * @function
      * @public
      * @param {string} organizationName - The organization name.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The organization object.
      */
 
@@ -300,9 +294,8 @@
 
     /**
      * Defines the getCredentials method.
-     * @method
+     * @function
      * @public
-     *
      * @returns {Array/Any} The list of credentials.
      */
 
@@ -320,11 +313,10 @@
 
     /**
      * Defines the getCredentialById method.
-     * @method
+     * @function
      * @public
      * @param {number} credentialId - The credential ID.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The credential object.
      */
 
@@ -351,11 +343,10 @@
 
     /**
      * Defines the getCredentialByName method.
-     * @method
+     * @function
      * @public
      * @param {string} credentialName - The credential name.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The credential object.
      */
 
@@ -382,10 +373,9 @@
 
     /**
      * Defines the createCredential method.
-     * @method
+     * @function
      * @public
      * @param {Any} credentialSpecification - The credential specification.
-     *
      * @returns {Any} The new credential object.
      */
 
@@ -414,11 +404,10 @@
 
     /**
      * Defines the updateCredential method.
-     * @method
+     * @function
      * @public
      * @param {number} credentialId - The credential ID.
      * @param {Any} credentialSpecification - The credential specification.
-     *
      * @returns {Any} The updated credential object.
      */
 
@@ -456,9 +445,8 @@
 
     /**
      * Defines the getCredentialTypes method.
-     * @method
+     * @function
      * @public
-     *
      * @returns {Array/Any} The list of credential types.
      */
 
@@ -476,11 +464,10 @@
 
     /**
      * Defines the getCredentialTypeById method.
-     * @method
+     * @function
      * @public
      * @param {number} credentialTypeId - The credential type ID.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The credential type object.
      */
 
@@ -507,11 +494,10 @@
 
     /**
      * Defines the getCredentialTypeByName method.
-     * @method
+     * @function
      * @public
      * @param {string} credentialTypeName - The credential type name.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The credential type object.
      */
 
@@ -542,9 +528,8 @@
 
     /**
      * Defines the getTeams method.
-     * @method
+     * @function
      * @public
-     *
      * @returns {Array/Any} The list of teams.
      */
 
@@ -562,11 +547,10 @@
 
     /**
      * Defines the getTeamById method.
-     * @method
+     * @function
      * @public
      * @param {number} teamId - The team ID.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The team object.
      */
 
@@ -593,11 +577,10 @@
 
     /**
      * Defines the getTeamByName method.
-     * @method
+     * @function
      * @public
      * @param {string} teamName - The team name.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The team object.
      */
 
@@ -624,10 +607,9 @@
 
     /**
      * Defines the createTeam method.
-     * @method
+     * @function
      * @public
      * @param {Any} teamSpecification - The team specification.
-     *
      * @returns {Any} The new team object.
      */
 
@@ -656,11 +638,10 @@
 
     /**
      * Defines the assignRoleToTeam method.
-     * @method
+     * @function
      * @public
      * @param {number} teamId - The team ID.
      * @param {number} roleId - The role ID.
-     *
      * @returns {Any} The role object.
      */
 
@@ -708,12 +689,11 @@
 
     /**
      * Defines the getRoles method.
-     * @method
+     * @function
      * @public
      * @param {name} [roleName] - filter by role name.
      * @param {name} [resourceType] - filter by resource type.
      * @param {name} [resourceName] - filter by resource name.
-     *
      * @returns {Array/Any} The response results.
      */
 
@@ -769,11 +749,10 @@
 
     /**
      * Defines the getRoleById method.
-     * @method
+     * @function
      * @public
      * @param {number} roleId - The Role ID.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The role object.
      */
 
@@ -811,9 +790,8 @@
 
     /**
      * Defines the getInventories method.
-     * @method
+     * @function
      * @public
-     *
      * @returns {Array/Any} The list of inventories.
      */
 
@@ -831,11 +809,10 @@
 
     /**
      * Defines the getInventoryById method.
-     * @method
+     * @function
      * @public
      * @param {number} inventoryId - The inventory ID.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The inventory object.
      */
 
@@ -863,11 +840,10 @@
 
     /**
      * Defines the getInventoryByName method.
-     * @method
+     * @function
      * @public
      * @param {string} inventoryName - The inventory name.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The inventory object.
      */
 
@@ -894,10 +870,9 @@
 
     /**
      * Defines the createInventory method.
-     * @method
+     * @function
      * @public
      * @param {Any} inventorySpecification - The inventory specification.
-     *
      * @returns {Any} The new inventory object.
      */
 
@@ -930,10 +905,9 @@
 
     /**
      * Defines the getInventoryHosts method.
-     * @method
+     * @function
      * @public
      * @param {number} inventoryId - The inventory ID.
-     *
      * @returns {Array/Any} The list of inventory hosts.
      */
 
@@ -959,12 +933,11 @@
 
     /**
      * Defines the getInventoryHostByName method.
-     * @method
+     * @function
      * @public
      * @param {number} inventoryId - The inventory ID.
      * @param {string} hostName - The inventory host name.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The inventory host object.
      */
 

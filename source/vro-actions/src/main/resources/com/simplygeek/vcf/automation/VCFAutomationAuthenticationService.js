@@ -7,17 +7,14 @@
      * Defines The VCFAutomationAuthenticationService class.
      * @class
      * @param {REST:RESTHost} restHost - The VCF Automation HTTP REST host.
-     *
      * @returns {Any} An instance of The VCFAutomationAuthenticationService class.
      */
-
     function VCFAutomationAuthenticationService(restHost) {
         if (!restHost || System.getObjectType(restHost) !== "REST:RESTHost") {
             throw new ReferenceError(
                 "restHost is required and must be of type 'REST:RESTHost'"
             );
         }
-
         HttpRestClient.call(this, restHost);
 
         this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
@@ -45,10 +42,9 @@
 
     /**
      * Defines the createAuthenticatedSession method.
-     * @method
+     * @function
      * @public
      * @param {string} refreshToken - The refresh token.
-     *
      */
 
     VCFAutomationAuthenticationService.prototype.createAuthenticatedSession = function (
@@ -71,10 +67,9 @@
 
     /**
      * Defines the createSession method.
-     * @method
+     * @function
      * @public
      * @param {string} refreshToken - The refresh token.
-     *
      * @returns {Any} The session object.
      */
 
@@ -110,12 +105,11 @@
 
     /**
      * Defines the getRefreshToken method.
-     * @method
+     * @function
      * @public
      * @param {string} username - CSP username.
      * @param {SecureString} password - CSP password.
      * @param {string} [domain] - CSP domain.
-     *
      * @returns {string} The refresh token
      */
 

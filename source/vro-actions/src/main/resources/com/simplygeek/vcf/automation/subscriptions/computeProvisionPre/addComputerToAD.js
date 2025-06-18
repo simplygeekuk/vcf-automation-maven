@@ -1,7 +1,6 @@
 /**
  * A subscription to add an Active Directory computer account.
  * @param {Properties} inputProperties - The input properties Subscription payload.
- *
  * @returns {Properties} - The updated Custom Properties.
  */
 (function (inputProperties) {

@@ -9,7 +9,6 @@
  * @param {string} workingDirectory - The command working directory (Optional).
  * @param {Array/string} environmentVariables - The environment variables to set (Optional).
  * @param {number} maxWaitTime - The maximum wait time in seconds (Optional).
- *
  * @returns {void} - no return value.
  */
 (function (

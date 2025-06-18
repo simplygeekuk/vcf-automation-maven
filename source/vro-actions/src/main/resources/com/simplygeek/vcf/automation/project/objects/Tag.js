@@ -8,10 +8,8 @@
      * @class
      * @param {string} key - The Tag name.
      * @param {string} [value] - The (optional) Tag value.
-     *
      * @returns {Any} Returns an instance of the Tag Class.
      */
-
     function Tag (
         key,
         value

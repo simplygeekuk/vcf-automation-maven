@@ -1,7 +1,6 @@
 /**
  * Performs a graceful shutdown of the virtual machine. Optional to forcefully shutdown.
  * @param {VC:VirtualMachine} vcVirtualMachine - The vCenter VM object.
- *
  * @returns {void} - no return value.
  */
 (function (

@@ -6,10 +6,8 @@
     /**
      * Defines the WindowsConfigService class.
      * @class
-     *
      * @returns {Any} An instance of the WindowsConfigService class.
      */
-
     function WindowsConfigService() {
         ConfigElementService.call(this);
 
@@ -47,9 +45,8 @@
     /**
      * Defines the getUsername method.
      * @description Gets the username used for machine login.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The username used for machine login.
      */
 
@@ -64,9 +61,8 @@
     /**
      * Defines the getPassword method.
      * @description Gets the password used for machine login.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The password used for machine login.
      */
 
@@ -85,9 +81,8 @@
     /**
      * Defines the getCustomNamingProfileName method.
      * @description Gets the Custom Naming profile name used for machine naming.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Custom Naming Profile Name.
      */
 
@@ -106,9 +101,8 @@
     /**
      * Defines the getActiveDirectoryDomainName method.
      * @description Gets the Active Directory Domain Name for Machine joins.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Active Directory Domain Name.
      */
 
@@ -123,9 +117,8 @@
     /**
      * Defines the getActiveDirectoryDNSSuffix method.
      * @description Gets the Active Directory DNS Suffix.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Active Directory DNS Suffix.
      */
 
@@ -140,9 +133,8 @@
     /**
      * Defines the getActiveDirectoryServerOUDN method.
      * @description Gets the Active Directory Server OU Distinguished Name.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Active Directory Server OU Distinguished Name.
      */
 
@@ -157,9 +149,8 @@
     /**
      * Defines the getActiveDirectoryGroupPolicyUpdateWaitTime method.
      * @description Gets the Active Directory Group Policy update wait time.
-     * @method
+     * @function
      * @public
-     *
      * @returns {number} The time to wait for Group Policy updates to apply (in mins).
      */
 
@@ -178,9 +169,8 @@
     /**
      * Defines the getAnsibleRestHostName method.
      * @description Gets the Ansible Rest Host name.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Ansible Rest Host name.
      */
 
@@ -195,9 +185,8 @@
     /**
      * Defines the getAnsibleProjectName method.
      * @description Gets the Ansible Project name for Playbook execution.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Ansible Project name.
      */
 
@@ -212,9 +201,8 @@
     /**
      * Defines the getAnsibleProvisioningJobTemplateName method.
      * @description Gets the Ansible Job Template used for machine provisioning.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Ansible Job Template name.
      */
 
@@ -229,9 +217,8 @@
     /**
      * Defines the getAnsibleDeProvisioningJobTemplateName method.
      * @description Gets the Ansible Job Template used for machine de-provisioning.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Ansible Job Template name.
      */
 
@@ -246,9 +233,8 @@
     /**
      * Defines the getAnsibleJobTags method.
      * @description Gets the Ansible job tags to include.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Ansible job tags.
      */
 
@@ -263,9 +249,8 @@
     /**
      * Defines the getAnsibleSkipTags method.
      * @description Gets the Ansible job tags to skip.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Ansible skip tags.
      */
 
@@ -280,9 +265,8 @@
     /**
      * Defines the getAnsibleGroupName method.
      * @description Gets the Ansible Group name to assign to the inventory host.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Ansible group name.
      */
 
@@ -297,9 +281,8 @@
     /**
      * Defines the getAnsibleConnection method.
      * @description Gets the Ansible connection method for connecting to inventory hosts.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Ansible group name.
      */
 
@@ -314,9 +297,8 @@
     /**
      * Defines the getAnsiblePort method.
      * @description Gets the port used for the Ansible connection.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The port used for the Ansible connection.
      */
 
@@ -331,9 +313,8 @@
     /**
      * Defines the __getConfigValue method.
      * @description Gets a configuration value (or default value if none is found)
-     * @method
+     * @function
      * @private
-     *
      * @returns {Any} The configuration value
      */
 

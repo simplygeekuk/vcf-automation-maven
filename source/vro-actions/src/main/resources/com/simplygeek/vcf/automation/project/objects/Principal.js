@@ -8,10 +8,8 @@
      * @class
      * @param {string} email - The username of the user or display name of the group.
      * @param {string} [type] - Type of the principal.
-     *
      * @returns {Any} Returns an instance of the Principal Class.
      */
-
     function Principal (
         email,
         type

@@ -7,10 +7,8 @@
      * Defines the Constraint class.
      * @class
      * @param {Array/Any} conditions - The Constraint conditions.
-     *
      * @returns {Any} Returns an instance of the Constraint Class.
      */
-
     function Constraint (
         conditions
     ) {

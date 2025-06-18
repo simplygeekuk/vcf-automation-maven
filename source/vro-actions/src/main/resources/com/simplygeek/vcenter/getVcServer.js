@@ -1,7 +1,6 @@
 /**
  * Finds a vCenter Server endpoint with the provided instance uuid.
  * @param {string} vcHostInstanceUuid - The instance uuid of the vCenter Server.
- *
  * @returns {VC:SdkConnection} - vCenter Server SDK connection object.
  */
 (function (

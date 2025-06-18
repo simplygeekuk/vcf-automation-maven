@@ -1,7 +1,6 @@
 /**
  * A subscription Action that creates a custom naming prefix.
  * @param {Properties} inputProperties - The input properties Subscription payload.
- *
  * @returns {void} - No return value.
  */
 (function (inputProperties) {

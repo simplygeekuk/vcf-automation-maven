@@ -8,10 +8,8 @@
      * @class
      * @param {REST:RESTHost} restHost - The Gitlab HTTP REST host.
      * @param {string} accessToken -  Personal Access Token for authentication.
-     *
      * @returns {Any} An instance of the GitlabService class.
      */
-
     function GitlabService(
         restHost,
         accessToken
@@ -39,9 +37,8 @@
 
     /**
      * Defines the getGroups method.
-     * @method
+     * @function
      * @public
-     *
      * @returns {Array/Any} The list of Groups.
      */
 
@@ -58,11 +55,10 @@
 
     /**
      * Defines the getGroupById method.
-     * @method
+     * @function
      * @public
      * @param {number} groupId - The group id.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The group object.
      */
 
@@ -91,11 +87,10 @@
 
     /**
      * Defines the getGroupByName method.
-     * @method
+     * @function
      * @public
      * @param {string} groupName - The group name.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The group object.
      */
 
@@ -124,10 +119,9 @@
 
     /**
      * Defines the createGroup method.
-     * @method
+     * @function
      * @public
      * @param {Any} groupSpecification - The group specification.
-     *
      * @returns {Any} The new group object.
      */
 
@@ -167,12 +161,11 @@
 
     /**
      * Defines the deleteGroup method.
-     * @method
+     * @function
      * @public
      * @param {number} groupId - The group ID.
      * @param {boolean} [permamentlyRemove] - The group ID.
      * @param {string} [fullPath] - The group ID.
-     *
      */
 
     GitlabService.prototype.deleteGroup = function (
@@ -208,10 +201,9 @@
 
     /**
      * Defines the restoreGroup method.
-     * @method
+     * @function
      * @public
      * @param {number} groupId - The group ID.
-     *
      */
 
     GitlabService.prototype.restoreGroup = function (
@@ -236,12 +228,11 @@
 
     /**
      * Defines the getSamlGroupLink method.
-     * @method
+     * @function
      * @public
      * @param {number} groupId - The group id.
      * @param {string} samlGroupName - Name of the SAML group.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The SAML group object.
      */
 
@@ -277,11 +268,10 @@
 
     /**
      * Defines the createSamlGroupLink method.
-     * @method
+     * @function
      * @public
      * @param {number} groupId - The group id.
      * @param {Any} samlGroupLinkSpecification - The SAML group spec.
-     *
      * @returns {Any} The SAML group link object.
      */
 
@@ -315,10 +305,9 @@
 
     /**
      * Defines the getGroupAccessTokens method.
-     * @method
+     * @function
      * @public
      * @param {number} groupId - The group id.
-     *
      * @returns {Array/Any} The list of group access tokens.
      */
 
@@ -344,12 +333,11 @@
 
     /**
      * Defines the getGroupAccessTokenById method.
-     * @method
+     * @function
      * @public
      * @param {number} groupId - The group id.
      * @param {number} accessTokenId - The Access Token id.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The access token object.
      */
 
@@ -385,12 +373,11 @@
 
     /**
      * Defines the getAccessTokenByName method.
-     * @method
+     * @function
      * @public
      * @param {number} groupId - The group id.
      * @param {string} accessTokenName - The access token name.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The access token object.
      */
 
@@ -426,11 +413,10 @@
 
     /**
      * Defines the createGroupAccessToken method.
-     * @method
+     * @function
      * @public
      * @param {number} groupId - The group id.
      * @param {Any} accessTokenSpecification - The Access Token spec.
-     *
      * @returns {Any} The group access token object.
      */
 
@@ -464,12 +450,11 @@
 
     /**
      * Defines the rotateGroupAccessToken method.
-     * @method
+     * @function
      * @public
      * @param {number} groupId - The group id.
      * @param {number} accessTokenId - The group access token id.
      * @param {Date} expiresAt - Expiration date of the access token in ISO format (YYYY-MM-DD).
-     *
      * @returns {Any} The group access token object.
      */
 
@@ -512,7 +497,7 @@
 
     /**
      * Defines the revokeGroupAccessToken method.
-     * @method
+     * @function
      * @public
      * @param {number} groupId - The group id.
      * @param {number} accessTokenId - The group access token id.
@@ -543,9 +528,8 @@
 
     /**
      * Defines the getProjects method.
-     * @method
+     * @function
      * @public
-     *
      * @returns {Array/Any} The list of Projects.
      */
 
@@ -562,11 +546,10 @@
 
     /**
      * Defines the getProjectById method.
-     * @method
+     * @function
      * @public
      * @param {number} projectId - The project id.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The project object.
      */
 
@@ -595,11 +578,10 @@
 
     /**
      * Defines the getProjectByName method.
-     * @method
+     * @function
      * @public
      * @param {number} projectName - The project name.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The project object.
      */
 
@@ -628,10 +610,9 @@
 
     /**
      * Defines the createProject method.
-     * @method
+     * @function
      * @public
      * @param {Any} projectSpecification - The Project spec.
-     *
      * @returns {Any} The project object.
      */
 
@@ -658,11 +639,10 @@
 
     /**
      * Defines the updateProject method.
-     * @method
+     * @function
      * @public
      * @param {number} projectId - The Project id.
      * @param {Any} projectSpecification - The updated Project spec.
-     *
      * @returns {Any} The updated project object.
      */
 
@@ -698,12 +678,11 @@
 
     /**
      * Defines the getResourceById method.
-     * @method
+     * @function
      * @public
      * @param {string} resourceId - The resource id.
      * @param {string} resource - The resource URI.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The resource object.
      */
 
@@ -732,12 +711,11 @@
 
     /**
      * Defines the getResourceByName method.
-     * @method
+     * @function
      * @public
      * @param {string} resourceName - The resource name.
      * @param {string} resource - The resource URI.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The resource object.
      */
 
@@ -795,12 +773,11 @@
 
     /**
      * Defines the GET method.
-     * @method
+     * @function
      * @private
      * @param {string} uri - The request uri.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any||Array/Any} The response result or results.
      */
 
@@ -896,12 +873,11 @@
 
     /**
      * Defines the POST method.
-     * @method
+     * @function
      * @private
      * @param {string} uri - The request uri.
      * @param {Any} [content] - The request content.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
-     *
      * @returns {Any} The response content object.
      */
 
@@ -935,11 +911,10 @@
 
     /**
      * Defines the PUT method.
-     * @method
+     * @function
      * @param {string} uri - The request uri.
      * @param {Any} content - The request content.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
-     *
      * @returns {Any} The response content object.
      */
 
@@ -977,11 +952,10 @@
 
     /**
      * Defines the PATCH method.
-     * @method
+     * @function
      * @param {string} uri - The request uri.
      * @param {Any} content - The request content.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
-     *
      * @returns {Any} The response content object.
      */
 
@@ -1019,7 +993,7 @@
 
     /**
      * Defines the DELETE method.
-     * @method
+     * @function
      * @param {string} uri - The request uri.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
      */

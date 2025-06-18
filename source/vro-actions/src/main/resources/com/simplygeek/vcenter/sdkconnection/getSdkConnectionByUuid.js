@@ -1,7 +1,6 @@
 /**
  * Search for a SdkConnection by its uuid.
  * @param {string} sdkConnectionUuid - The instance uuid of the SdkConnection.
- *
  * @returns {VC:SdkConnection} - SdkConnection object.
  */
 (function (

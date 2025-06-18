@@ -6,20 +6,17 @@
     /**
      * Defines the DateUtils class.
      * @class
-     *
      * @returns {Any} Returns an instance of the DateUtils Class.
      */
-
     function DateUtils () {}
 
     /**
      * Defines the addMonthsToDate method.
-     * @method
+     * @function
      * @public
      * @param {Date} inputDate - The input date.
      * @param {number} months - The number of months to add/remove from the inputDate.
      *                          Note: This can also be a negative value.
-     *
      * @returns {Date} The updated Date.
      */
 
@@ -56,10 +53,9 @@
 
     /**
      * Defines the getISODate method.
-     * @method
+     * @function
      * @public
      * @param {Date} inputDate - The input date.
-     *
      * @returns {Date} The Date in ISO 8601 format (YYYY-MM-DD).
      */
 

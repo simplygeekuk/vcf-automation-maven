@@ -1,7 +1,6 @@
 /**
  * A Subscription to remove an Active Directory computer account.
  * @param {Properties} inputProperties - The input properties Subscription payload.
- *
  * @returns {void} - No return value.
  */
 (function (inputProperties) {

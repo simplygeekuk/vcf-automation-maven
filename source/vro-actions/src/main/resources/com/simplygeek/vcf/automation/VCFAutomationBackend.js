@@ -6,10 +6,8 @@
     /**
      * Defines The VCFAutomationBackend class.
      * @class
-     *
      * @returns {Any} An instance of The VCFAutomationBackend class.
      */
-
     function VCFAutomationBackend() {
         VCFAutomationAuthenticationService.call(this, this.restHost);
 
@@ -29,7 +27,6 @@
 
     /**
      * Defines the about method.
-     *
      * @returns {Any} The API About object.
      */
 
@@ -43,7 +40,6 @@
 
     /**
      * Defines the IaaS about method.
-     *
      * @returns {Any} The API About object.
      */
 
@@ -57,12 +53,11 @@
 
     /**
      * Defines the GET method.
-     * @method
+     * @function
      * @private
      * @param {string} uri - The request uri.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any||Array/Any} The response result or results.
      */
 
@@ -145,12 +140,11 @@
 
     /**
      * Defines the POST method.
-     * @method
+     * @function
      * @private
      * @param {string} uri - The request uri.
      * @param {Any} [content] - The request content.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
-     *
      * @returns {Any} The response content object.
      */
 
@@ -184,11 +178,10 @@
 
     /**
      * Defines the PUT method.
-     * @method
+     * @function
      * @param {string} uri - The request uri.
      * @param {Any} content - The request content.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
-     *
      * @returns {Any} The response content object.
      */
 
@@ -226,11 +219,10 @@
 
     /**
      * Defines the PATCH method.
-     * @method
+     * @function
      * @param {string} uri - The request uri.
      * @param {Any} content - The request content.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
-     *
      * @returns {Any} The response content object.
      */
 
@@ -268,7 +260,7 @@
 
     /**
      * Defines the DELETE method.
-     * @method
+     * @function
      * @param {string} uri - The request uri.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
      */

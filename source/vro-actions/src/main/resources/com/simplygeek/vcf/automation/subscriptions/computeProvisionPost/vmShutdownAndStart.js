@@ -1,7 +1,6 @@
 /**
  * Performs a shutdown and start of a virtual machine.
  * @param {Properties} inputProperties - The input properties Subscription payload.
- *
  * @returns {void} - No return value.
  */
 (function (inputProperties) {

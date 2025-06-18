@@ -7,10 +7,8 @@
      * Defines the InfobloxService class.
      * @class
      * @param {REST:RESTHost} restHost - The Infoblox HTTP REST host.
-     *
      * @returns {Any} An instance of the InfobloxService class.
      */
-
     function InfobloxService(
         restHost
     ) {

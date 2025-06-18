@@ -8,10 +8,8 @@
      * @class
      * @param {REST:RESTHost} restHost - The VCF Automation HTTP REST host.
      * @param {string} apiToken - The VCF Automation API Token.
-     *
      * @returns {Any} An instance of the VCFAutomationDeploymentService class.
      */
-
     function VCFAutomationDeploymentService(
         restHost,
         apiToken
@@ -57,7 +55,7 @@
 
     /**
      * Get a list of deployments.
-     * @method
+     * @function
      * @public
      * @param {Array/string} statuses - Results must be associated with one of these statuses.
      * @param {Array/string} projects - Results must be associated with one of these project IDs.
@@ -67,7 +65,6 @@
      * @param {Array/string} requestedBy - Results must be associated with one of these requesters.
      * @param {Array/string} ownedBy - Results must be associated with one of these owners.
      * @param {Array/string} tags - Results must be associated with one of these tags.
-     *
      * @returns {Array/Any} The list of deployments.
      */
 
@@ -190,11 +187,10 @@
 
     /**
      * get a deployment by its ID.
-     * @method
+     * @function
      * @public
      * @param {string} deploymentId - The deployment id.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The deployment object.
      */
 
@@ -245,11 +241,10 @@
 
     /**
      * Get a deployment by its name.
-     * @method
+     * @function
      * @public
      * @param {string} deploymentName - The deployment name.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The deployment object.
      */
 
@@ -310,11 +305,10 @@
 
     /**
      * Updates a deployment.
-     * @method
+     * @function
      * @public
      * @param {string} deploymentId - The deployment id.
      * @param {object} updatedDeploymentObject - The deployment object to update.
-     *
      * @returns {Any} The updated deployment object.
      */
 
@@ -347,13 +341,12 @@
 
     /**
      * Deletes a deployment.
-     * @method
+     * @function
      * @public
      * @param {string} deploymentId - The deployment ID.
-     * @param {boolean} [wait=true] - If true, waits for the action to complete.
-     * @param {number} [intervalSeconds=10] - Polling interval.
-     * @param {number} [timeoutSeconds=300] - Timeout.
-     *
+     * @param {boolean} [wait] - If true, waits for the action to complete. Default true.
+     * @param {number} [intervalSeconds] - Polling interval. Default 10.
+     * @param {number} [timeoutSeconds] - Timeout. Default 300
      * @returns {object} The final or initial request object.
      */
     VCFAutomationDeploymentService.prototype.deleteDeployment = function (
@@ -392,10 +385,9 @@
 
     /**
      * Gets available Day-2 actions for a deployment.
-     * @method
+     * @function
      * @public
      * @param {string} deploymentId - The deployment ID.
-     *
      * @returns {Array} The list of available actions.
      */
     VCFAutomationDeploymentService.prototype.getDeploymentActions = function (
@@ -420,11 +412,10 @@
 
     /**
      * Gets a specific Day-2 action by its ID for a deployment.
-     * @method
+     * @function
      * @public
      * @param {string} deploymentId - The deployment ID.
      * @param {string} actionId - The action ID.
-     *
      * @returns {object} The deployment action.
      */
     VCFAutomationDeploymentService.prototype.getDeploymentActionById = function (
@@ -467,15 +458,14 @@
 
     /**
      * Runs a Day-2 action on a deployment.
-     * @method
+     * @function
      * @public
      * @param {string} deploymentId - The deployment ID.
      * @param {string} actionId - The action ID.
      * @param {object} [inputs] - Optional inputs.
-     * @param {boolean} [wait=true] - If true, waits for the action to complete.
-     * @param {number} [intervalSeconds=10] - Polling interval.
-     * @param {number} [timeoutSeconds=300] - Timeout.
-     *
+     * @param {boolean} [wait] - If true, waits for the action to complete. Default true.
+     * @param {number} [intervalSeconds] - Polling interval. Default 10.
+     * @param {number} [timeoutSeconds] - Timeout. Default 300
      * @returns {object} The final or initial request object.
      */
     VCFAutomationDeploymentService.prototype.runDeploymentAction = function (
@@ -527,7 +517,6 @@
     /**
      * Lists all request records for a deployment (Day-1 and Day-2).
      * @param {string} deploymentId - The deployment ID.
-     *
      * @returns {Array} List of request objects.
      */
     VCFAutomationDeploymentService.prototype.getDeploymentRequests = function (deploymentId) {
@@ -554,10 +543,9 @@
 
     /**
      * Lists resources within a deployment.
-     * @method
+     * @function
      * @public
      * @param {string} deploymentId - The deployment ID.
-     *
      * @returns {Array/Any} List of resources for the deployment.
      */
     VCFAutomationDeploymentService.prototype.getDeploymentResources = function (deploymentId) {
@@ -580,12 +568,11 @@
 
     /**
      * Gets a specific resource by ID within a deployment.
-     * @method
+     * @function
      * @public
      * @param {string} deploymentId - The deployment ID.
      * @param {string} resourceId - The resource ID.
      * @param {boolean} [throwOnNotFound] - Whether to throw if not found.
-     *
      * @returns {object|null} The resource object or null if not found.
      */
     VCFAutomationDeploymentService.prototype.getDeploymentResourceById = function (
@@ -638,14 +625,13 @@
 
     /**
      * Deletes a resource within a deployment.
-     * @method
+     * @function
      * @public
      * @param {string} deploymentId - The deployment ID.
      * @param {string} resourceId - The resource ID.
-     * @param {boolean} [wait=true] - If true, waits for the action to complete.
-     * @param {number} [intervalSeconds=10] - Polling interval.
-     * @param {number} [timeoutSeconds=300] - Timeout.
-     *
+     * @param {boolean} [wait] - If true, waits for the action to complete. Default true.
+     * @param {number} [intervalSeconds] - Polling interval. Default 10.
+     * @param {number} [timeoutSeconds] - Timeout. Default 300
      * @returns {object} The final or initial request object.
      */
     VCFAutomationDeploymentService.prototype.deleteDeploymentResource = function (
@@ -691,11 +677,10 @@
 
     /**
      * Gets available Day-2 actions for a resource within a deployment.
-     * @method
+     * @function
      * @public
      * @param {string} deploymentId - The deployment ID.
      * @param {string} resourceId - The deployment resource ID.
-     *
      * @returns {Array} The list of available actions.
      */
     VCFAutomationDeploymentService.prototype.getDeploymentResourceActions = function (
@@ -727,12 +712,11 @@
 
     /**
      * Gets a specific Day-2 action by its ID for a resource within a deployment.
-     * @method
+     * @function
      * @public
      * @param {string} deploymentId - The deployment ID.
      * @param {string} resourceId - The deployment resource ID.
      * @param {string} actionId - The action ID.
-     *
      * @returns {object} The deployment action.
      */
     VCFAutomationDeploymentService.prototype.getDeploymentResourceActionById = function (
@@ -782,16 +766,15 @@
 
     /**
      * Runs a Day-2 action on a resource within a deployment.
-     * @method
+     * @function
      * @public
      * @param {string} deploymentId - The deployment ID.
      * @param {string} resourceId - The deployment resource ID.
      * @param {string} actionId - The action ID.
      * @param {object} [inputs] - Optional inputs.
-     * @param {boolean} [wait=true] - If true, waits for the action to complete.
-     * @param {number} [intervalSeconds=10] - Polling interval.
-     * @param {number} [timeoutSeconds=300] - Timeout.
-     *
+     * @param {boolean} [wait] - If true, waits for the action to complete. Default true.
+     * @param {number} [intervalSeconds] - Polling interval. Default 10.
+     * @param {number} [timeoutSeconds] - Timeout. Default 300
      * @returns {object} The final or initial request object.
      */
     VCFAutomationDeploymentService.prototype.runDeploymentResourceAction = function (
@@ -853,9 +836,8 @@
 
     /**
      * Get all resource types.
-     * @method
+     * @function
      * @public
-     *
      * @returns {Array} The list of available resource types.
      */
     VCFAutomationDeploymentService.prototype.getResourceTypes = function () {
@@ -871,10 +853,9 @@
 
     /**
      * Gets a specific resource-type by its ID.
-     * @method
+     * @function
      * @public
      * @param {string} resourceTypeId - The resource-type ID.
-     *
      * @returns {object} The resource-type.
      */
     VCFAutomationDeploymentService.prototype.getResourceTypeById = function (
@@ -910,7 +891,7 @@
 
     /**
      * Get a list of resources.
-     * @method
+     * @function
      * @public
      * @param {Array/string} projects - Results must be associated with one of these project IDs.
      * @param {Array/string} resourceTypes - Results must be associated with one of these resourceType Names.
@@ -919,7 +900,6 @@
      * @param {Array/string} tags - Results must be associated with one of these tags.
      * @param {Array/string} syncStatuses - Results must be associated with one of these SyncStatuses.
      * @param {boolean} isManaged - If true, return only resources that are managed.
-     *
      * @returns {Array/Any} The list of managed resources.
      */
 
@@ -1026,11 +1006,10 @@
 
     /**
      * Get a resource by its ID.
-     * @method
+     * @function
      * @public
      * @param {string} resourceId - The resource ID.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The resource object.
      */
 
@@ -1077,10 +1056,9 @@
 
     /**
      * Gets available Day-2 actions for a resource.
-     * @method
+     * @function
      * @public
      * @param {string} resourceId - The resource ID.
-     *
      * @returns {Array} The list of available actions.
      */
     VCFAutomationDeploymentService.prototype.getResourceActions = function (
@@ -1105,11 +1083,10 @@
 
     /**
      * Gets a specific Day-2 action by its ID for a resource.
-     * @method
+     * @function
      * @public
      * @param {string} resourceId - The resource ID.
      * @param {string} actionId - The action ID.
-     *
      * @returns {object} The resource action.
      */
     VCFAutomationDeploymentService.prototype.getResourceActionById = function (
@@ -1152,15 +1129,14 @@
 
     /**
      * Runs a Day-2 action on a resource.
-     * @method
+     * @function
      * @public
      * @param {string} resourceId - The resource ID.
      * @param {string} actionId - The action ID.
      * @param {object} [inputs] - Optional inputs.
-     * @param {boolean} [wait=true] - If true, waits for the action to complete.
-     * @param {number} [intervalSeconds=10] - Polling interval.
-     * @param {number} [timeoutSeconds=300] - Timeout.
-     *
+     * @param {boolean} [wait] - If true, waits for the action to complete. Default true.
+     * @param {number} [intervalSeconds] - Polling interval. Default 10.
+     * @param {number} [timeoutSeconds] - Timeout. Default 300
      * @returns {object} The final or initial request object.
      */
     VCFAutomationDeploymentService.prototype.runResourceAction = function (
@@ -1212,7 +1188,6 @@
     /**
      * Lists all request records for a resource (Day-1 and Day-2).
      * @param {string} resourceId - The resource ID.
-     *
      * @returns {Array} List of request objects.
      */
     VCFAutomationDeploymentService.prototype.getResourceRequests = function (
@@ -1237,12 +1212,11 @@
 
     /**
      * Polls the status of a deployment or resource action request until complete.
-     * @method
+     * @function
      * @public
      * @param {string} requestId - The request ID (from an action).
-     * @param {number} [intervalSeconds=10] - Polling interval in seconds.
-     * @param {number} [timeoutSeconds=300] - Maximum time to wait before aborting.
-     *
+     * @param {number} [intervalSeconds] - Polling interval. Default 10.
+     * @param {number} [timeoutSeconds] - Timeout. Default 300
      * @returns {object} Final request object.
      */
     VCFAutomationDeploymentService.prototype.pollRequestStatus = function (

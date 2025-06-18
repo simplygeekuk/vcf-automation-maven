@@ -9,10 +9,8 @@
      * @param {string} samlGroupName - The name of the AD group (without domain).
      * @param {number} accessLevel - Role (access_level) for members of the SAML group.
      * @param {number} [memberRoleId] - Member Role ID for members of the SAML group.
-     *
      * @returns {Any} Returns an instance of the SAMLGroupLink Class.
      */
-
     function SAMLGroupLink (
         samlGroupName,
         accessLevel,

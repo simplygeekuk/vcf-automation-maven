@@ -22,10 +22,8 @@
      * @param {number} [operationTimeout] - The timeout that should be used for Blueprint operations
      *                                      and Provisioning tasks.
      * @param {boolean} [sharedResources] - Whether the resources in this project are shared or not.
-     *
      * @returns {Any} Returns an instance of the Project Class.
      */
-
     function Project (
         name,
         description,

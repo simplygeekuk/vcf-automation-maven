@@ -12,10 +12,8 @@
      * @param {number} [namespaceId] - Namespace for the new project.
      * @param {number} [templateId] - Project ID of a custom project template.
      * @param {number} [templateGroupId] - Group ID of a custom project template.
-     *
      * @returns {Any} Returns an instance of the Project Class.
      */
-
     function Project (
         name,
         path,

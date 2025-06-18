@@ -8,10 +8,8 @@
      * @class
      * @param {REST:RESTHost} restHost - The VCF Automation HTTP REST host.
      * @param {string} apiToken - The VCF Automation API Token.
-     *
      * @returns {Any} An instance of the VCFAutomationCustomNamingService class.
      */
-
     function VCFAutomationCustomNamingService(
         restHost,
         apiToken
@@ -41,9 +39,8 @@
 
     /**
      * Defines the getCustomNames method.
-     * @method
+     * @function
      * @public
-     *
      * @returns {Array/Any} The list of custom names.
      */
 
@@ -60,11 +57,10 @@
 
     /**
      * Defines the getCustomNamingById method.
-     * @method
+     * @function
      * @public
      * @param {string} customNamingId - The custom naming uuid.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The custom naming object.
      */
 
@@ -101,11 +97,10 @@
 
     /**
      * Defines the getCustomNamingByName method.
-     * @method
+     * @function
      * @public
      * @param {string} customNamingName - The custom naming name.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The custom naming object.
      */
 
@@ -164,11 +159,10 @@
 
     /**
      * Defines the updateCustomNaming method.
-     * @method
+     * @function
      * @public
      * @param {string} customNamingId - The custom naming uuid.
      * @param {Any} updatedObject - The custom naming object to update.
-     *
      * @returns {Any} The updated custom naming object.
      */
 
@@ -202,11 +196,10 @@
 
     /**
      * Defines the checkCustomNamingPrefixExists method.
-     * @method
+     * @function
      * @public
      * @param {string} customNamingId - The custom naming uuid.
      * @param {string} prefix - The static pattern to find.
-     *
      * @returns {boolean} Whether the prefix was found.
      */
 
@@ -252,14 +245,13 @@
 
     /**
      * Defines the addCustomNamingPrefixToTemplate method.
-     * @method
+     * @function
      * @public
      * @param {string} customNamingId - The custom naming uuid.
      * @param {string} prefix - The static pattern to find.
      * @param {string} resourceType - The custom naming resource type.
      * @param {number} [startCounter] - The number to start incrementing from.
      * @param {number} [incrementStep] - The increment step to increase by.
-     *
      * @returns {Any} The updated Custom Naming object.
      */
 

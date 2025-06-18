@@ -6,10 +6,8 @@
     /**
      * Defines the InfobloxBackendService class.
      * @class
-     *
      * @returns {Any} An instance of the InfobloxBackendService class.
      */
-
     function InfobloxBackendService() {
         this.rest = new (System.getModule("com.simplygeek.rest").HttpRestClient())(
             this.restHost
@@ -18,12 +16,11 @@
 
     /**
      * Defines the GET method.
-     * @method
+     * @function
      * @private
      * @param {string} uri - The request uri.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any||Array/Any} The response result or results.
      */
 
@@ -110,14 +107,13 @@
     };
 
     /**
-   * Defines the POST method.
-   * @method
-   * @param {string} uri - The request uri.
-   * @param {string} [content] - The request content.
-   * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
-   *
-   * @returns {Any} The response content object.
-   */
+     * Defines the POST method.
+     * @function
+     * @param {string} uri - The request uri.
+     * @param {string} [content] - The request content.
+     * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
+     * @returns {Any} The response content object.
+     */
 
     InfobloxBackendService.prototype.post = function (
         uri,
@@ -150,14 +146,13 @@
     };
 
     /**
-   * Defines the PUT method.
-   * @method
-   * @param {string} uri - The request uri.
-   * @param {string} content - The request content.
-   * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
-   *
-   * @returns {Any} The response content object.
-   */
+     * Defines the PUT method.
+     * @function
+     * @param {string} uri - The request uri.
+     * @param {string} content - The request content.
+     * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
+     * @returns {Any} The response content object.
+     */
 
     InfobloxBackendService.prototype.put = function (
         uri,
@@ -190,14 +185,13 @@
     };
 
     /**
-   * Defines the PATCH method.
-   * @method
-   * @param {string} uri - The request uri.
-   * @param {string} content - The request content.
-   * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
-   *
-   * @returns {Any} The response content object.
-   */
+     * Defines the PATCH method.
+     * @function
+     * @param {string} uri - The request uri.
+     * @param {string} content - The request content.
+     * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
+     * @returns {Any} The response content object.
+     */
 
     InfobloxBackendService.prototype.patch = function (
         uri,
@@ -231,11 +225,11 @@
     };
 
     /**
-   * Defines the DELETE method.
-   * @method
-   * @param {string} uri - The request uri.
-   * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
-   */
+     * Defines the DELETE method.
+     * @function
+     * @param {string} uri - The request uri.
+     * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
+     */
 
     InfobloxBackendService.prototype.delete = function (
         uri,

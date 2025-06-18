@@ -8,10 +8,8 @@
      * @class
      * @param {REST:RESTHost} restHost - The VCF Automation HTTP REST host.
      * @param {string} apiToken - The VCF Automation API Token.
-     *
      * @returns {Any} An instance of the VCFAutomationIaasService class.
      */
-
     function VCFAutomationIaasService(
         restHost,
         apiToken
@@ -55,10 +53,9 @@
 
     /**
      * Defines the getMachineDisks method.
-     * @method
+     * @function
      * @public
      * @param {string} machineId - The machine id.
-     *
      * @returns {Any} The machine disks object.
      */
 
@@ -86,10 +83,9 @@
 
     /**
      * Defines the getProjectZones method.
-     * @method
+     * @function
      * @public
      * @param {string} projectId - The project id.
-     *
      * @returns {Any} The project zones object.
      */
 

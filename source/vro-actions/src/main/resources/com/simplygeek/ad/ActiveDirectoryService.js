@@ -7,10 +7,8 @@
      * Defines the ActiveDirectoryService class.
      * @class
      * @param {string} adHostName - Active Directory Hostname.
-     *
      * @returns {Any} An instance of the ActiveDirectoryService class.
      */
-
     function ActiveDirectoryService(adHostName) {
         if (!adHostName || typeof adHostName !== "string") {
             throw new ReferenceError("adHostName is required and must be of type 'string'");
@@ -44,9 +42,8 @@
 
         /**
          * Defines the getAdHost method.
-         * @method
+         * @function
          * @public
-         *
          * @returns {AD:AdHost} Active Directory Host object.
          */
 
@@ -56,12 +53,11 @@
 
         /**
          * Defines the getComputer method.
-         * @method
+         * @function
          * @public
          * @param {string} computerName - Computer name.
          * @param {boolean} throwOnNotFound - Whether to throw an exception if no
          *                                    object is found.
-         *
          * @returns {AD:ComputerAD} Active Directory Computer object.
          */
 
@@ -80,12 +76,11 @@
 
         /**
          * Defines the createComputer method.
-         * @method
+         * @function
          * @public
          * @param {string} computerName - Computer name.
          * @param {Any} parent - Parent container.
          * @param {string} [domainName] - Domain name.
-         *
          * @returns {AD:ComputerAD} Active Directory Computer object.
          */
 
@@ -130,10 +125,9 @@
 
         /**
          * Defines the removeComputer method.
-         * @method
+         * @function
          * @public
          * @param {AD:ComputerAD} adComputer - Active Directory Computer object.
-         *
          * @returns {void}
          */
 
@@ -151,13 +145,12 @@
 
         /**
          * Defines the getAdGroup method.
-         * @method
+         * @function
          * @public
          * @param {string} groupName - Group name.
          * @param {string} [groupDN] - Group Distinguished Name.
          * @param {boolean} throwOnNotFound - Whether to throw an exception if no
          *                                    object is found.
-         *
          * @returns {AD:Group} Active Directory Group object.
          */
 
@@ -180,13 +173,12 @@
 
         /**
          * Defines the getOrganizationalUnit method.
-         * @method
+         * @function
          * @public
          * @param {string} ouName - OrganizationalUnit Name.
          * @param {string} [ouDN] - OrganizationalUnit Distinguished Name.
          * @param {boolean} throwOnNotFound - Whether to throw an exception if no
          *                                    object is found.
-         *
          * @returns {AD:OrganizationUnit} Active Directory OU object.
          */
 
@@ -209,12 +201,11 @@
 
         /**
          * Defines the getUser method.
-         * @method
+         * @function
          * @public
          * @param {string} username - User name.
          * @param {boolean} throwOnNotFound - Whether to throw an exception if no
          *                                    object is found.
-         *
          * @returns {AD:User} Active Directory User object.
          */
 
@@ -233,14 +224,13 @@
 
         /**
          * Defines the createUser method.
-         * @method
+         * @function
          * @public
          * @param {string} username - User Account name.
          * @param {string} password - User Account password.
          * @param {Any} parent - Parent container.
          * @param {string} [domainName] - Domain name.
          * @param {string} [displayName] - Display name.
-         *
          * @returns {AD:User} Active Directory User object.
          */
 
@@ -300,10 +290,9 @@
 
         /**
          * Defines the removeUser method.
-         * @method
+         * @function
          * @public
          * @param {AD:User} adUser - Active Directory User object.
-         *
          * @returns {void}
          */
 
@@ -321,13 +310,12 @@
 
         /**
          * Defines the getUserGroup method.
-         * @method
+         * @function
          * @public
          * @param {string} userGroupName - UserGroup name.
          * @param {string} userGroupDN - UserGroup Distinguished Name.
          * @param {boolean} throwOnNotFound - Whether to throw an exception if no
          *                                    object is found.
-         *
          * @returns {AD:UserGroup} Active Directory UserGroup object.
          */
 
@@ -350,11 +338,9 @@
 
         /**
          * Search for AD users matching a pattern within an optional specific OU.
-         *
          * @param {string} searchPattern The search pattern (e.g., "*John*").
          * @param {string} searchOU Distinguished Name (DN) of the OU to search in (e.g., "OU=Users,DC=example,DC=com").
-         *
-         * @return {Array/Any} Array of matched AD user objects.
+         * @returns {Array/Any} Array of matched AD user objects.
          */
 
         this.searchADUsers = function(
@@ -392,7 +378,7 @@
 
         /**
          * Defines the findAdObject method.
-         * @method
+         * @function
          * @private
          * @param {string} adObjType - AD Object Type.
          * @param {string} adObjName - AD Object Name.
@@ -401,7 +387,6 @@
          *                                          same name).
          * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no
          *                                      object is found.
-         *
          * @returns {Any} Active Directory object.
          */
 
@@ -422,6 +407,7 @@
                             "' of type '" + adObjType + "'");
             try {
                 adObjs = ActiveDirectory.search(adObjType, adObjName, this.adHost);
+                // Switch to searchExactMatch
             } catch (e) {
                 throw new Error("Find Active Directory object failed: " + e);
             }

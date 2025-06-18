@@ -2,7 +2,6 @@
  * Search for a virtual machine by its instance uuid. Optionally search on a specific vCenter Server.
  * @param {string} vcVmInstanceUuid - The instance uuid of the vCenter VirtualMachine.
  * @param {VC:SdkConnection} vCenterSdkConnection - vCenter Server SDK connection.
- *
  * @returns {VC:VirtualMachine} - vcVirtualMachine object.
  */
 (function (

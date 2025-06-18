@@ -6,19 +6,16 @@
     /**
      * Defines the ArrayUtils class.
      * @class
-     *
      * @returns {Any} Returns an instance of the ArrayUtils Class.
      */
-
     function ArrayUtils () {}
 
     /**
      * Defines the getHighestStringPerPrefix method.
-     * @method
+     * @function
      * @public
      * @param {string} inputString - The input string.
      * @param {number} width - The minimum number of characters to apply padding.
-     *
      * @returns {string} The padded string.
      */
 

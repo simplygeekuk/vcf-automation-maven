@@ -9,7 +9,6 @@
  * @param {string} [basicUsername] - The username if Basic authentication is used.
  * @param {SecureString} [basicPassword] - The password if Basic authentication is used.
  * @param {string} [apiToken] - The API Bearer Token if Oauth2 authentication is used.
- *
  * @returns {REST:RESTHost} - The RESTHost vRO type
  */
 (function (

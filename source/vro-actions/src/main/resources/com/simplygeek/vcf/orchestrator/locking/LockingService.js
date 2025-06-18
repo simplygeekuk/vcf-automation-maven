@@ -7,7 +7,6 @@
      * Defines the LockingService class.
      * @class
      */
-
     function LockingService() {
         this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
             "Action",
@@ -16,7 +15,7 @@
 
         /**
          * Defines the createLock method.
-         * @method
+         * @function
          * @public
          * @param {string} lockOwner - the lock owner.
          * @param {string} lockId - the unique (per lock) id.
@@ -24,7 +23,6 @@
          * @param {number} [retryDelay] - The delay between retry attempts (default 60 seconds).
          * @param {boolean} [autoRemoveLock] - Auto remove the lock if one is already present and
          *                                     the max retry attempts has been reached (default true).
-         *
          * @returns {boolean} - Return the lock status.
          */
 
@@ -132,7 +130,7 @@
 
         /**
          * Defines the removeLock method.
-         * @method
+         * @function
          * @public
          * @param {string} lockOwner - the lock owner.
          * @param {string} lockId - the unique (per lock) id.

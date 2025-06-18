@@ -1,7 +1,6 @@
 /**
  * Performs a power on of a virtual machine.
  * @param {VC:VirtualMachine} vcVirtualMachine - The vCenter VM object.
- *
  * @returns {void} - no return value.
  */
 (function (

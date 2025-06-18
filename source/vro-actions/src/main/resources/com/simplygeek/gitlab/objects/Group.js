@@ -10,10 +10,8 @@
      * @param {string} path - The path of the group.
      * @param {string} [description] - The group’s description.
      * @param {number} [parentId] - The parent group ID for creating nested group.
-     *
      * @returns {Any} Returns an instance of the Group Class.
      */
-
     function Group (
         name,
         path,

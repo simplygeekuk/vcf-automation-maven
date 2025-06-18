@@ -9,10 +9,8 @@
      * @param {Any} tag - The tag object to add.
      * @param {string} [enforcement] - The condition enforcement.
      * @param {string} [occurrence] - The condition occurrence.
-     *
      * @returns {Any} Returns an instance of the ConstraintCondition Class.
      */
-
     function ConstraintCondition (
         tag,
         enforcement,

@@ -10,10 +10,8 @@
      * @param {number} retryMaxAttempts - The maximum number attempts to retry a failed request.
      * @param {number} retryDelay - The delay (in seconds) between retry attempts.
      * @param {boolean} retryOn500 - Should retry the request if HTTP Status 500 is received.
-     *
      * @returns {Any} An instance of the HttpRestClient class.
      */
-
     function HttpRestClient(
         restHost,
         retryMaxAttempts,
@@ -44,7 +42,7 @@
 
         /**
          * A method that invokes the request.
-         * @method
+         * @function
          * @private
          * @param {string} restMethod - The request method.
          * @param {string} uri - The request uri.
@@ -53,7 +51,6 @@
          * @param {string} [contentType] - The encoding for content.
          * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
          * @param {Properties} [headers] - A key/value set of headers to include in the request.
-         *
          * @returns {Any} The request response object.
          */
 
@@ -180,7 +177,7 @@
 
         /**
          * A function that creates the request.
-         * @method
+         * @function
          * @private
          * @param {string} restMethod - The request method.
          * @param {string} uri - The request uri.
@@ -188,7 +185,6 @@
          * @param {Any} [content] - The request content.
          * @param {string} [contentType] - The encoding for content.
          * @param {Properties} [headers] - A key/value set of headers to include in the request.
-         *
          * @returns {Any} The request response object.
          */
 
@@ -277,7 +273,7 @@
 
         /**
          * A function that converts a JSON body to a form-url-encoded string
-         * @method
+         * @function
          * @private
          * @param {Any} [content] - The request content.
          */
@@ -308,13 +304,12 @@
 
     /**
      * Defines the httpGet method.
-     * @method
+     * @function
      * @public
      * @param {string} uri - The request uri.
      * @param {string} [acceptType] - The encoding format to accept.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
      * @param {Properties} [headers] - A key/value set of headers to include in the request.
-     *
      * @returns {Any} The request response object.
      */
 
@@ -339,7 +334,7 @@
 
     /**
      * Defines the httpPost method.
-     * @method
+     * @function
      * @public
      * @param {string} uri - The request uri.
      * @param {string} [acceptType] - The encoding format to accept.
@@ -347,7 +342,6 @@
      * @param {string} [contentType] - The encoding for content.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
      * @param {Properties} [headers] - A key/value set of headers to include in the request.
-     *
      * @returns {Any} The request response object.
      */
 
@@ -376,7 +370,7 @@
 
     /**
      * Defines the httpPut method.
-     * @method
+     * @function
      * @public
      * @param {string} uri - The request uri.
      * @param {string} [acceptType] - The encoding format to accept.
@@ -384,7 +378,6 @@
      * @param {string} [contentType] - The encoding for content.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
      * @param {Properties} [headers] - A key/value set of headers to include in the request.
-     *
      * @returns {Any} The request response object.
      */
 
@@ -411,7 +404,7 @@
 
     /**
      * Defines the httpPatch method.
-     * @method
+     * @function
      * @public
      * @param {string} uri - The request uri.
      * @param {string} [acceptType] - The encoding format to accept.
@@ -419,7 +412,6 @@
      * @param {string} [contentType] - The encoding for content.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
      * @param {Properties} [headers] - A key/value set of headers to include in the request.
-     *
      * @returns {Any} The request response object.
      */
 
@@ -446,13 +438,12 @@
 
     /**
      * Defines the httpDelete method.
-     * @method
+     * @function
      * @public
      * @param {string} uri - The request uri.
      * @param {string} [acceptType] - The encoding format to accept.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
      * @param {Properties} [headers] - A key/value set of headers to include in the request.
-     *
      * @returns {Any} The request response object.
      */
 
@@ -477,13 +468,12 @@
 
     /**
      * Defines the httpHead method.
-     * @method
+     * @function
      * @public
      * @param {string} uri - The request uri.
      * @param {string} [acceptType] - The encoding format to accept.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
      * @param {Properties} [headers] - A key/value set of headers to include in the request.
-     *
      * @returns {Any} The request response object.
      */
 

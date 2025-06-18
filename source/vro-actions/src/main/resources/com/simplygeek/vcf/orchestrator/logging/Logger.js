@@ -9,7 +9,6 @@
      * @param {string} logSource - The log source. Valid sources are Action or Workflow.
      * @param {string} logName - The name of the Action or Workflow sending the log message.
      */
-
     function Logger(
         logSource,
         logName
@@ -31,7 +30,7 @@
 
     /**
      * Prints INFO messages to the console.
-     * @method
+     * @function
      * @public
      */
 
@@ -43,7 +42,7 @@
 
     /**
      * Prints WARNING messages to the console.
-     * @method
+     * @function
      * @public
      */
 
@@ -55,7 +54,7 @@
 
     /**
      * Prints ERROR messages to the console.
-     * @method
+     * @function
      * @public
      */
 
@@ -67,7 +66,7 @@
 
     /**
      * Prints DEBUG messages to the console.
-     * @method
+     * @function
      * @public
      */
 

@@ -6,10 +6,8 @@
     /**
      * Defines The VCFAutomationConfigService class.
      * @class
-     *
      * @returns {Any} An instance of The VCFAutomationConfigService class.
      */
-
     function VCFAutomationConfigService() {
         ConfigElementService.call(this);
 
@@ -44,9 +42,8 @@
 
     /**
      * Defines the getRestHostName method.
-     * @method
+     * @function
      * @public
-     *
      * @returns {REST:RESTHost} The VCF Automation REST host name.
      */
 
@@ -61,9 +58,8 @@
 
     /**
      * Defines the getRestHost method.
-     * @method
+     * @function
      * @public
-     *
      * @returns {REST:RESTHost} The VCF Automation REST Host
      */
 
@@ -77,9 +73,8 @@
 
     /**
      * Defines the getApiToken method.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The VCF Automation API Token
      */
 
@@ -94,9 +89,8 @@
 
     /**
      * Defines the getUsername method.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The VCF Automation Username
      */
 
@@ -111,9 +105,8 @@
 
     /**
      * Defines the getPassword method.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The VCF Automation Password
      */
 
@@ -128,9 +121,8 @@
 
     /**
      * Defines the getUrl method.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The VCF Automation URL
      */
 

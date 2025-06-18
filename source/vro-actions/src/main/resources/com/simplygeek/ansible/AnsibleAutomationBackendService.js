@@ -6,10 +6,8 @@
     /**
      * Defines the AnsibleAutomationBackendService class.
      * @class
-     *
      * @returns {Any} An instance of the AnsibleAutomationBackendService class.
      */
-
     function AnsibleAutomationBackendService() {
         HttpRestClient.call(this, this.restHost);
     }
@@ -25,12 +23,11 @@
 
     /**
      * Defines the getResourceById method.
-     * @method
+     * @function
      * @public
      * @param {number} resourceId - The resource ID.
      * @param {string} resourceType - The resource type.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The resource object.
      */
 
@@ -86,12 +83,11 @@
 
     /**
      * Defines the getResourceByName method.
-     * @method
+     * @function
      * @public
      * @param {string} resourceName - The resource name.
      * @param {string} resourceType - The resource type.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The resource object.
      */
 
@@ -153,11 +149,10 @@
 
     /**
      * Defines the GET method.
-     * @method
+     * @function
      * @private
      * @param {string} uri - The request uri.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
-     *
      * @returns {Any||Array/Any} The response result or results.
      */
 
@@ -234,12 +229,11 @@
 
     /**
      * Defines the POST method.
-     * @method
+     * @function
      * @private
      * @param {string} uri - The request uri.
      * @param {Any} [content] - The request content.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
-     *
      * @returns {Any} The response content object.
      */
 
@@ -273,11 +267,10 @@
 
     /**
      * Defines the PUT method.
-     * @method
+     * @function
      * @param {string} uri - The request uri.
      * @param {Any} content - The request content.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
-     *
      * @returns {Any} The response content object.
      */
 
@@ -314,11 +307,10 @@
 
     /**
      * Defines the PATCH method.
-     * @method
+     * @function
      * @param {string} uri - The request uri.
      * @param {Any} content - The request content.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
-     *
      * @returns {Any} The response content object.
      */
 
@@ -355,7 +347,7 @@
 
     /**
      * Defines the DELETE method.
-     * @method
+     * @function
      * @param {string} uri - The request uri.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
      */

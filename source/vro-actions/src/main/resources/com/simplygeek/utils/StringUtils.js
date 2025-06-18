@@ -6,20 +6,17 @@
     /**
      * Defines the StringUtils class.
      * @class
-     *
      * @returns {Any} Returns an instance of the StringUtils Class.
      */
-
     function StringUtils () {}
 
     /**
      * Defines the padString method.
-     * @method
+     * @function
      * @public
      * @param {string} inputString - The input string.
      * @param {number} width - The minimum number of characters to apply padding.
      * @param {string} [padValue] - The value to use for padding (default 0).
-     *
      * @returns {string} The padded string.
      */
 

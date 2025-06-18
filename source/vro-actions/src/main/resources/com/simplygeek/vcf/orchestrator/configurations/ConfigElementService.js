@@ -6,10 +6,8 @@
     /**
      * Defines the ConfigElementService class.
      * @class
-     *
      * @returns {Any} An instance of the ConfigElementService class.
      */
-
     function ConfigElementService() {
         this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
             "Action",
@@ -18,11 +16,10 @@
 
         /**
          * Defines the getConfigElement method.
-         * @method
+         * @function
          * @public
          * @param {string} configElementName - Configuration Element Name.
          * @param {string} categoryPath - Configuration Element Path.
-         *
          * @returns {ConfigurationElement} Configuration Element object.
          */
 
@@ -92,11 +89,10 @@
 
         /**
          * Defines the createConfigElement method.
-         * @method
+         * @function
          * @public
          * @param {string} configElementName - Configuration Element Name.
          * @param {string} categoryPath - Configuration Element Path.
-         *
          * @returns {ConfigurationElement} Configuration Elemenet object.
          */
 
@@ -140,11 +136,10 @@
 
         /**
          * Defines the getConfigElementAttribute method.
-         * @method
+         * @function
          * @public
          * @param {ConfigurationElement} configElement - Configuration Element Object.
          * @param {string} attributeName - Configuration Element Attribute Name.
-         *
          * @returns {Any} Configuration Element Attribute.
          */
 
@@ -205,13 +200,12 @@
 
         /**
          * Defines the createConfigElementAttribute method.
-         * @method
+         * @function
          * @public
          * @param {ConfigurationElement} configElement - Configuration Element Object.
          * @param {string} attributeName - Configuration Element Attribute Name.
          * @param {string} attributeValue - Configuration Element Attribute Value.
          * @param {string} attributeType - Configuration Element Attribute Type.
-         *
          * @returns {Any} Configuration Elemenet Attribute.
          */
 
@@ -289,13 +283,12 @@
 
         /**
          * Defines the updateConfigElementAttribute method.
-         * @method
+         * @function
          * @public
          * @param {ConfigurationElement} configElement - Configuration Element Object.
          * @param {string} attributeName - Configuration Element Attribute Name.
          * @param {string} attributeValue - Configuration Element Attribute Value.
          * @param {string} [attributeType] - Configuration Element Attribute Type.
-         *
          * @returns {Any} Configuration Elemenet Attribute.
          */
 
@@ -383,11 +376,10 @@
 
         /**
          * Defines the removeConfigElementAttribute method.
-         * @method
+         * @function
          * @public
          * @param {ConfigurationElement} configElement - Configuration Element Object.
          * @param {string} attributeName - Configuration Element Attribute Name.
-         *
          * @returns {void}
          */
 

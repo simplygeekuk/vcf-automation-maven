@@ -1,7 +1,6 @@
 /**
  * Write a brief description of the purpose of the action.
  * @param {string} restHostName - The name of the resthost in the inventory.
- *
  * @returns {REST:RESTHost} - RESTHost inventory type.
  */
 (function (restHostName) {

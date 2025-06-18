@@ -6,10 +6,8 @@
     /**
      * Defines the DefaultConfigService class.
      * @class
-     *
      * @returns {Any} An instance of the DefaultConfigService class.
      */
-
     function DefaultConfigService() {
         ConfigElementService.call(this);
 
@@ -49,9 +47,8 @@
     /**
      * Defines the getCustomNamingProfileName method.
      * @description Gets the Custom Naming profile name used for machine naming.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Custom Naming Profile Name.
      */
 
@@ -70,9 +67,8 @@
     /**
      * Defines the getActiveDirectoryDomainName method.
      * @description Gets the Active Directory Domain Name for Machine joins.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Active Directory Domain Name.
      */
 
@@ -87,9 +83,8 @@
     /**
      * Defines the getActiveDirectoryDNSSuffix method.
      * @description Gets the Active Directory DNS Suffix.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Active Directory DNS Suffix.
      */
 
@@ -104,9 +99,8 @@
     /**
      * Defines the getActiveDirectoryServerOUDN method.
      * @description Gets the Active Directory Server OU Distinguished Name.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Active Directory Server OU Distinguished Name.
      */
 
@@ -125,9 +119,8 @@
     /**
      * Defines the getAnsibleRestHostName method.
      * @description Gets the Ansible Rest Host name.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Ansible Rest Host name.
      */
 
@@ -142,9 +135,8 @@
     /**
      * Defines the __getConfigValue method.
      * @description Gets a configuration value.
-     * @method
+     * @function
      * @private
-     *
      * @returns {Any} The configuration value
      */
 
