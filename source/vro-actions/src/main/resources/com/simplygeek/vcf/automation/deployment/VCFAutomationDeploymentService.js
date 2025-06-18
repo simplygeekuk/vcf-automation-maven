@@ -238,7 +238,6 @@
                     "Deployment with id '" + deploymentId + "' not found"
                 );
             }
-
         }
 
         return deploymentObject;
