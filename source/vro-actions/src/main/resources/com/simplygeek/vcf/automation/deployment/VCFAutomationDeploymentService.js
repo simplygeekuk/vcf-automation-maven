@@ -1,10 +1,10 @@
 /**
- * Write a brief description of the purpose of the action.
+ * The VCFAutomationDeploymentService class for interacting with the Deployments API.
  * @returns {Any} - describe the return type as well
  */
 (function () {
     /**
-     * Defines the VCFAutomationDeploymentService class.
+     * The VCFAutomationDeploymentService class for interacting with the Deployments API.
      * @class
      * @param {REST:RESTHost} restHost - The VCF Automation HTTP REST host.
      * @param {string} apiToken - The VCF Automation API Token.
@@ -186,7 +186,7 @@
     };
 
     /**
-     * get a deployment by its ID.
+     * Get a deployment by its ID.
      * @function
      * @public
      * @param {string} deploymentId - The deployment id.
