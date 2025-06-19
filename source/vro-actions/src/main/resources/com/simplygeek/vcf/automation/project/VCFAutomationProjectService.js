@@ -1,10 +1,10 @@
 /**
- * Write a brief description of the purpose of the action.
- * @returns {Any} - describe the return type as well
+ * Provides an interface to the VCF Automation Projects API.
+ * @returns {Any} - An instance of the VCFAutomationProjectService class.
  */
 (function () {
     /**
-     * Defines the VCFAutomationProjectService class.
+     * Provides an interface to the VCF Automation Projects API.
      * @class
      * @param {REST:RESTHost} restHost - The VCF Automation HTTP REST host.
      * @param {string} apiToken - The VCF Automation API Token.
@@ -29,7 +29,7 @@
         this.restHost = restHost;
 
         VCFAutomationBackend.call(this);
-        VCFAutomationIaasService.call(this, this.restHost, apiToken);
+        // VCFAutomationIaasService.call(this, this.restHost, apiToken);
 
         this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
             "Action",
@@ -41,7 +41,7 @@
         this.apiVersionParam = "apiVersion=" + this.apiVersion;
 
         // Since we are calling VCFAutomationIaasService, no need to re-authenticate.
-        //this.createAuthenticatedSession(apiToken);
+        this.createAuthenticatedSession(apiToken);
     }
 
     var VCFAutomationBackend = System.getModule(
@@ -53,14 +53,14 @@
     );
     VCFAutomationProjectService.prototype.constructor = VCFAutomationProjectService;
 
-    var VCFAutomationIaasService = System.getModule(
-        "com.simplygeek.vcf.automation.iaas"
-    ).VCFAutomationIaasService();
+    // var VCFAutomationIaasService = System.getModule(
+    //     "com.simplygeek.vcf.automation.iaas"
+    // ).VCFAutomationIaasService();
 
-    VCFAutomationProjectService.prototype.getProjectZones = VCFAutomationIaasService.prototype.getProjectZones;
+    // VCFAutomationProjectService.prototype.getProjectZones = VCFAutomationIaasService.prototype.getProjectZones;
 
     /**
-     * Defines the getProjects method.
+     * Get a list of projects.
      * @function
      * @public
      * @returns {Array/Any} The list of projects.
@@ -78,7 +78,7 @@
     };
 
     /**
-     * Defines the getProjectById method.
+     * Get a specific project by its ID.
      * @function
      * @public
      * @param {string} projectId - The project id.
@@ -104,7 +104,7 @@
         var projectObject;
 
         this.log.debug("Getting project with ID '" + projectId + "'");
-        projectObject = this.get(uri, null, throwOnNotFound);
+        projectObject = this.get(uri, [200, 404]);
 
         if (projectObject) {
             var projectName = projectObject.name;
@@ -129,7 +129,7 @@
     };
 
     /**
-     * Defines the getProjectByName method.
+     * Get a specific project by its name.
      * @function
      * @public
      * @param {string} projectName - The project name.
@@ -192,7 +192,7 @@
     };
 
     /**
-     * Defines the getProjectsWithPrefix method.
+     * Get a list of projects that start with the specified prefix.
      * @function
      * @public
      * @param {string} projectNamePrefix - The project name prefix.
@@ -222,7 +222,7 @@
     };
 
     /**
-     * Defines the createProject method.
+     * Create a project.
      * @function
      * @public
      * @param {Any} projectSpecification - The project specification.
@@ -245,6 +245,7 @@
         if (projectSpecification.tags) var projectTags = projectSpecification.tags;
         delete projectSpecification.tags;
 
+        this.log.debug("Creating project '" + projectSpecification.name + "'");
         projectObject = this.post(
             uri,
             projectSpecification
@@ -261,11 +262,13 @@
             projectObject.tags = projectTags;
         }
 
+        this.log.debug("Project successfully created");
+
         return projectObject;
     };
 
     /**
-     * Defines the getProjectTags method.
+     * Get project tags.
      * @function
      * @public
      * @param {string} projectId - The project id.
@@ -301,7 +304,7 @@
     };
 
     /**
-     * Defines the createProjectTags method.
+     * Create project tags.
      * @function
      * @public
      * @param {string} projectId - The project id.
@@ -352,7 +355,7 @@
     };
 
     /**
-     * Defines the updateProject method.
+     * Update a project.
      * @function
      * @public
      * @param {string} projectId - The Project uuid.
@@ -389,7 +392,7 @@
     };
 
     /**
-     * Defines the deleteProject method.
+     * Delete a project.
      * @function
      * @public
      * @param {string} projectId - The Project uuid.
