@@ -1,10 +1,10 @@
 /**
- * The VCFAutomationDeploymentService class for interacting with the Deployments API.
- * @returns {Any} - describe the return type as well
+ * Provides an interface to the VCF Automation Deployments API.
+ * @returns {Any} - An instance of the VCFAutomationDeploymentService class.
  */
 (function () {
     /**
-     * The VCFAutomationDeploymentService class for interacting with the Deployments API.
+     * Provides an interface to the VCF Automation Deployments API.
      * @class
      * @param {REST:RESTHost} restHost - The VCF Automation HTTP REST host.
      * @param {string} apiToken - The VCF Automation API Token.
