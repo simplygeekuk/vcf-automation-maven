@@ -195,7 +195,7 @@
          * Enable or disable a computer account.
          * @function
          * @public
-         * @param {AD:User} adComputer - Active Directory computer object.
+         * @param {AD:ComputerAD} adComputer - Active Directory computer object.
          * @param {boolean} enable - True to enable, false to disable.
          */
         this.setComputerEnabled = function(
@@ -657,6 +657,92 @@
             );
 
             return adUserGroup;
+        };
+
+        /**
+         * Create an Active Directory User Group object in the specified container.
+         * @function
+         * @public
+         * @param {string} userGroupName - User Group name.
+         * @param {AD:OrganizationalUnit|AD:Group} parent - Parent container.
+         * @returns {AD:UserGroup} The created Active Directory User Group object.
+         */
+
+        this.createUserGroup = function(
+            userGroupName,
+            parent
+        ) {
+            if (!userGroupName || typeof userGroupName !== "string") {
+                throw new ReferenceError(
+                    "userGroupName is required and must be of type 'string'"
+                );
+            }
+            if (!parent || (System.getObjectType(parent) !== "AD:OrganizationalUnit" &&
+                System.getObjectType(parent) !== "AD:Group")) {
+                throw new ReferenceError(
+                    "parent container is required and must be of type " +
+                    "'AD:OrganizationalUnit' or 'AD:Group'"
+                );
+            }
+
+            var containerDn = parent.distinguishedName;
+            var existingAdUserGroup = findAdObject.call(
+                this,
+                "UserGroup",
+                userGroupName,
+                null,
+                containerDn,
+                null,
+                false
+            );
+
+            try {
+                this.log.debug("Creating User Group: " + userGroupName);
+                if (existingAdUserGroup) {
+                    throw new Error(
+                        "The User Group '" + userGroupName + "' already exists"
+                    );
+                }
+
+                parent.createUserGroup(userGroupName);
+
+                var adOu = this.getUserGroup(
+                    userGroupName,
+                    null,
+                    containerDn
+                );
+
+                this.log.debug("User Group '" + userGroupName + "' created successfully.");
+            } catch (e) {
+                throw new Error("Failed to create User Group: " + e);
+            }
+
+            return adOu;
+        };
+
+        /**
+         * Remove an Active Directory User Group.
+         * @function
+         * @public
+         * @param {AD:UserGroup} adUserGroup - Active Directory User Group object.
+         */
+
+        this.removeUserGroup = function(
+            adUserGroup
+        ) {
+            if (!adUserGroup || System.getObjectType(adUserGroup) !== "AD:UserGroup") {
+                throw new ReferenceError(
+                    "adUserGroup is required and must be of type 'AD:UserGroup'"
+                );
+            }
+
+            try {
+                this.log.debug("Removing User Group: " + adUserGroup.name);
+                adUserGroup.destroy();
+                this.log.debug("User Group '" + adUserGroup.name + "' removed successfully");
+            } catch (e) {
+                throw new Error("Failed to remove User Group: " + e);
+            }
         };
 
         /**
