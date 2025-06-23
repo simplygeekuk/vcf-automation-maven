@@ -305,6 +305,96 @@
         };
 
         /**
+         * Create an Active Directory Organizational Unit object in the specified container.
+         * @function
+         * @public
+         * @param {string} organizationalUnitName - Organizational Unit name.
+         * @param {AD:OrganizationalUnit} parent - Parent container.
+         * @returns {AD:OrganizationalUnit} The created Active Directory Organizational Unit object.
+         */
+
+        this.createOrganizationalUnit = function(
+            organizationalUnitName,
+            parent
+        ) {
+            if (!organizationalUnitName || typeof organizationalUnitName !== "string") {
+                throw new ReferenceError(
+                    "organizationalUnitName is required and must be of type 'string'"
+                );
+            }
+            if (!parent || (System.getObjectType(parent) !== "AD:OrganizationalUnit")) {
+                throw new ReferenceError(
+                    "parent container is required and must be of type " +
+                    "'AD:OrganizationalUnit'"
+                );
+            }
+
+            var containerDn = parent.distinguishedName;
+            var existingAdOu = findAdObject.call(
+                this,
+                "OrganizationalUnit",
+                organizationalUnitName,
+                null,
+                containerDn,
+                null,
+                false
+            );
+
+            try {
+                this.log.debug("Creating Organizational Unit: " + organizationalUnitName);
+                if (existingAdOu) {
+                    throw new Error(
+                        "The Organizational Unit '" + organizationalUnitName + "' already exists"
+                    );
+                }
+
+                parent.createOrganizationalUnit(organizationalUnitName);
+
+                var adOu = this.getOrganizationalUnit(
+                    organizationalUnitName,
+                    null,
+                    containerDn
+                );
+
+                this.log.debug("Organizational Unit '" + organizationalUnitName + "' created successfully.");
+            } catch (e) {
+                throw new Error("Failed to create Organizational Unit: " + e);
+            }
+
+            return adOu;
+        };
+
+        /**
+         * Remove an Active Directory Organizational Unit.
+         * @function
+         * @public
+         * @param {AD:OrganizationalUnit} adOu - Active Directory Organizational Unit object.
+         * @param {boolean} deleteSubTree - Whether to delete Organizational Unit subtree.
+         */
+
+        this.removeOrganizationalUnit = function(
+            adOu,
+            deleteSubTree
+        ) {
+            if (!adOu || System.getObjectType(adOu) !== "AD:OrganizationalUnit") {
+                throw new ReferenceError(
+                    "adOu is required and must be of type 'AD:OrganizationalUnit'"
+                );
+            }
+
+            // Default deleteSubTree to false, unless explicitly set to true.
+            deleteSubTree = deleteSubTree === true;
+
+            try {
+                this.log.debug("Removing Organizational Unit: " + adOu.name);
+                adOu.destroy(deleteSubTree);
+                this.log.debug("Organizational Unit '" + adOu.name + "' removed successfully");
+            } catch (e) {
+                throw new Error("Failed to remove Organizational Unit: " + e);
+            }
+        };
+
+        /**
          * Get an Active Directory user.
          * @function
          * @public
