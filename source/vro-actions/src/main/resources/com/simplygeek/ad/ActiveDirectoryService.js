@@ -29,8 +29,7 @@
 
         if (adHostsFound.length > 1) {
             throw new Error(
-                "More than one Active Directory Host was found with the name '" +
-                adHostName + "'"
+                "More than one Active Directory Host was found with the name '" + adHostName + "'"
             );
         } else if (adHostsFound.length > 0) {
             var adHost = adHostsFound[0];
@@ -115,35 +114,56 @@
             domainName
         ) {
             if (!computerName || typeof computerName !== "string") {
-                throw new ReferenceError("computerName is required and must be of type 'string'");
+                throw new ReferenceError(
+                    "computerName is required and must be of type 'string'"
+                );
             }
             if (!parent || (System.getObjectType(parent) !== "AD:OrganizationalUnit" &&
                 System.getObjectType(parent) !== "AD:Group")) {
-                throw new ReferenceError("parent container is required and must be of type " +
-                                        "'AD:OrganizationalUnit' or 'AD:Group'");
+                throw new ReferenceError(
+                    "parent container is required and must be of type " +
+                    "'AD:OrganizationalUnit' or 'AD:Group'"
+                );
             }
             if (domainName && typeof domainName !== "string") {
                 throw new ReferenceError("domainName must be of type 'string'");
             }
 
-            var existingAdComputer = findAdObject.call(this, "ComputerAD", computerName, null, false);
-
-            if (existingAdComputer) {
-                throw new Error("Failed to create Computer. The Computer '" + computerName +
-                                "' already exists");
-            }
+            var containerDn = parent.distinguishedName;
+            var existingAdComputer = findAdObject.call(
+                this,
+                "ComputerAD",
+                computerName,
+                null,
+                containerDn,
+                null,
+                false
+            );
 
             try {
+                this.log.debug("Creating computer: " + computerName);
+                if (existingAdComputer) {
+                    throw new Error(
+                        "The Computer '" + computerName + "' already exists"
+                    );
+                }
+
                 if (domainName) {
                     parent.createComputer(computerName, domainName);
                 } else {
                     parent.createComputer(computerName);
                 }
+
+                var adComputer = this.getComputer(
+                    computerName,
+                    null,
+                    containerDn
+                );
+
+                this.log.debug("Computer '" + computerName + "' created successfully.");
             } catch (e) {
                 throw new Error("Failed to create Computer: " + e);
             }
-
-            var adComputer = this.getComputer(computerName);
 
             return adComputer;
         };
@@ -163,7 +183,9 @@
             }
 
             try {
+                this.log.debug("Removing computer: " + adComputer.name);
                 adComputer.destroy();
+                this.log.debug("Computer '" + adComputer.name + "' removed successfully");
             } catch (e) {
                 throw new Error("Failed to remove AD Computer: " + e);
             }
@@ -334,6 +356,7 @@
          * @param {AD:OrganizationalUnit|AD:Group} parent - Parent container.
          * @param {string} [domainName] - Domain name.
          * @param {string} [displayName] - Display name. Defaults to username if not specified.
+         * @param {string} [description] - User description.
          * @param {boolean} [changePasswordAtNextLogon] - Whether to force password change at next logon.
          * @returns {AD:User} Active Directory User object.
          */
@@ -344,6 +367,7 @@
             parent,
             domainName,
             displayName,
+            description,
             changePasswordAtNextLogon
         ) {
             if (!username || typeof username !== "string") {
@@ -370,9 +394,9 @@
             if (displayName && typeof displayName !== "string") {
                 throw new ReferenceError("displayName must be of type 'string'");
             }
-            // if (description && typeof description !== "string") {
-            //     throw new ReferenceError("description must be of type 'string'");
-            // }
+            if (description && typeof description !== "string") {
+                throw new ReferenceError("description must be of type 'string'");
+            }
 
             var containerDn = parent.distinguishedName;
             var existingAdUser = this.getUser(
@@ -384,10 +408,10 @@
             );
 
             try {
+                this.log.debug("Creating user: " + username);
                 if (existingAdUser) {
                     throw new Error(
-                        "The User '" + username +
-                        "' already exists"
+                        "The User '" + username + "' already exists"
                     );
                 }
 
@@ -408,8 +432,10 @@
                     containerDn
                 );
 
+                this.log.debug("Setting changePasswordAtNextLogon to: " + changePasswordAtNextLogon);
                 adUser.setChangePasswordAtNextLogon(changePasswordAtNextLogon);
-                // if (description) adUser.setAttribute("description", description);
+                if (description) adUser.setAttribute("description", description);
+                this.log.debug("User '" + username + "' created successfully.");
             } catch (e) {
                 throw new Error("Failed to create User: " + e);
             }
@@ -432,7 +458,9 @@
             }
 
             try {
+                this.log.debug("Removing user: " + adUser.name);
                 adUser.destroy();
+                this.log.debug("User '" + adUser.name + "' removed successfully");
             } catch (e) {
                 throw new Error("Failed to remove AD User: " + e);
             }
@@ -487,7 +515,9 @@
             }
 
             try {
+                this.log.debug("Resetting password for user: " + adUser.name);
                 adUser.setPassword(newPassword);
+                this.log.debug("User '" + adUser.name + "' password reset successfully");
             } catch (e) {
                 throw new Error("Failed to reset password: " + e);
             }
