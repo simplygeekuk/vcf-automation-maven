@@ -305,6 +305,7 @@
          * @param {AD:OrganizationalUnit|AD:Group} parent - Parent container.
          * @param {string} [domainName] - Domain name.
          * @param {string} [displayName] - Display name. Defaults to username if not specified.
+         * @param {boolean} [changePasswordAtNextLogon] - Whether to force password change at next logon.
          * @returns {AD:User} Active Directory User object.
          */
 
@@ -314,7 +315,7 @@
             parent,
             domainName,
             displayName,
-            description
+            changePasswordAtNextLogon
         ) {
             if (!username || typeof username !== "string") {
                 throw new ReferenceError(
@@ -340,37 +341,49 @@
             if (displayName && typeof displayName !== "string") {
                 throw new ReferenceError("displayName must be of type 'string'");
             }
-            if (description && typeof description !== "string") {
-                throw new ReferenceError("description must be of type 'string'");
-            }
+            // if (description && typeof description !== "string") {
+            //     throw new ReferenceError("description must be of type 'string'");
+            // }
 
-            var existingAdUser = this.getUser(username, null, null, null, false);
-
-            if (existingAdUser) {
-                throw new Error(
-                    "Failed to create User. The User '" + username +
-                    "' already exists"
-                );
-            }
-
-            // eslint-disable-next-line no-redeclare
-            if (!domainName) var domainName;
-            if (!displayName) displayName = username;
+            var containerDn = parent.distinguishedName;
+            var existingAdUser = this.getUser(
+                username,
+                null,
+                containerDn,
+                null,
+                false
+            );
 
             try {
+                if (existingAdUser) {
+                    throw new Error(
+                        "The User '" + username +
+                        "' already exists"
+                    );
+                }
+
+                // eslint-disable-next-line no-redeclare
+                if (!domainName) var domainName;
+                if (!displayName) displayName = username;
+
                 parent.createUserWithPassword(
                     username,
                     password,
                     domainName,
                     displayName
                 );
+
+                var adUser = this.getUser(
+                    username,
+                    null,
+                    containerDn
+                );
+
+                adUser.setChangePasswordAtNextLogon(changePasswordAtNextLogon);
+                // if (description) adUser.setAttribute("description", description);
             } catch (e) {
                 throw new Error("Failed to create User: " + e);
             }
-
-            var adUser = this.getUser(username);
-
-            if (description) adUser.setAttribute("description", description);
 
             return adUser;
         };
@@ -380,7 +393,6 @@
          * @function
          * @public
          * @param {AD:User} adUser - Active Directory User object.
-         * @returns {void}
          */
 
         this.removeUser = function(adUser) {
@@ -394,6 +406,61 @@
                 adUser.destroy();
             } catch (e) {
                 throw new Error("Failed to remove AD User: " + e);
+            }
+        };
+
+        /**
+         * Enable or disable a user account.
+         * @function
+         * @public
+         * @param {AD:User} adUser - Active Directory User object.
+         * @param {boolean} enable - True to enable, false to disable.
+         */
+        this.setUserEnabled = function(
+            adUser,
+            enable
+        ) {
+            if (!adUser || System.getObjectType(adUser) !== "AD:User") {
+                throw new ReferenceError(
+                    "adUser is required and must be of type 'AD:User'"
+                );
+            }
+
+            // Default enable to true
+            enable = enable !== false;
+
+            try {
+                this.log.debug("Setting user '" + adUser.name + "' enabled status to: " + enable);
+                adUser.setEnabled(enable);
+                this.log.debug("User '" + adUser.name + "' enabled status set to: " + enable);
+            } catch (e) {
+                throw new Error("Failed to set user enabled status: " + e);
+            }
+        };
+
+        /**
+         * Resets the password for a user.
+         * @function
+         * @public
+         * @param {AD:User} adUser - Active Directory User object.
+         * @param {string} newPassword - The new password.
+         */
+        this.resetUserPassword = function(adUser, newPassword) {
+            if (!adUser || System.getObjectType(adUser) !== "AD:User") {
+                throw new ReferenceError(
+                    "adUser is required and must be of type 'AD:User'"
+                );
+            }
+            if (!newPassword || typeof newPassword !== "string") {
+                throw new ReferenceError(
+                    "newPassword is required and must be of type 'string'"
+                );
+            }
+
+            try {
+                adUser.setPassword(newPassword);
+            } catch (e) {
+                throw new Error("Failed to reset password: " + e);
             }
         };
 
