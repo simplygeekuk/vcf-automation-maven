@@ -170,6 +170,35 @@
         };
 
         /**
+         * Enable or disable a computer account.
+         * @function
+         * @public
+         * @param {AD:User} adComputer - Active Directory computer object.
+         * @param {boolean} enable - True to enable, false to disable.
+         */
+        this.setComputerEnabled = function(
+            adComputer,
+            enable
+        ) {
+            if (!adComputer || System.getObjectType(adComputer) !== "AD:ComputerAD") {
+                throw new ReferenceError(
+                    "adComputer is required and must be of type 'AD:ComputerAD'"
+                );
+            }
+
+            // Default enable to true
+            enable = enable !== false;
+
+            try {
+                this.log.debug("Setting computer '" + adComputer.name + "' enabled status to: " + enable);
+                adComputer.setEnabled(enable);
+                this.log.debug("Computer '" + adComputer.name + "' enabled status set to: " + enable);
+            } catch (e) {
+                throw new Error("Failed to set computer enabled status: " + e);
+            }
+        };
+
+        /**
          * Get an Active Directory group.
          * @function
          * @public
