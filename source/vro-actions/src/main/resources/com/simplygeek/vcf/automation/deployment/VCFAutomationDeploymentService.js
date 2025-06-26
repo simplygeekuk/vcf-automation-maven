@@ -154,7 +154,7 @@
         var results;
 
         if (statuses && statuses.length > 0) {
-            uri += "&projects=" + statuses.join(",");
+            uri += "&status=" + statuses.join(",");
         }
         if (projects && projects.length > 0) {
             uri += "&projects=" + projects.join(",");
