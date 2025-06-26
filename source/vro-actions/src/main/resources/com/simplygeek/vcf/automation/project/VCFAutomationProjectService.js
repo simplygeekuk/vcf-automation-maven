@@ -53,19 +53,12 @@
     );
     VCFAutomationProjectService.prototype.constructor = VCFAutomationProjectService;
 
-    // var VCFAutomationIaasService = System.getModule(
-    //     "com.simplygeek.vcf.automation.iaas"
-    // ).VCFAutomationIaasService();
-
-    // VCFAutomationProjectService.prototype.getProjectZones = VCFAutomationIaasService.prototype.getProjectZones;
-
     /**
      * Get a list of projects.
      * @function
      * @public
      * @returns {Array/Any} The list of projects.
      */
-
     VCFAutomationProjectService.prototype.getProjects = function () {
         var uri = this.baseUri + "/projects?" + this.apiVersionParam;
         var results;
@@ -85,7 +78,6 @@
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
      * @returns {Any} The project object.
      */
-
     VCFAutomationProjectService.prototype.getProjectById = function (
         projectId,
         throwOnNotFound
@@ -136,7 +128,6 @@
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
      * @returns {Any} The project object.
      */
-
     VCFAutomationProjectService.prototype.getProjectByName = function (
         projectName,
         throwOnNotFound
@@ -198,7 +189,6 @@
      * @param {string} projectNamePrefix - The project name prefix.
      * @returns {Array/Any} The projects matching the provided name prefix.
      */
-
     VCFAutomationProjectService.prototype.getProjectsWithPrefix = function (
         projectNamePrefix
     ) {
@@ -228,7 +218,6 @@
      * @param {Any} projectSpecification - The project specification.
      * @returns {Any} The new project object.
      */
-
     VCFAutomationProjectService.prototype.createProject = function (
         projectSpecification
     ) {
@@ -274,7 +263,6 @@
      * @param {string} projectId - The project id.
      * @returns {Array/Any} The project tags list.
      */
-
     VCFAutomationProjectService.prototype.getProjectTags = function (
         projectId
     ) {
@@ -311,7 +299,6 @@
      * @param {Array/Any} tags - The tags to assign to project.
      * @returns {Array/Any} The project tags list.
      */
-
     VCFAutomationProjectService.prototype.createProjectTags = function (
         projectId,
         tags
@@ -362,7 +349,6 @@
      * @param {Any} updatedObject - The Project object to update.
      * @returns {Any} The updated Project object.
      */
-
     VCFAutomationProjectService.prototype.updateProject = function (
         projectId,
         updatedObject
@@ -397,7 +383,6 @@
      * @public
      * @param {string} projectId - The Project uuid.
      */
-
     VCFAutomationProjectService.prototype.deleteProject = function (
         projectId
     ) {
