@@ -63,6 +63,14 @@
          * @param {string} [containerDn] - Optional container to search within.
          * @param {boolean} [returnAllMatches] - Return all matching objects.
          * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no object is found.
+         * @example
+         * var adcomputer = adService.getComputer(
+         *     "computerName",
+         *     null,
+         *     "OU=servers,DC=example,DC=local",
+         *     false,
+         *     true
+         * );
          * @returns {AD:ComputerAD} The Active Directory computer object.
          */
 
@@ -85,8 +93,7 @@
                 throw new ReferenceError("containerDn must be of type 'string'");
             }
 
-            var adComputer = findAdObject.call(
-                this,
+            var adComputer = this.findAdObject(
                 "ComputerAD",
                 computerName,
                 computerDn,
@@ -130,8 +137,7 @@
             }
 
             var containerDn = parent.distinguishedName;
-            var existingAdComputer = findAdObject.call(
-                this,
+            var existingAdComputer = this.findAdObject(
                 "ComputerAD",
                 computerName,
                 null,
@@ -249,8 +255,7 @@
                 throw new ReferenceError("containerDn must be of type 'string'");
             }
 
-            var adGroup = findAdObject.call(
-                this,
+            var adGroup = this.findAdObject(
                 "Group",
                 groupName,
                 groupDN,
@@ -291,8 +296,7 @@
                 throw new ReferenceError("containerDn must be of type 'string'");
             }
 
-            var adOu = findAdObject.call(
-                this,
+            var adOu = this.findAdObject(
                 "OrganizationalUnit",
                 ouName,
                 ouDN,
@@ -330,8 +334,7 @@
             }
 
             var containerDn = parent.distinguishedName;
-            var existingAdOu = findAdObject.call(
-                this,
+            var existingAdOu = this.findAdObject(
                 "OrganizationalUnit",
                 organizationalUnitName,
                 null,
@@ -425,8 +428,7 @@
                 throw new ReferenceError("containerDn must be of type 'string'");
             }
 
-            var adUser = findAdObject.call(
-                this,
+            var adUser = this.findAdObject(
                 "User",
                 username,
                 userDn,
@@ -614,18 +616,18 @@
         };
 
         /**
-         * Get an Active Directory user group (security group).
+         * Get an Active Directory security group.
          * @function
          * @public
-         * @param {string} userGroupName - UserGroup name.
-         * @param {string} userGroupDN - UserGroup Distinguished Name.
+         * @param {string} userGroupName - Security Group name.
+         * @param {string} userGroupDN - Security Group Distinguished Name.
          * @param {string} [containerDn] - Optional container to search within.
          * @param {boolean} [returnAllMatches] - Return all matching objects.
          * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no object is found.
-         * @returns {AD:UserGroup} The Active Directory UserGroup object.
+         * @returns {AD:UserGroup} The Active Directory Security Group object.
          */
 
-        this.getUserGroup = function(
+        this.getSecurityGroup = function(
             userGroupName,
             userGroupDN,
             containerDn,
@@ -646,8 +648,7 @@
                 throw new ReferenceError("containerDn must be of type 'string'");
             }
 
-            var adUserGroup = findAdObject.call(
-                this,
+            var adUserGroup = this.findAdObject(
                 "UserGroup",
                 userGroupName,
                 userGroupDN,
@@ -660,7 +661,7 @@
         };
 
         /**
-         * Create an Active Directory User Group object in the specified container.
+         * Create an Active Directory Security Group object in the specified container.
          * @function
          * @public
          * @param {string} userGroupName - User Group name.
@@ -668,7 +669,7 @@
          * @returns {AD:UserGroup} The created Active Directory User Group object.
          */
 
-        this.createUserGroup = function(
+        this.createSecurityGroup = function(
             userGroupName,
             parent
         ) {
@@ -686,8 +687,7 @@
             }
 
             var containerDn = parent.distinguishedName;
-            var existingAdUserGroup = findAdObject.call(
-                this,
+            var existingAdUserGroup = this.findAdObject(
                 "UserGroup",
                 userGroupName,
                 null,
@@ -697,37 +697,37 @@
             );
 
             try {
-                this.log.debug("Creating User Group: " + userGroupName);
+                this.log.debug("Creating Security Group: " + userGroupName);
                 if (existingAdUserGroup) {
                     throw new Error(
-                        "The User Group '" + userGroupName + "' already exists"
+                        "The Security Group '" + userGroupName + "' already exists"
                     );
                 }
 
                 parent.createUserGroup(userGroupName);
 
-                var adOu = this.getUserGroup(
+                var adUserGroup = this.getSecurityGroup(
                     userGroupName,
                     null,
                     containerDn
                 );
 
-                this.log.debug("User Group '" + userGroupName + "' created successfully.");
+                this.log.debug("Security Group '" + userGroupName + "' created successfully.");
             } catch (e) {
-                throw new Error("Failed to create User Group: " + e);
+                throw new Error("Failed to create Security Group: " + e);
             }
 
-            return adOu;
+            return adUserGroup;
         };
 
         /**
-         * Remove an Active Directory User Group.
+         * Remove an Active Directory Security Group.
          * @function
          * @public
-         * @param {AD:UserGroup} adUserGroup - Active Directory User Group object.
+         * @param {AD:UserGroup} adUserGroup - Active Directory Security Group object.
          */
 
-        this.removeUserGroup = function(
+        this.removeSecurityGroup = function(
             adUserGroup
         ) {
             if (!adUserGroup || System.getObjectType(adUserGroup) !== "AD:UserGroup") {
@@ -737,52 +737,227 @@
             }
 
             try {
-                this.log.debug("Removing User Group: " + adUserGroup.name);
+                this.log.debug("Removing Security Group: " + adUserGroup.name);
                 adUserGroup.destroy();
-                this.log.debug("User Group '" + adUserGroup.name + "' removed successfully");
+                this.log.debug("Security Group '" + adUserGroup.name + "' removed successfully");
             } catch (e) {
-                throw new Error("Failed to remove User Group: " + e);
+                throw new Error("Failed to remove Security Group: " + e);
             }
         };
 
         /**
-         * Search for AD users matching a pattern within an optional specific OU.
-         * @param {string} searchPattern The search pattern (e.g., "*John*").
-         * @param {string} searchOU Distinguished Name (DN) of the OU to search in (e.g., "OU=Users,DC=example,DC=com").
-         * @returns {Array/Any} Array of matched AD user objects.
+         * Search for AD computers based on a pattern.
+         * @function
+         * @public
+         * @param {string} searchPattern - Pattern to match CN (e.g., "*MYCOMPUTER*").
+         * @param {string} [searchBaseDn] - The base DN for the search (domain or OU).
+         * @returns {Array/AD:Computer} List of Active Directory users.
          */
-
-        this.searchADUsers = function(
+        this.searchComputers = function(
             searchPattern,
-            searchOU
+            searchBaseDn
         ) {
             if (!searchPattern || typeof searchPattern !== "string") {
-                throw new Error("searchPattern is required and must be of type 'string'");
+                throw new ReferenceError(
+                    "searchPattern is required and must be of type 'string'"
+                );
             }
-            if (searchOU && typeof searchOU !== "string") {
-                throw new Error("searchOU must be of type 'string'");
-            }
-
-            var adContainer;
-
-            if (searchOU) {
-                // Get the AD container for the specified OU
-                adContainer = ActiveDirectory.getContainer(searchOU);
-
-                if (!adContainer) {
-                    throw new Error(
-                        "Unable to retrieve the specified OU: " + searchOU + ". Check the DN and permissions."
-                    );
-                }
-            } else {
-                adContainer = ActiveDirectory.getRoot();
+            if (searchBaseDn && typeof searchBaseDn !== "string") {
+                throw new ReferenceError(
+                    "searchBaseDn must be of type 'string'"
+                );
             }
 
-            // Search users
-            var userCriteria = "(&(objectClass=user)(cn=" + searchPattern + "))";
-            var adUsers = adContainer.search(userCriteria, "subtree");
+            var entries = [];
+            var adUComputers = [];
+            var baseDn = searchBaseDn || this.getDefaultBaseDn();
+
+            entries = this.ldapSearch("computer", searchPattern, baseDn);
+            entries.forEach(function(entry){
+                var cn = entry.getAttributeValue("cn");
+                var dn = entry.getDN();
+
+                this.log.debug("Matched computer: " + cn);
+                this.log.debug("Distinguished Name: " + dn);
+
+                adUComputers.push(this.getComputer(cn, dn));
+            }, this);
+
+            return adUComputers;
+        };
+
+        /**
+         * Search for AD users based on a pattern.
+         * @function
+         * @public
+         * @param {string} searchPattern - Pattern to match CN (e.g., "*John*").
+         * @param {string} [searchBaseDn] - The base DN for the search (domain or OU).
+         * @returns {Array/AD:User} List of Active Directory users.
+         */
+        this.searchUsers = function(
+            searchPattern,
+            searchBaseDn
+        ) {
+            if (!searchPattern || typeof searchPattern !== "string") {
+                throw new ReferenceError(
+                    "searchPattern is required and must be of type 'string'"
+                );
+            }
+            if (searchBaseDn && typeof searchBaseDn !== "string") {
+                throw new ReferenceError(
+                    "searchBaseDn must be of type 'string'"
+                );
+            }
+
+            var entries = [];
+            var adUsers = [];
+            var baseDn = searchBaseDn || this.getDefaultBaseDn();
+
+            entries = this.ldapSearch("user", searchPattern, baseDn);
+            entries.forEach(function(entry){
+                var cn = entry.getAttributeValue("cn");
+                var dn = entry.getDN();
+
+                this.log.debug("Matched user: " + cn);
+                this.log.debug("Distinguished Name: " + dn);
+
+                adUsers.push(this.getUser(cn, dn));
+            }, this);
 
             return adUsers;
+        };
+
+        /**
+         * Search for AD security groups based on a pattern.
+         * @function
+         * @public
+         * @param {string} searchPattern - Pattern to match CN (e.g., "*MYGROUP*").
+         * @param {string} searchBaseDn - The base DN for the search (domain or OU).
+         * @returns {Array/AD:UserGroup} List of Active Directory security groups.
+         */
+        this.searchSecurityGroups = function(
+            searchPattern,
+            searchBaseDn
+        ) {
+            if (!searchPattern || typeof searchPattern !== "string") {
+                throw new ReferenceError(
+                    "searchPattern is required and must be of type 'string'"
+                );
+            }
+            if (searchBaseDn && typeof searchBaseDn !== "string") {
+                throw new ReferenceError(
+                    "searchBaseDn must be of type 'string'"
+                );
+            }
+
+            var entries = [];
+            var adUserGroups = [];
+            var baseDn = searchBaseDn || this.getDefaultBaseDn();
+
+            entries = this.ldapSearch("usergroup", searchPattern, baseDn);
+            entries.forEach(function(entry){
+                var cn = entry.getAttributeValue("cn");
+                var dn = entry.getDN();
+
+                this.log.debug("Matched security group: " + cn);
+                this.log.debug("Distinguished Name: " + dn);
+
+                adUserGroups.push(this.getSecurityGroup(cn, dn));
+            }, this);
+
+            return adUserGroups;
+        };
+
+        /**
+         * Search for ldap objects with pattern and specified base DN.
+         * @function
+         * @private
+         * @param {string} objectClass - The ldap object class to search for.
+         * @param {string} searchPattern - Pattern to match CN (e.g., "*John*").
+         * @param {string} searchBaseDn - The base DN for the search (domain or OU).
+         * @returns {Array} List of LDAP entries.
+         */
+        this.ldapSearch = function(
+            objectClass,
+            searchPattern,
+            searchBaseDn
+        ) {
+            var ldapClient = this.adHost.getLdapClient();
+            var searchScope = LdapSearchScope.SUB;
+            var dereferencePolicy = LdapDereferencePolicy.NEVER;
+            var filter;
+            var timeLimit = 0; // No time limit
+            var sizeLimit = 0; // No size limit (return all matches)
+            var entries;
+            var objectclassFilter;
+
+            if (objectClass === "user") {
+                objectclassFilter = "(&(objectClass=user)" +
+                                    "(!(objectClass=computer))" +
+                                    "(!(cn=HealthMailbox*))" +
+                                    "(!(cn=SystemMailbox*))" +
+                                    "(!(cn=DiscoverySearchMailbox*))";
+            } else if (objectClass === "computer") {
+                objectclassFilter = "(&(objectClass=computer)";
+            } else if (objectClass === "usergroup") {
+                // (groupType:1.2.840.113556.1.4.803:=2147483648) = All Security Groups (excludes distribution groups)
+                // Distribution Groups can also be returned using (!(groupType:1.2.840.113556.1.4.803:=2147483648))
+                objectclassFilter = "(&(objectCategory=Group)(groupType:1.2.840.113556.1.4.803:=2147483648)";
+            } else {
+                throw new Error("Unknown objectClass");
+            }
+
+            filter = objectclassFilter + "(cn=" + searchPattern + "))";
+
+            try {
+                this.log.debug("Using LdapClient to perform search");
+                this.log.debug("LDAP search base DN: " + searchBaseDn);
+                this.log.debug("LDAP search filter: " + filter);
+
+                var results = ldapClient.search(
+                    searchBaseDn,
+                    searchScope,
+                    dereferencePolicy,
+                    timeLimit,
+                    sizeLimit,
+                    filter
+                );
+
+                entries = results.getSearchEntries();
+                this.log.debug("Found " + entries.length + " " + objectClass + "(s) matching pattern '" + searchPattern + "'");
+            } catch (e) {
+                throw new Error("LdapClient search failed: " + e);
+            } finally {
+                ldapClient.close();
+            }
+
+            return entries;
+        };
+
+        /**
+         * Derives the default base DN from the adHost URL.
+         * @function
+         * @public
+         * @example ldap://example.com:389 → DC=example,DC=com
+         * @returns {string} The inferred base DN.
+         */
+        this.getDefaultBaseDn = function() {
+            var url = this.adHost.url;
+            // Extract the domain from the URL
+            var match = url.match(/^ldap[s]?:\/\/([^:\\/]+)/i);
+
+            if (!match || !match[1]) {
+                throw new Error("Failed to parse domain from AD host URL: " + url);
+            }
+
+            var domain = match[1];
+            var baseDn = domain.split(".").map(function(part) {
+                return "DC=" + part;
+            }).join(",");
+
+            this.log.debug("Found baseDN: " + baseDn);
+
+            return baseDn;
         };
 
         /**
@@ -798,7 +973,7 @@
          * @returns {Any|Array} A single object or array of matching AD objects.
          */
 
-        var findAdObject = function(
+        this.findAdObject = function(
             adObjType,
             adObjName,
             objDistinguishedName,
@@ -815,11 +990,9 @@
 
             this.log.debug("Finding Active Directory object with name '" + adObjName +
                             "' of type '" + adObjType + "'");
-            try {
-                this.log.debug("Searching entire domain for objects matching '" + adObjName + "'");
-                adObjsFound = ActiveDirectory.searchExactMatch(adObjType, adObjName, 10, this.adHost);
-                this.log.debug("Found " + adObjsFound.length + " objects matching '" + adObjName + "'");
 
+            adObjsFound = ActiveDirectory.searchExactMatch(adObjType, adObjName, 1000, this.adHost);
+            try {
                 // If DN is provided, use it exclusively and skip container filtering
                 if (objDistinguishedName) {
                     this.log.debug("Looking up AD object by Distinguished Name: " + objDistinguishedName);
@@ -834,7 +1007,11 @@
                         return obj.distinguishedName.toLowerCase().indexOf(containerDn.toLowerCase()) > -1;
                     });
                     this.log.debug("Filtered to " + adObjsFound.length + " results in container: " + containerDn);
+                } else {
+                    this.log.debug("Searching entire domain for objects matching '" + adObjName + "'");
                 }
+
+                this.log.debug("Found " + adObjsFound.length + " objects matching '" + adObjName + "'");
 
                 if (adObjsFound.length > 1) {
                     if (returnAllMatches) {
