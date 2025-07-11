@@ -805,11 +805,13 @@
          * @public
          * @param {string} searchPattern - Pattern to match CN (e.g., "*MYCOMPUTER*").
          * @param {string} [searchBaseDn] - The base DN for the search (domain or OU).
+         * @param {string} [searchAttribute] - LDAP attribute to search for. Defaults to 'cn'.
          * @returns {Array/AD:Computer} List of Active Directory users.
          */
         this.searchComputers = function(
             searchPattern,
-            searchBaseDn
+            searchBaseDn,
+            searchAttribute
         ) {
             if (!searchPattern || typeof searchPattern !== "string") {
                 throw new ReferenceError(
@@ -821,12 +823,21 @@
                     "searchBaseDn must be of type 'string'"
                 );
             }
+            if (searchAttribute && typeof searchAttribute !== "string") {
+                throw new ReferenceError(
+                    "searchAttribute must be of type 'string'"
+                );
+            }
 
             var entries = [];
             var adUComputers = [];
-            var baseDn = searchBaseDn || this.getDefaultBaseDn();
 
-            entries = this.ldapSearch("computer", searchPattern, baseDn);
+            entries = this.ldapSearch(
+                "computer",
+                searchPattern,
+                searchBaseDn,
+                searchAttribute
+            );
             entries.forEach(function(entry){
                 var cn = entry.getAttributeValue("cn");
                 var dn = entry.getDN();
@@ -846,11 +857,13 @@
          * @public
          * @param {string} searchPattern - Pattern to match CN (e.g., "*John*").
          * @param {string} [searchBaseDn] - The base DN for the search (domain or OU).
+         * @param {string} [searchAttribute] - LDAP attribute to search for. Defaults to 'cn'.
          * @returns {Array/AD:User} List of Active Directory users.
          */
         this.searchUsers = function(
             searchPattern,
-            searchBaseDn
+            searchBaseDn,
+            searchAttribute
         ) {
             if (!searchPattern || typeof searchPattern !== "string") {
                 throw new ReferenceError(
@@ -862,12 +875,21 @@
                     "searchBaseDn must be of type 'string'"
                 );
             }
+            if (searchAttribute && typeof searchAttribute !== "string") {
+                throw new ReferenceError(
+                    "searchAttribute must be of type 'string'"
+                );
+            }
 
             var entries = [];
             var adUsers = [];
-            var baseDn = searchBaseDn || this.getDefaultBaseDn();
 
-            entries = this.ldapSearch("user", searchPattern, baseDn);
+            entries = this.ldapSearch(
+                "user",
+                searchPattern,
+                searchBaseDn,
+                searchAttribute
+            );
             entries.forEach(function(entry){
                 var cn = entry.getAttributeValue("cn");
                 var dn = entry.getDN();
@@ -886,12 +908,14 @@
          * @function
          * @public
          * @param {string} searchPattern - Pattern to match CN (e.g., "*MYGROUP*").
-         * @param {string} searchBaseDn - The base DN for the search (domain or OU).
+         * @param {string} [searchBaseDn] - The base DN for the search (domain or OU).
+         * @param {string} [searchAttribute] - LDAP attribute to search for. Defaults to 'cn'.
          * @returns {Array/AD:UserGroup} List of Active Directory security groups.
          */
         this.searchSecurityGroups = function(
             searchPattern,
-            searchBaseDn
+            searchBaseDn,
+            searchAttribute
         ) {
             if (!searchPattern || typeof searchPattern !== "string") {
                 throw new ReferenceError(
@@ -903,12 +927,21 @@
                     "searchBaseDn must be of type 'string'"
                 );
             }
+            if (searchAttribute && typeof searchAttribute !== "string") {
+                throw new ReferenceError(
+                    "searchAttribute must be of type 'string'"
+                );
+            }
 
             var entries = [];
             var adUserGroups = [];
-            var baseDn = searchBaseDn || this.getDefaultBaseDn();
 
-            entries = this.ldapSearch("usergroup", searchPattern, baseDn);
+            entries = this.ldapSearch(
+                "usergroup",
+                searchPattern,
+                searchBaseDn,
+                searchAttribute
+            );
             entries.forEach(function(entry){
                 var cn = entry.getAttributeValue("cn");
                 var dn = entry.getDN();
@@ -928,13 +961,15 @@
          * @private
          * @param {string} objectClass - The ldap object class to search for.
          * @param {string} searchPattern - Pattern to match CN (e.g., "*John*").
-         * @param {string} searchBaseDn - The base DN for the search (domain or OU).
+         * @param {string} [searchBaseDn] - The base DN for the search (domain or OU).
+         * @param {string} [searchAttribute] - LDAP attribute to search for. Defaults to 'cn'.
          * @returns {Array} List of LDAP entries.
          */
         this.ldapSearch = function(
             objectClass,
             searchPattern,
-            searchBaseDn
+            searchBaseDn,
+            searchAttribute
         ) {
             var ldapClient = this.adHost.getLdapClient();
             var searchScope = LdapSearchScope.SUB;
@@ -944,6 +979,8 @@
             var sizeLimit = 0; // No size limit (return all matches)
             var entries;
             var objectclassFilter;
+            var baseDn = searchBaseDn || this.getDefaultBaseDn();
+            var ldapAttribute = searchAttribute || "cn";
 
             if (objectClass === "user") {
                 objectclassFilter = "(&(objectClass=user)" +
@@ -957,19 +994,21 @@
                 // (groupType:1.2.840.113556.1.4.803:=2147483648) = All Security Groups (excludes distribution groups)
                 // Distribution Groups can also be returned using (!(groupType:1.2.840.113556.1.4.803:=2147483648))
                 objectclassFilter = "(&(objectCategory=Group)(groupType:1.2.840.113556.1.4.803:=2147483648)";
+            } else if (objectClass === "ou") {
+                objectclassFilter = "(&(objectClass=organizationalUnit)";
             } else {
                 throw new Error("Unknown objectClass");
             }
 
-            filter = objectclassFilter + "(cn=" + searchPattern + "))";
+            filter = objectclassFilter + "(" + ldapAttribute + "=" + searchPattern + "))";
 
             try {
                 this.log.debug("Using LdapClient to perform search");
-                this.log.debug("LDAP search base DN: " + searchBaseDn);
+                this.log.debug("LDAP search base DN: " + baseDn);
                 this.log.debug("LDAP search filter: " + filter);
 
                 var results = ldapClient.search(
-                    searchBaseDn,
+                    baseDn,
                     searchScope,
                     dereferencePolicy,
                     timeLimit,
