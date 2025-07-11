@@ -746,6 +746,60 @@
         };
 
         /**
+         * Search for AD organizational units based on a pattern.
+         * @function
+         * @public
+         * @param {string} searchPattern - Pattern to match CN (e.g., "*MYOU*").
+         * @param {string} [searchBaseDn] - The base DN for the search (domain or OU).
+         * @param {string} [searchAttribute] - LDAP attribute to search for. Defaults to 'name'.
+         * @returns {Array/AD:OrganizationUnit} List of Active Directory organizational units.
+         */
+        this.searchOrganizationalUnits = function(
+            searchPattern,
+            searchBaseDn,
+            searchAttribute
+        ) {
+            if (!searchPattern || typeof searchPattern !== "string") {
+                throw new ReferenceError(
+                    "searchPattern is required and must be of type 'string'"
+                );
+            }
+            if (searchBaseDn && typeof searchBaseDn !== "string") {
+                throw new ReferenceError(
+                    "searchBaseDn must be of type 'string'"
+                );
+            }
+            if (searchAttribute && typeof searchAttribute !== "string") {
+                throw new ReferenceError(
+                    "searchAttribute must be of type 'string'"
+                );
+            }
+
+            var entries = [];
+            var adUOUs = [];
+
+            searchAttribute = searchAttribute || "name";
+
+            entries = this.ldapSearch(
+                "ou",
+                searchPattern,
+                searchBaseDn,
+                searchAttribute
+            );
+            entries.forEach(function(entry){
+                var ouName = entry.getAttributeValue("name");
+                var dn = entry.getDN();
+
+                this.log.debug("Matched OU: " + ouName);
+                this.log.debug("Distinguished Name: " + dn);
+
+                adUOUs.push(this.getOrganizationalUnit(ouName, dn));
+            }, this);
+
+            return adUOUs;
+        };
+
+        /**
          * Search for AD computers based on a pattern.
          * @function
          * @public
