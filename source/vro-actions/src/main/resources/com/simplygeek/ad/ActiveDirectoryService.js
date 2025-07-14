@@ -49,7 +49,6 @@
          * @public
          * @returns {AD:AdHost} Active Directory Host object.
          */
-
         this.getAdHost = function() {
             return this.adHost;
         };
@@ -746,6 +745,33 @@
         };
 
         /**
+         * Add members to a Security Group.
+         * @function
+         * @public
+         * @param {AD:UserGroup} adUserGroup - Active Directory Security Group object.
+         * @param {Array/AD:User|Array/AD:UserGroup|Array/AD:Computer} groupMembers - Active Directory items to add.
+         */
+
+        this.addSecurityGroupMembers = function(
+            adUserGroup,
+            groupMembers
+        ) {
+            if (!adUserGroup || System.getObjectType(adUserGroup) !== "AD:UserGroup") {
+                throw new ReferenceError(
+                    "adUserGroup is required and must be of type 'AD:UserGroup'"
+                );
+            }
+
+            try {
+                this.log.debug("Removing Security Group: " + adUserGroup.name);
+                adUserGroup.addElements(groupMembers);
+                this.log.debug("Security Group '" + adUserGroup.name + "' removed successfully");
+            } catch (e) {
+                throw new Error("Failed to remove Security Group: " + e);
+            }
+        };
+
+        /**
          * Search for AD organizational units based on a pattern.
          * @function
          * @public
@@ -965,6 +991,7 @@
          * @param {string} [searchAttribute] - LDAP attribute to search for. Defaults to 'cn'.
          * @returns {Array} List of LDAP entries.
          */
+
         this.ldapSearch = function(
             objectClass,
             searchPattern,
@@ -1017,7 +1044,9 @@
                 );
 
                 entries = results.getSearchEntries();
-                this.log.debug("Found " + entries.length + " " + objectClass + "(s) matching pattern '" + searchPattern + "'");
+                this.log.debug(
+                    "Found " + entries.length + " " + objectClass +
+                    "(s) matching pattern '" + searchPattern + "'");
             } catch (e) {
                 throw new Error("LdapClient search failed: " + e);
             } finally {
@@ -1093,7 +1122,9 @@
                     adObjsFound = adObjsFound.filter(function(obj) {
                         return obj.distinguishedName.toLowerCase() === objDistinguishedName.toLowerCase();
                     });
-                    this.log.debug("Filtered to " + adObjsFound.length + " results using exact DN: " + objDistinguishedName);
+                    this.log.debug(
+                        "Filtered to " + adObjsFound.length +
+                        " results using exact DN: " + objDistinguishedName);
                 } else if (containerDn) {
                     this.log.debug("Searching for '" + adObjName + "' in containerDN '" + containerDn + "'");
                     adObjsFound = adObjsFound.filter(function(obj) {
