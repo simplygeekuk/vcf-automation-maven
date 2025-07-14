@@ -1,0 +1,11 @@
+# .prettierignore
+
+# ignore build output
+dist/
+build/
+
+# Maven
+**/target/
+
+# ignore node modules
+node_modules/
