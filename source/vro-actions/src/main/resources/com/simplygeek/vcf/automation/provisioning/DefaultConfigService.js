@@ -13,10 +13,9 @@
 
         var provisioningConfigPath = "Simplygeek/VCF/Automation/Provisioning";
 
-        this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
-            "Action",
-            "DefaultConfigService"
-        );
+        this.log = new (System.getModule(
+            "com.simplygeek.vcf.orchestrator.logging"
+        ).Logger())("Action", "DefaultConfigService");
 
         this.configElement = this.getConfigElement(
             "Default",
@@ -125,9 +124,7 @@
      */
 
     DefaultConfigService.prototype.getAnsibleRestHostName = function () {
-        var ansibleRestHostName = this.__getConfigValue(
-            "ansibleRestHostName"
-        );
+        var ansibleRestHostName = this.__getConfigValue("ansibleRestHostName");
 
         return ansibleRestHostName;
     };
@@ -140,9 +137,7 @@
      * @returns {Any} The configuration value
      */
 
-    DefaultConfigService.prototype.__getConfigValue = function (
-        configKey
-    ) {
+    DefaultConfigService.prototype.__getConfigValue = function (configKey) {
         var configValue;
         var configElementAttribute;
 

@@ -10,10 +10,7 @@
      * @param {string} apiToken - The VCF Automation API Token.
      * @returns {Any} An instance of the VCFAutomationIaasService class.
      */
-    function VCFAutomationIaasService(
-        restHost,
-        apiToken
-    ) {
+    function VCFAutomationIaasService(restHost, apiToken) {
         if (!restHost || System.getObjectType(restHost) !== "REST:RESTHost") {
             throw new ReferenceError(
                 "restHost is required and must be of type 'REST:RESTHost'"
@@ -21,8 +18,7 @@
         }
         if (!apiToken || typeof apiToken !== "string") {
             throw new ReferenceError(
-                "apiToken is required and must " +
-                "be of type 'string'"
+                "apiToken is required and must " + "be of type 'string'"
             );
         }
 
@@ -30,10 +26,9 @@
 
         VCFAutomationBackend.call(this);
 
-        this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
-            "Action",
-            "VCFAutomationIaasService"
-        );
+        this.log = new (System.getModule(
+            "com.simplygeek.vcf.orchestrator.logging"
+        ).Logger())("Action", "VCFAutomationIaasService");
 
         this.iaasBaseUri = "/iaas/api";
         this.iaasApiVersion = this.iaasAbout().latestApiVersion;
@@ -46,7 +41,9 @@
         "com.simplygeek.vcf.automation"
     ).VCFAutomationBackend();
 
-    VCFAutomationIaasService.prototype = Object.create(VCFAutomationBackend.prototype);
+    VCFAutomationIaasService.prototype = Object.create(
+        VCFAutomationBackend.prototype
+    );
     VCFAutomationIaasService.prototype.constructor = VCFAutomationIaasService;
 
     // ─────────────────────────────────────────────────────────────────────────────
@@ -61,18 +58,19 @@
      * @returns {Any} The machine disks object.
      */
 
-    VCFAutomationIaasService.prototype.getMachineDisks = function (
-        machineId
-    ) {
+    VCFAutomationIaasService.prototype.getMachineDisks = function (machineId) {
         if (!machineId || typeof machineId !== "string") {
             throw new ReferenceError(
-                "machineId is required and must " +
-                "be of type 'string'"
+                "machineId is required and must " + "be of type 'string'"
             );
         }
 
-        var uri = this.iaasBaseUri + "/machines/" + machineId +
-                                     "/disks?" + this.iaasApiVersionParam;
+        var uri =
+            this.iaasBaseUri +
+            "/machines/" +
+            machineId +
+            "/disks?" +
+            this.iaasApiVersionParam;
         var disksObject;
 
         this.log.debug("Getting disks for machine with ID '" + machineId + "'");
@@ -93,18 +91,19 @@
      * @returns {Any} The project zones.
      */
 
-    VCFAutomationIaasService.prototype.getProjectZones = function (
-        projectId
-    ) {
+    VCFAutomationIaasService.prototype.getProjectZones = function (projectId) {
         if (!projectId || typeof projectId !== "string") {
             throw new ReferenceError(
-                "projectId is required and must " +
-                "be of type 'string'"
+                "projectId is required and must " + "be of type 'string'"
             );
         }
 
-        var uri = this.iaasBaseUri + "/projects/" + projectId +
-                                     "/zones?" + this.iaasApiVersionParam;
+        var uri =
+            this.iaasBaseUri +
+            "/projects/" +
+            projectId +
+            "/zones?" +
+            this.iaasApiVersionParam;
         var projectZonesObject;
 
         this.log.debug("Getting zones for project with ID '" + projectId + "'");
@@ -128,18 +127,23 @@
     ) {
         if (!projectId || typeof projectId !== "string") {
             throw new ReferenceError(
-                "projectId is required and must " +
-                "be of type 'string'"
+                "projectId is required and must " + "be of type 'string'"
             );
         }
 
         var zones = {};
-        var uri = this.iaasBaseUri + "/projects/" + projectId +
-                                     "/zones?" + this.iaasApiVersionParam;
+        var uri =
+            this.iaasBaseUri +
+            "/projects/" +
+            projectId +
+            "/zones?" +
+            this.iaasApiVersionParam;
         var updatedProjectZones;
         var request;
 
-        this.log.debug("Updating cloud zones for project with ID '" + projectId + "'");
+        this.log.debug(
+            "Updating cloud zones for project with ID '" + projectId + "'"
+        );
         zones.zoneAssignmentSpecifications = [];
         if (projectZones && projectZones.length > 0) {
             zones.zoneAssignmentSpecifications = projectZones;
@@ -147,7 +151,11 @@
         request = this.put(uri, zones, [202]);
         this.pollRequestStatus(request.id);
         updatedProjectZones = this.getProjectZones(projectId);
-        this.log.debug("Successfully updated cloud zones for project with ID '" + projectId + "'");
+        this.log.debug(
+            "Successfully updated cloud zones for project with ID '" +
+                projectId +
+                "'"
+        );
 
         return updatedProjectZones;
     };
@@ -182,27 +190,41 @@
         var status;
         var result;
 
-        this.log.debug("Polling request status for request with ID '" + requestId + "'");
+        this.log.debug(
+            "Polling request status for request with ID '" + requestId + "'"
+        );
 
         while (elapsed < timeoutSeconds) {
             result = this.get(uri);
             status = result.status;
 
-            this.log.debug("Request status: " + status + " (elapsed: " + elapsed + "s)");
+            this.log.debug(
+                "Request status: " + status + " (elapsed: " + elapsed + "s)"
+            );
 
             if (status === "FINISHED") {
-                this.log.debug("Request '" + requestId + "' completed successfully");
+                this.log.debug(
+                    "Request '" + requestId + "' completed successfully"
+                );
 
                 return result;
             } else if (status === "FAILED") {
-                throw new Error("Request '" + requestId + "' failed with status: " + status);
+                throw new Error(
+                    "Request '" + requestId + "' failed with status: " + status
+                );
             }
 
             System.sleep(intervalSeconds * 1000);
             elapsed += intervalSeconds;
         }
 
-        throw new Error("Request '" + requestId + "' timed out after " + timeoutSeconds + " seconds");
+        throw new Error(
+            "Request '" +
+                requestId +
+                "' timed out after " +
+                timeoutSeconds +
+                " seconds"
+        );
     };
 
     return VCFAutomationIaasService;

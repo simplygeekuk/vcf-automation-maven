@@ -13,14 +13,13 @@
 
         var provisioningConfigPath = "Simplygeek/VCF/Automation/Provisioning";
 
-        this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
-            "Action",
-            "LinuxConfigService"
-        );
+        this.log = new (System.getModule(
+            "com.simplygeek.vcf.orchestrator.logging"
+        ).Logger())("Action", "LinuxConfigService");
 
         this.defaultConfigService = new (System.getModule(
             "com.simplygeek.vcf.automation.provisioning"
-        ).DefaultConfigService());
+        ).DefaultConfigService())();
 
         this.configElement = this.getConfigElement(
             "Linux",
@@ -123,9 +122,7 @@
      */
 
     LinuxConfigService.prototype.getAnsibleRestHostName = function () {
-        var ansibleRestHostName = this.__getConfigValue(
-            "ansibleRestHostName"
-        );
+        var ansibleRestHostName = this.__getConfigValue("ansibleRestHostName");
 
         return ansibleRestHostName;
     };
@@ -139,9 +136,7 @@
      */
 
     LinuxConfigService.prototype.getAnsibleProjectName = function () {
-        var ansibleProjectName = this.__getConfigValue(
-            "ansibleProjectName"
-        );
+        var ansibleProjectName = this.__getConfigValue("ansibleProjectName");
 
         return ansibleProjectName;
     };
@@ -154,13 +149,14 @@
      * @returns {string} The Ansible Job Template name.
      */
 
-    LinuxConfigService.prototype.getAnsibleProvisioningJobTemplateName = function () {
-        var ansibleProvisioningJobTemplateName = this.__getConfigValue(
-            "ansibleProvisioningJobTemplateName"
-        );
+    LinuxConfigService.prototype.getAnsibleProvisioningJobTemplateName =
+        function () {
+            var ansibleProvisioningJobTemplateName = this.__getConfigValue(
+                "ansibleProvisioningJobTemplateName"
+            );
 
-        return ansibleProvisioningJobTemplateName;
-    };
+            return ansibleProvisioningJobTemplateName;
+        };
 
     /**
      * Defines the getAnsibleDeProvisioningJobTemplateName method.
@@ -170,13 +166,14 @@
      * @returns {string} The Ansible Job Template name.
      */
 
-    LinuxConfigService.prototype.getAnsibleDeProvisioningJobTemplateName = function () {
-        var ansibleDeProvisioningJobTemplateName = this.__getConfigValue(
-            "ansibleDeProvisioningJobTemplateName"
-        );
+    LinuxConfigService.prototype.getAnsibleDeProvisioningJobTemplateName =
+        function () {
+            var ansibleDeProvisioningJobTemplateName = this.__getConfigValue(
+                "ansibleDeProvisioningJobTemplateName"
+            );
 
-        return ansibleDeProvisioningJobTemplateName;
-    };
+            return ansibleDeProvisioningJobTemplateName;
+        };
 
     /**
      * Defines the getAnsibleJobTags method.
@@ -187,9 +184,7 @@
      */
 
     LinuxConfigService.prototype.getAnsibleJobTags = function () {
-        var ansibleJobTags = this.__getConfigValue(
-            "ansibleJobTags"
-        );
+        var ansibleJobTags = this.__getConfigValue("ansibleJobTags");
 
         return ansibleJobTags;
     };
@@ -203,9 +198,7 @@
      */
 
     LinuxConfigService.prototype.getAnsibleSkipTags = function () {
-        var ansibleSkipTags = this.__getConfigValue(
-            "ansibleSkipTags"
-        );
+        var ansibleSkipTags = this.__getConfigValue("ansibleSkipTags");
 
         return ansibleSkipTags;
     };
@@ -219,9 +212,7 @@
      */
 
     LinuxConfigService.prototype.getAnsibleGroupName = function () {
-        var ansibleGroupName = this.__getConfigValue(
-            "ansibleGroupName"
-        );
+        var ansibleGroupName = this.__getConfigValue("ansibleGroupName");
 
         return ansibleGroupName;
     };
@@ -235,9 +226,7 @@
      */
 
     LinuxConfigService.prototype.getAnsibleConnection = function () {
-        var ansibleGroupName = this.__getConfigValue(
-            "ansibleGroupName"
-        );
+        var ansibleGroupName = this.__getConfigValue("ansibleGroupName");
 
         return ansibleGroupName;
     };
@@ -251,9 +240,7 @@
      */
 
     LinuxConfigService.prototype.getAnsiblePort = function () {
-        var ansiblePort = this.__getConfigValue(
-            "ansiblePort"
-        );
+        var ansiblePort = this.__getConfigValue("ansiblePort");
 
         return ansiblePort;
     };
@@ -266,9 +253,7 @@
      * @returns {Any} The configuration value
      */
 
-    LinuxConfigService.prototype.__getConfigValue = function (
-        configKey
-    ) {
+    LinuxConfigService.prototype.__getConfigValue = function (configKey) {
         var configValue;
         var configElementAttribute;
 
@@ -285,8 +270,14 @@
                 this.log.info("Found " + configKey + ": " + configValue);
             }
         } catch (e) {
-            if (e.message.indexOf("No Configuration Element Attribute found") !== -1) {
-                this.log.info("No " + configKey + " found, getting default value");
+            if (
+                e.message.indexOf(
+                    "No Configuration Element Attribute found"
+                ) !== -1
+            ) {
+                this.log.info(
+                    "No " + configKey + " found, getting default value"
+                );
                 try {
                     configValue = this.defaultConfigService[configKey];
                     this.log.info("Found " + configKey + ": " + configValue);

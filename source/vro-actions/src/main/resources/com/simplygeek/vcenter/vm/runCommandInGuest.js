@@ -22,22 +22,33 @@
     environmentVariables,
     maxWaitTime
 ) {
-    if (!vcVirtualMachine || System.getObjectType(vcVirtualMachine) !== "VC:VirtualMachine") {
+    if (
+        !vcVirtualMachine ||
+        System.getObjectType(vcVirtualMachine) !== "VC:VirtualMachine"
+    ) {
         throw new ReferenceError(
             "vcVirtualMachine is required and must be of type 'VC:VirtualMachine'"
         );
     }
     if (!guestUsername || typeof guestUsername !== "string") {
-        throw new ReferenceError("guestUsername is required and must be of type 'string'");
+        throw new ReferenceError(
+            "guestUsername is required and must be of type 'string'"
+        );
     }
     if (!guestPassword || typeof guestPassword !== "string") {
-        throw new ReferenceError("guestPassword is required and must be of type 'string'");
+        throw new ReferenceError(
+            "guestPassword is required and must be of type 'string'"
+        );
     }
     if (!commandPath || typeof commandPath !== "string") {
-        throw new ReferenceError("commandPath is required and must be of type 'string'");
+        throw new ReferenceError(
+            "commandPath is required and must be of type 'string'"
+        );
     }
     if (!commandPath || typeof commandPath !== "string") {
-        throw new ReferenceError("commandPath is required and must be of type 'string'");
+        throw new ReferenceError(
+            "commandPath is required and must be of type 'string'"
+        );
     }
     if (commandArguments && typeof commandArguments !== "string") {
         throw new TypeError("commandArguments must be of type 'string'");
@@ -46,33 +57,50 @@
         throw new TypeError("commandArguments must be of type 'string'");
     }
     if (environmentVariables && !Array.isArray(environmentVariables)) {
-        throw new ReferenceError("environmentVariables is required and must be of type 'Array/string'");
+        throw new ReferenceError(
+            "environmentVariables is required and must be of type 'Array/string'"
+        );
     } else if (environmentVariables && environmentVariables.length > 0) {
-        environmentVariables.forEach(
-            function(item) {
-                if (typeof item !== "object") {
-                    throw new TypeError("environmentVariables not of type 'Array/string'");
-                }
+        environmentVariables.forEach(function (item) {
+            if (typeof item !== "object") {
+                throw new TypeError(
+                    "environmentVariables not of type 'Array/string'"
+                );
             }
+        });
+    }
+    if (
+        !vcVirtualMachine.guest ||
+        !vcVirtualMachine.guest.toolsRunningStatus ||
+        vcVirtualMachine.guest.toolsRunningStatus !== "guestToolsRunning"
+    ) {
+        throw new Error(
+            "VMware Tools is not running on the VM. Ensure it is installed and operational."
         );
     }
-    if (!vcVirtualMachine.guest ||
-        !vcVirtualMachine.guest.toolsRunningStatus ||
-        vcVirtualMachine.guest.toolsRunningStatus !== "guestToolsRunning") {
-        throw new Error("VMware Tools is not running on the VM. Ensure it is installed and operational.");
-    }
 
-    var log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
-        "Action",
-        "runCommandInGuest"
-    );
+    var log = new (System.getModule(
+        "com.simplygeek.vcf.orchestrator.logging"
+    ).Logger())("Action", "runCommandInGuest");
 
-    if (maxWaitTime <= 0 || typeof maxWaitTime !== "number" || isNaN(maxWaitTime)) {
-        log.warn("Invalid or missing maxWaitTime. Using default value: 300 seconds.");
+    if (
+        maxWaitTime <= 0 ||
+        typeof maxWaitTime !== "number" ||
+        isNaN(maxWaitTime)
+    ) {
+        log.warn(
+            "Invalid or missing maxWaitTime. Using default value: 300 seconds."
+        );
         maxWaitTime = 300;
     }
-    if (expectedExitCode <= 0 || typeof expectedExitCode !== "number" || isNaN(expectedExitCode)) {
-        log.warn("Invalid or missing expectedExitCode. Using default value: 0.");
+    if (
+        expectedExitCode <= 0 ||
+        typeof expectedExitCode !== "number" ||
+        isNaN(expectedExitCode)
+    ) {
+        log.warn(
+            "Invalid or missing expectedExitCode. Using default value: 0."
+        );
         expectedExitCode = 0;
     }
 
@@ -96,11 +124,17 @@
         // Set Guest ProgramSpec
         guestProgramSpec.programPath = commandPath;
         guestProgramSpec.arguments = commandArguments;
-        if (workingDirectory) guestProgramSpec.workingDirectory = workingDirectory;
-        if (environmentVariables && environmentVariables.length > 0) guestProgramSpec.envVariables = environmentVariables;
+        if (workingDirectory)
+            guestProgramSpec.workingDirectory = workingDirectory;
+        if (environmentVariables && environmentVariables.length > 0)
+            guestProgramSpec.envVariables = environmentVariables;
 
         try {
-            pid = processManager.startProgramInGuest(vcVirtualMachine, guestAuth, guestProgramSpec);
+            pid = processManager.startProgramInGuest(
+                vcVirtualMachine,
+                guestAuth,
+                guestProgramSpec
+            );
             log.info("Command executed successfully. Process ID: " + pid);
         } catch (e) {
             throw new Error(e.message);
@@ -108,16 +142,24 @@
 
         log.info("Waiting for process " + pid + " to complete...");
         while (elapsedTime < maxWaitTime) {
-            var processes = processManager.listProcessesInGuest(vcVirtualMachine, guestAuth, [pid]);
+            var processes = processManager.listProcessesInGuest(
+                vcVirtualMachine,
+                guestAuth,
+                [pid]
+            );
 
             if (processes.length > 0) {
                 var process = processes[0];
 
                 if (process.endTime !== null) {
-                    log.info("Process completed with exit code: " + process.exitCode);
+                    log.info(
+                        "Process completed with exit code: " + process.exitCode
+                    );
                     log.debug(process);
                     if (process.exitCode !== expectedExitCode) {
-                        throw new Error("Unexpected exit code: " + process.exitCode);
+                        throw new Error(
+                            "Unexpected exit code: " + process.exitCode
+                        );
                     }
                     break;
                 }
@@ -133,7 +175,9 @@
 
         // If the process did not complete within the timeout.
         if (process.endTime === null) {
-            throw new Error("Process did not complete within " + maxWaitTime + " seconds.");
+            throw new Error(
+                "Process did not complete within " + maxWaitTime + " seconds."
+            );
         }
     } catch (e) {
         throw new Error("Failed to execute command: " + e.message);

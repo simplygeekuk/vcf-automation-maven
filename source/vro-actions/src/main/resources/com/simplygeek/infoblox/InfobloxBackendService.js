@@ -9,9 +9,9 @@
      * @returns {Any} An instance of the InfobloxBackendService class.
      */
     function InfobloxBackendService() {
-        this.rest = new (System.getModule("com.simplygeek.rest").HttpRestClient())(
-            this.restHost
-        );
+        this.rest = new (System.getModule(
+            "com.simplygeek.rest"
+        ).HttpRestClient())(this.restHost);
     }
 
     /**
@@ -32,8 +32,11 @@
         if (!uri || typeof uri !== "string") {
             this.log.debug("uri has not been defined or not of type 'string'");
         }
-        if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
-            expectedResponseCodes.length < 1)) {
+        if (
+            !expectedResponseCodes ||
+            (Array.isArray(expectedResponseCodes) &&
+                expectedResponseCodes.length < 1)
+        ) {
             expectedResponseCodes = [200];
         }
 
@@ -51,7 +54,9 @@
         }
 
         // Get the initial response
-        uri = this.wapiUrl + uri +
+        uri =
+            this.wapiUrl +
+            uri +
             "_return_as_object=1&_paging=1&_max_results=" +
             pageSize;
 
@@ -74,10 +79,8 @@
                 this.log.d("Getting additional results");
                 var uriParam1 = "_paging=1&_return_as_object=1";
                 var uriParam2 = "_page_id=" + responseContent.next_page_id;
-                var uriWithParams = this.wapiUrl +
-                                    uri +
-                                    uriParam1 + "&" +
-                                    uriParam2;
+                var uriWithParams =
+                    this.wapiUrl + uri + uriParam1 + "&" + uriParam2;
 
                 response = this.rest.get(
                     uriWithParams,
@@ -126,8 +129,11 @@
         if (!content) {
             content = "{}";
         }
-        if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
-            expectedResponseCodes.length < 1)) {
+        if (
+            !expectedResponseCodes ||
+            (Array.isArray(expectedResponseCodes) &&
+                expectedResponseCodes.length < 1)
+        ) {
             expectedResponseCodes = [201];
         }
 
@@ -140,7 +146,8 @@
             expectedResponseCodes
         );
 
-        if (response.statusCode !== 204) result = JSON.parse(response.contentAsString);
+        if (response.statusCode !== 204)
+            result = JSON.parse(response.contentAsString);
 
         return result;
     };
@@ -163,10 +170,15 @@
             this.log.debug("uri has not been defined or not of type 'string'");
         }
         if (!content || typeof content !== "string") {
-            this.log.debug("content has not been defined or not of type 'string'");
+            this.log.debug(
+                "content has not been defined or not of type 'string'"
+            );
         }
-        if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
-            expectedResponseCodes.length < 1)) {
+        if (
+            !expectedResponseCodes ||
+            (Array.isArray(expectedResponseCodes) &&
+                expectedResponseCodes.length < 1)
+        ) {
             expectedResponseCodes = [200];
         }
 
@@ -198,15 +210,19 @@
         content,
         expectedResponseCodes
     ) {
-
         if (!uri || typeof uri !== "string") {
             this.log.debug("uri has not been defined or not of type 'string'");
         }
         if (!content || typeof content !== "string") {
-            this.log.debug("content has not been defined or not of type 'string'");
+            this.log.debug(
+                "content has not been defined or not of type 'string'"
+            );
         }
-        if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
-            expectedResponseCodes.length < 1)) {
+        if (
+            !expectedResponseCodes ||
+            (Array.isArray(expectedResponseCodes) &&
+                expectedResponseCodes.length < 1)
+        ) {
             expectedResponseCodes = [200];
         }
 
@@ -238,16 +254,15 @@
         if (!uri || typeof uri !== "string") {
             this.log.debug("uri has not been defined or not of type 'string'");
         }
-        if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
-            expectedResponseCodes.length < 1)) {
+        if (
+            !expectedResponseCodes ||
+            (Array.isArray(expectedResponseCodes) &&
+                expectedResponseCodes.length < 1)
+        ) {
             expectedResponseCodes = [204];
         }
 
-        this.rest.delete(
-            uri,
-            this.mediaType,
-            expectedResponseCodes
-        );
+        this.rest.delete(uri, this.mediaType, expectedResponseCodes);
     };
 
     return InfobloxBackendService;

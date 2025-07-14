@@ -19,7 +19,8 @@
     AnsibleAutomationBackendService.prototype = Object.create(
         HttpRestClient.prototype
     );
-    AnsibleAutomationBackendService.prototype.constructor = AnsibleAutomationBackendService;
+    AnsibleAutomationBackendService.prototype.constructor =
+        AnsibleAutomationBackendService;
 
     /**
      * Defines the getResourceById method.
@@ -36,40 +37,56 @@
         resourceType,
         throwOnNotFound
     ) {
-        if ((!resourceId && resourceId !== 0) || typeof resourceId !== "number") {
+        if (
+            (!resourceId && resourceId !== 0) ||
+            typeof resourceId !== "number"
+        ) {
             throw new ReferenceError(
-                "resourceId is required and must " +
-                "be of type 'number'"
+                "resourceId is required and must " + "be of type 'number'"
             );
         }
         if (!resourceType || typeof resourceType !== "string") {
             throw new ReferenceError(
-                "resourceType is required and must " +
-                "be of type 'string'"
+                "resourceType is required and must " + "be of type 'string'"
             );
         }
 
         // Default throwOnNotFound to true, unless explicitly set to false.
         throwOnNotFound = throwOnNotFound !== false;
 
-        var uri = this.baseUri + "/" + resourceType.toLowerCase() + "/" + resourceId.toString() + "/";
+        var uri =
+            this.baseUri +
+            "/" +
+            resourceType.toLowerCase() +
+            "/" +
+            resourceId.toString() +
+            "/";
         var resourceObject;
 
-        this.log.info("Get resource '" + resourceType + "' with id '" + resourceId + "'");
-        resourceObject = this.get(
-            uri,
-            [200, 404]
+        this.log.info(
+            "Get resource '" + resourceType + "' with id '" + resourceId + "'"
         );
+        resourceObject = this.get(uri, [200, 404]);
 
         if (resourceObject.id) {
             var resourceName = resourceObject.name;
 
             this.log.info(
-                "Found resource '" + resourceType + "' with name '" + resourceName +
-                "' and id '" + resourceId + "'"
+                "Found resource '" +
+                    resourceType +
+                    "' with name '" +
+                    resourceName +
+                    "' and id '" +
+                    resourceId +
+                    "'"
             );
         } else {
-            var errMsg = "No resource found for '" + resourceType + "' with id '" + resourceId + "'";
+            var errMsg =
+                "No resource found for '" +
+                resourceType +
+                "' with id '" +
+                resourceId +
+                "'";
 
             if (throwOnNotFound) {
                 throw new Error(errMsg);
@@ -98,44 +115,59 @@
     ) {
         if (!resourceName || typeof resourceName !== "string") {
             throw new ReferenceError(
-                "resourceName is required and must " +
-                "be of type 'string'"
+                "resourceName is required and must " + "be of type 'string'"
             );
         }
         if (!resourceType || typeof resourceType !== "string") {
             throw new ReferenceError(
-                "resourceType is required and must " +
-                "be of type 'string'"
+                "resourceType is required and must " + "be of type 'string'"
             );
         }
 
         // Default throwOnNotFound to true, unless explicitly set to false.
         throwOnNotFound = throwOnNotFound !== false;
 
-        var uri = this.baseUri + "/" + resourceType + "/?search=" + resourceName;
+        var uri =
+            this.baseUri + "/" + resourceType + "/?search=" + resourceName;
         var resourceObject;
 
-        this.log.info("Get resource '" + resourceType + "' with name '" + resourceName + "'");
-        var results = this.get(
-            uri,
-            [200, 404]
+        this.log.info(
+            "Get resource '" +
+                resourceType +
+                "' with name '" +
+                resourceName +
+                "'"
         );
+        var results = this.get(uri, [200, 404]);
 
         if (results.length > 1) {
             throw new Error(
                 "More than one resource found. Unable to determine correct resource '" +
-                resourceType + "' with name '" + resourceName + "'"
+                    resourceType +
+                    "' with name '" +
+                    resourceName +
+                    "'"
             );
         } else if (results.length > 0) {
             resourceObject = results[0];
             var resourceId = resourceObject.id;
 
             this.log.info(
-                "Found resource '" + resourceType + "' with name '" + resourceName +
-                "' and id '" + resourceId + "'"
+                "Found resource '" +
+                    resourceType +
+                    "' with name '" +
+                    resourceName +
+                    "' and id '" +
+                    resourceId +
+                    "'"
             );
         } else {
-            var errMsg = "No resource found for '" + resourceType + "' with name '" + resourceName + "'";
+            var errMsg =
+                "No resource found for '" +
+                resourceType +
+                "' with name '" +
+                resourceName +
+                "'";
 
             if (throwOnNotFound) {
                 throw new Error(errMsg);
@@ -161,10 +193,15 @@
         expectedResponseCodes
     ) {
         if (!uri || typeof uri !== "string") {
-            throw new ReferenceError("uri is required and must be of type 'string'");
+            throw new ReferenceError(
+                "uri is required and must be of type 'string'"
+            );
         }
-        if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
-            expectedResponseCodes.length < 1)) {
+        if (
+            !expectedResponseCodes ||
+            (Array.isArray(expectedResponseCodes) &&
+                expectedResponseCodes.length < 1)
+        ) {
             expectedResponseCodes = [200];
         }
 
@@ -183,7 +220,13 @@
             var results = responseContent.results;
             var numResultsOnPage = results.length;
 
-            this.log.debug("Found " + numResultsOnPage + " of " + numTotalResults + " results");
+            this.log.debug(
+                "Found " +
+                    numResultsOnPage +
+                    " of " +
+                    numTotalResults +
+                    " results"
+            );
 
             if (numResultsOnPage > 0) {
                 if (numResultsOnPage < numTotalResults) {
@@ -213,8 +256,11 @@
                         responseContent = JSON.parse(response.contentAsString);
                         results = results.concat(responseContent.results);
                         this.log.debug(
-                            "Found " + results.length + " of " +
-                            numTotalResults + " results"
+                            "Found " +
+                                results.length +
+                                " of " +
+                                numTotalResults +
+                                " results"
                         );
                         nextPage++;
                     } while (results.length < numTotalResults);
@@ -243,10 +289,15 @@
         expectedResponseCodes
     ) {
         if (!uri || typeof uri !== "string") {
-            throw new ReferenceError("uri is required and must be of type 'string'");
+            throw new ReferenceError(
+                "uri is required and must be of type 'string'"
+            );
         }
-        if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
-            expectedResponseCodes.length < 1)) {
+        if (
+            !expectedResponseCodes ||
+            (Array.isArray(expectedResponseCodes) &&
+                expectedResponseCodes.length < 1)
+        ) {
             expectedResponseCodes = [201];
         }
 
@@ -260,7 +311,8 @@
             this.sessionHeaders
         );
 
-        if (response.statusCode !== 204) responseContent = JSON.parse(response.contentAsString);
+        if (response.statusCode !== 204)
+            responseContent = JSON.parse(response.contentAsString);
 
         return responseContent;
     };
@@ -279,16 +331,22 @@
         content,
         expectedResponseCodes
     ) {
-
         if (!uri || typeof uri !== "string") {
-            throw new ReferenceError("uri is required and must be of type 'string'");
+            throw new ReferenceError(
+                "uri is required and must be of type 'string'"
+            );
         }
         if (!content || typeof content !== "object") {
-            throw new ReferenceError("content is required and must be of type 'object'");
+            throw new ReferenceError(
+                "content is required and must be of type 'object'"
+            );
         }
 
-        if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
-            expectedResponseCodes.length < 1)) {
+        if (
+            !expectedResponseCodes ||
+            (Array.isArray(expectedResponseCodes) &&
+                expectedResponseCodes.length < 1)
+        ) {
             expectedResponseCodes = [200];
         }
 
@@ -319,16 +377,22 @@
         content,
         expectedResponseCodes
     ) {
-
         if (!uri || typeof uri !== "string") {
-            throw new ReferenceError("uri is required and must be of type 'string'");
+            throw new ReferenceError(
+                "uri is required and must be of type 'string'"
+            );
         }
         if (!content || typeof content !== "object") {
-            throw new ReferenceError("content is required and must be of type 'object'");
+            throw new ReferenceError(
+                "content is required and must be of type 'object'"
+            );
         }
 
-        if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
-            expectedResponseCodes.length < 1)) {
+        if (
+            !expectedResponseCodes ||
+            (Array.isArray(expectedResponseCodes) &&
+                expectedResponseCodes.length < 1)
+        ) {
             expectedResponseCodes = [200];
         }
 
@@ -356,13 +420,15 @@
         uri,
         expectedResponseCodes
     ) {
-
         if (!uri || typeof uri !== "string") {
             this.log.e("uri has not been defined or not of type 'string'");
         }
 
-        if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
-            expectedResponseCodes.length < 1)) {
+        if (
+            !expectedResponseCodes ||
+            (Array.isArray(expectedResponseCodes) &&
+                expectedResponseCodes.length < 1)
+        ) {
             expectedResponseCodes = [204];
         }
 

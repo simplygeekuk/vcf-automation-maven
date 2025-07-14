@@ -9,20 +9,22 @@
      * @param {string} logSource - The log source. Valid sources are Action or Workflow.
      * @param {string} logName - The name of the Action or Workflow sending the log message.
      */
-    function Logger(
-        logSource,
-        logName
-    ) {
-        var validSources = [
-            "action",
-            "workflow"
-        ];
+    function Logger(logSource, logName) {
+        var validSources = ["action", "workflow"];
 
         if (logSource && typeof logSource !== "string") {
             throw new TypeError("logSource not of type 'string'");
-        } else if (logSource && validSources.indexOf(logSource.toLowerCase()) < 0) {
-            throw new ReferenceError("Unsupported source '" + logSource + "'." +
-                                     " Supported sources: " + validSources.join(", "));
+        } else if (
+            logSource &&
+            validSources.indexOf(logSource.toLowerCase()) < 0
+        ) {
+            throw new ReferenceError(
+                "Unsupported source '" +
+                    logSource +
+                    "'." +
+                    " Supported sources: " +
+                    validSources.join(", ")
+            );
         }
         this.type = logSource;
         this.name = logName;
@@ -34,9 +36,7 @@
      * @public
      */
 
-    Logger.prototype.info = function (
-        message
-    ) {
+    Logger.prototype.info = function (message) {
         System.log("[" + this.type + ": " + this.name + "] " + message);
     };
 
@@ -46,9 +46,7 @@
      * @public
      */
 
-    Logger.prototype.warn = function (
-        message
-    ) {
+    Logger.prototype.warn = function (message) {
         System.warn("[" + this.type + ": " + this.name + "] " + message);
     };
 
@@ -58,9 +56,7 @@
      * @public
      */
 
-    Logger.prototype.error = function (
-        message
-    ) {
+    Logger.prototype.error = function (message) {
         System.error("[" + this.type + ": " + this.name + "] " + message);
     };
 
@@ -70,9 +66,7 @@
      * @public
      */
 
-    Logger.prototype.debug = function (
-        message
-    ) {
+    Logger.prototype.debug = function (message) {
         System.debug("[" + this.type + ": " + this.name + "] " + message);
     };
 

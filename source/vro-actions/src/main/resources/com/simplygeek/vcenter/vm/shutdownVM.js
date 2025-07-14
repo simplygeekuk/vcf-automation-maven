@@ -3,19 +3,19 @@
  * @param {VC:VirtualMachine} vcVirtualMachine - The vCenter VM object.
  * @returns {void} - no return value.
  */
-(function (
-    vcVirtualMachine
-){
-    if (!vcVirtualMachine || System.getObjectType(vcVirtualMachine) !== "VC:VirtualMachine") {
+(function (vcVirtualMachine) {
+    if (
+        !vcVirtualMachine ||
+        System.getObjectType(vcVirtualMachine) !== "VC:VirtualMachine"
+    ) {
         throw new ReferenceError(
             "vcVirtualMachine is required and must be of type 'VC:VirtualMachine'"
         );
     }
 
-    var log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
-        "Action",
-        "shutdownVM"
-    );
+    var log = new (System.getModule(
+        "com.simplygeek.vcf.orchestrator.logging"
+    ).Logger())("Action", "shutdownVM");
     var timeout = 240;
     var pollingRate = 2;
     var vcTask;
@@ -44,7 +44,11 @@
                         break;
                     }
                     if (timeout <= 0) {
-                        throw new Error("Timeout: VM '" + vcVirtualMachine.name + "' is still powered on");
+                        throw new Error(
+                            "Timeout: VM '" +
+                                vcVirtualMachine.name +
+                                "' is still powered on"
+                        );
                     }
                     log.info("Guest OS is still shutting down...");
                     timeout -= pollingRate;
@@ -56,13 +60,15 @@
             }
         } else {
             try {
-                log.info("VMware Tools not running or installed. Attempting forced power off...");
+                log.info(
+                    "VMware Tools not running or installed. Attempting forced power off..."
+                );
                 vcTask = vcVirtualMachine.powerOffVM_Task();
                 System.getModule("com.vmware.library.vc.basic").vim3WaitTaskEnd(
                     vcTask,
                     true,
                     pollingRate
-                ) ;
+                );
                 log.info("VM powered off forcefully.");
             } catch (e) {
                 throw new Error("Failed to power off VM: " + e);

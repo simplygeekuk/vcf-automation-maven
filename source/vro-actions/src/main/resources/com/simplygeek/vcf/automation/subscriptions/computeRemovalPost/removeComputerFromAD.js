@@ -4,10 +4,9 @@
  * @returns {void} - No return value.
  */
 (function (inputProperties) {
-    var log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
-        "Action",
-        "removeComputerFromAD"
-    );
+    var log = new (System.getModule(
+        "com.simplygeek.vcf.orchestrator.logging"
+    ).Logger())("Action", "removeComputerFromAD");
     var throwOnNotFound = false;
     var activeDirectoryDomainName;
     // Get values from Input Properties
@@ -20,32 +19,30 @@
     log.debug("osType: " + osType);
 
     // Get Configuration
-    var windowsConfigService = new (
-        System.getModule(
-            "com.simplygeek.vcf.automation.provisioning"
-        ).WindowsConfigService());
-    var linuxConfigService = new (
-        System.getModule(
-            "com.simplygeek.vcf.automation.provisioning"
-        ).LinuxConfigService());
+    var windowsConfigService = new (System.getModule(
+        "com.simplygeek.vcf.automation.provisioning"
+    ).WindowsConfigService())();
+    var linuxConfigService = new (System.getModule(
+        "com.simplygeek.vcf.automation.provisioning"
+    ).LinuxConfigService())();
 
     if (osType.toLowerCase() === "windows") {
-        activeDirectoryDomainName = windowsConfigService.getActiveDirectoryDomainName();
+        activeDirectoryDomainName =
+            windowsConfigService.getActiveDirectoryDomainName();
     } else {
-        activeDirectoryDomainName = linuxConfigService.getActiveDirectoryDomainName();
+        activeDirectoryDomainName =
+            linuxConfigService.getActiveDirectoryDomainName();
     }
 
     // Remove Computer from AD
     try {
-        log.info("Removing Active Directory computer account '" + vmName + "'.");
-        var adService = new (
-            System.getModule(
-                "com.simplygeek.ad"
-            ).ActiveDirectoryService())(activeDirectoryDomainName);
-        var adComputer = adService.getComputer(
-            vmName,
-            throwOnNotFound
+        log.info(
+            "Removing Active Directory computer account '" + vmName + "'."
         );
+        var adService = new (System.getModule(
+            "com.simplygeek.ad"
+        ).ActiveDirectoryService())(activeDirectoryDomainName);
+        var adComputer = adService.getComputer(vmName, throwOnNotFound);
 
         if (adComputer) {
             adService.removeComputer(adComputer); // void

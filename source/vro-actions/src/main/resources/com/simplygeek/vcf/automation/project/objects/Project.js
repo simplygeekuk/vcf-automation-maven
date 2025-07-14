@@ -24,7 +24,7 @@
      * @param {boolean} [sharedResources] - Whether the resources in this project are shared or not.
      * @returns {Any} Returns an instance of the Project Class.
      */
-    function Project (
+    function Project(
         name,
         description,
         administrators,
@@ -44,58 +44,51 @@
         // Mandatory parameters, defaults and type checking.
         if (!name || typeof name !== "string") {
             throw new ReferenceError(
-                "name is required and must " +
-                "be of type 'string'"
+                "name is required and must " + "be of type 'string'"
             );
         }
         if (description && typeof description !== "string") {
-            throw new ReferenceError(
-                "description must be of type 'string'"
-            );
+            throw new ReferenceError("description must be of type 'string'");
         }
         if (administrators && !Array.isArray(administrators)) {
             throw new TypeError("administrators not of type 'Array/object'");
         } else if (administrators && administrators.length > 0) {
-            administrators.forEach(
-                function(item) {
-                    if (typeof item !== "object") {
-                        throw new TypeError("administrators not of type 'Array/object'");
-                    }
+            administrators.forEach(function (item) {
+                if (typeof item !== "object") {
+                    throw new TypeError(
+                        "administrators not of type 'Array/object'"
+                    );
                 }
-            );
+            });
         }
         if (members && !Array.isArray(members)) {
             throw new TypeError("members not of type 'Array/object'");
         } else if (members && members.length > 0) {
-            members.forEach(
-                function(item) {
-                    if (typeof item !== "object") {
-                        throw new TypeError("members not of type 'Array/object'");
-                    }
+            members.forEach(function (item) {
+                if (typeof item !== "object") {
+                    throw new TypeError("members not of type 'Array/object'");
                 }
-            );
+            });
         }
         if (viewers && !Array.isArray(viewers)) {
             throw new TypeError("viewers not of type 'Array/object'");
         } else if (viewers && viewers.length > 0) {
-            viewers.forEach(
-                function(item) {
-                    if (typeof item !== "object") {
-                        throw new TypeError("viewers not of type 'Array/object'");
-                    }
+            viewers.forEach(function (item) {
+                if (typeof item !== "object") {
+                    throw new TypeError("viewers not of type 'Array/object'");
                 }
-            );
+            });
         }
         if (supervisors && !Array.isArray(supervisors)) {
             throw new TypeError("supervisors not of type 'Array/object'");
         } else if (supervisors && supervisors.length > 0) {
-            supervisors.forEach(
-                function(item) {
-                    if (typeof item !== "object") {
-                        throw new TypeError("supervisors not of type 'Array/object'");
-                    }
+            supervisors.forEach(function (item) {
+                if (typeof item !== "object") {
+                    throw new TypeError(
+                        "supervisors not of type 'Array/object'"
+                    );
                 }
-            );
+            });
         }
         if (networkConstraints && typeof networkConstraints !== "object") {
             throw new ReferenceError(
@@ -107,48 +100,41 @@
                 "storageConstraints must be of type 'object'"
             );
         }
-        if (extensibilityConstraints && typeof extensibilityConstraints !== "object") {
-            throw new ReferenceError(
-                "constraints must be of type 'object'"
-            );
+        if (
+            extensibilityConstraints &&
+            typeof extensibilityConstraints !== "object"
+        ) {
+            throw new ReferenceError("constraints must be of type 'object'");
         }
         if (properties && typeof properties !== "object") {
-            throw new ReferenceError(
-                "properties must be of type 'object'"
-            );
+            throw new ReferenceError("properties must be of type 'object'");
         }
         if (tags && !Array.isArray(tags)) {
             throw new TypeError("tags not of type 'Array/object'");
         } else if (tags && tags.length > 0) {
-            tags.forEach(
-                function(item) {
-                    if (typeof item !== "object") {
-                        throw new TypeError("tags not of type 'Array/object'");
-                    }
+            tags.forEach(function (item) {
+                if (typeof item !== "object") {
+                    throw new TypeError("tags not of type 'Array/object'");
                 }
-            );
+            });
         }
         if (cost && !Array.isArray(cost)) {
             throw new TypeError("cost not of type 'Array/object'");
         } else if (cost && cost.length > 0) {
-            cost.forEach(
-                function(item) {
-                    if (typeof item !== "object") {
-                        throw new TypeError("cost not of type 'Array/object'");
-                    }
+            cost.forEach(function (item) {
+                if (typeof item !== "object") {
+                    throw new TypeError("cost not of type 'Array/object'");
                 }
-            );
+            });
         }
         if (zones && !Array.isArray(zones)) {
             throw new TypeError("zones not of type 'Array/object'");
         } else if (zones && zones.length > 0) {
-            zones.forEach(
-                function(item) {
-                    if (typeof item !== "object") {
-                        throw new TypeError("zones not of type 'Array/object'");
-                    }
+            zones.forEach(function (item) {
+                if (typeof item !== "object") {
+                    throw new TypeError("zones not of type 'Array/object'");
                 }
-            );
+            });
         }
         if (operationTimeout && typeof operationTimeout !== "number") {
             throw new ReferenceError(
@@ -166,15 +152,22 @@
         if (members) this.members = members;
         if (viewers) this.viewers = viewers;
         if (supervisors) this.supervisors = supervisors;
-        if (networkConstraints || storageConstraints || extensibilityConstraints) this.constraints = {};
+        if (
+            networkConstraints ||
+            storageConstraints ||
+            extensibilityConstraints
+        )
+            this.constraints = {};
         if (networkConstraints) this.constraints.network = networkConstraints;
         if (storageConstraints) this.constraints.storage = storageConstraints;
-        if (extensibilityConstraints) this.constraints.extensibility = extensibilityConstraints;
+        if (extensibilityConstraints)
+            this.constraints.extensibility = extensibilityConstraints;
         if (properties) this.properties = properties;
         if (tags) this.tags = tags;
         if (zones) this.zones = zones;
         if (cost) this.cost = cost;
-        this.operationTimeout = (operationTimeout || operationTimeout === 0) ? operationTimeout : 0;
+        this.operationTimeout =
+            operationTimeout || operationTimeout === 0 ? operationTimeout : 0;
         this.sharedResources = sharedResources;
     }
 

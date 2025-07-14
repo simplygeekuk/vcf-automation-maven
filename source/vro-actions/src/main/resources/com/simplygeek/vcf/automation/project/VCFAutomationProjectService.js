@@ -10,10 +10,7 @@
      * @param {string} apiToken - The VCF Automation API Token.
      * @returns {Any} An instance of the VCFAutomationProjectService class.
      */
-    function VCFAutomationProjectService(
-        restHost,
-        apiToken
-    ) {
+    function VCFAutomationProjectService(restHost, apiToken) {
         if (!restHost || System.getObjectType(restHost) !== "REST:RESTHost") {
             throw new ReferenceError(
                 "restHost is required and must be of type 'REST:RESTHost'"
@@ -21,8 +18,7 @@
         }
         if (!apiToken || typeof apiToken !== "string") {
             throw new ReferenceError(
-                "apiToken is required and must " +
-                "be of type 'string'"
+                "apiToken is required and must " + "be of type 'string'"
             );
         }
 
@@ -31,10 +27,9 @@
         VCFAutomationBackend.call(this);
         // VCFAutomationIaasService.call(this, this.restHost, apiToken);
 
-        this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
-            "Action",
-            "VCFAutomationProjectService"
-        );
+        this.log = new (System.getModule(
+            "com.simplygeek.vcf.orchestrator.logging"
+        ).Logger())("Action", "VCFAutomationProjectService");
 
         this.baseUri = "/project-service/api";
         this.apiVersion = this.about().latestApiVersion;
@@ -51,7 +46,8 @@
     VCFAutomationProjectService.prototype = Object.create(
         VCFAutomationBackend.prototype
     );
-    VCFAutomationProjectService.prototype.constructor = VCFAutomationProjectService;
+    VCFAutomationProjectService.prototype.constructor =
+        VCFAutomationProjectService;
 
     /**
      * Get a list of projects.
@@ -84,15 +80,19 @@
     ) {
         if (!projectId || typeof projectId !== "string") {
             throw new ReferenceError(
-                "projectId is required and must " +
-                "be of type 'string'"
+                "projectId is required and must " + "be of type 'string'"
             );
         }
 
         // Default throwOnNotFound to true
         throwOnNotFound = throwOnNotFound !== false;
 
-        var uri = this.baseUri + "/projects/" + projectId + "?" + this.apiVersionParam;
+        var uri =
+            this.baseUri +
+            "/projects/" +
+            projectId +
+            "?" +
+            this.apiVersionParam;
         var projectObject;
 
         this.log.debug("Getting project with ID '" + projectId + "'");
@@ -102,8 +102,11 @@
             var projectName = projectObject.name;
 
             this.log.debug(
-                "Found project with name '" + projectName +
-                "' and id '" + projectId + "'"
+                "Found project with name '" +
+                    projectName +
+                    "' and id '" +
+                    projectId +
+                    "'"
             );
         } else {
             if (throwOnNotFound) {
@@ -111,9 +114,7 @@
                     "Project with id '" + projectId + "' not found"
                 );
             } else {
-                this.log.warn(
-                    "Project with id '" + projectId + "' not found"
-                );
+                this.log.warn("Project with id '" + projectId + "' not found");
             }
         }
 
@@ -134,27 +135,32 @@
     ) {
         if (!projectName || typeof projectName !== "string") {
             throw new ReferenceError(
-                "projectName is required and must " +
-                "be of type 'string'"
+                "projectName is required and must " + "be of type 'string'"
             );
         }
 
         // Default throwOnNotFound to true
         throwOnNotFound = throwOnNotFound !== false;
 
-        var uri = this.baseUri + "/projects?$filter=name eq '" + projectName + "'" +
-                                "&" + this.apiVersionParam;
+        var uri =
+            this.baseUri +
+            "/projects?$filter=name eq '" +
+            projectName +
+            "'" +
+            "&" +
+            this.apiVersionParam;
         var projectObject;
         var projectId;
 
-        this.log.debug(
-            "Getting project with name '" + projectName + "'");
+        this.log.debug("Getting project with name '" + projectName + "'");
         var results = this.get(uri);
 
         if (results.length > 1) {
             throw new Error(
                 "More than one project found. Unable to determine correct " +
-                "project with name '" + projectName + "'"
+                    "project with name '" +
+                    projectName +
+                    "'"
             );
         } else if (results.length > 0) {
             projectObject = results[0];
@@ -162,19 +168,21 @@
             projectObject.tags = this.getProjectTags(projectId);
 
             this.log.debug(
-                "Found project '" + projectName + "' with " +
-                "id '" + projectId + "'"
+                "Found project '" +
+                    projectName +
+                    "' with " +
+                    "id '" +
+                    projectId +
+                    "'"
             );
         } else {
             if (throwOnNotFound) {
                 throw new Error(
-                    "Project not found with name '" +
-                    projectName + "'"
+                    "Project not found with name '" + projectName + "'"
                 );
             } else {
                 this.log.warn(
-                    "Project not found with name '" +
-                    projectName + "'"
+                    "Project not found with name '" + projectName + "'"
                 );
             }
         }
@@ -195,12 +203,17 @@
         if (!projectNamePrefix || typeof projectNamePrefix !== "string") {
             throw new ReferenceError(
                 "projectNamePrefix is required and must " +
-                "be of type 'string'"
+                    "be of type 'string'"
             );
         }
 
-        var uri = this.baseUri + "/projects?$filter=startswith(name, '" + projectNamePrefix + "')" +
-                                "&" + this.apiVersionParam;
+        var uri =
+            this.baseUri +
+            "/projects?$filter=startswith(name, '" +
+            projectNamePrefix +
+            "')" +
+            "&" +
+            this.apiVersionParam;
         var projects = [];
 
         this.log.debug(
@@ -224,29 +237,24 @@
         if (!projectSpecification || typeof projectSpecification !== "object") {
             throw new ReferenceError(
                 "projectSpecification is required and must " +
-                "be of type 'object'"
+                    "be of type 'object'"
             );
         }
 
         var uri = this.baseUri + "/projects?" + this.apiVersionParam;
         var projectObject;
 
-        if (projectSpecification.tags) var projectTags = projectSpecification.tags;
+        if (projectSpecification.tags)
+            var projectTags = projectSpecification.tags;
         delete projectSpecification.tags;
 
         this.log.debug("Creating project '" + projectSpecification.name + "'");
-        projectObject = this.post(
-            uri,
-            projectSpecification
-        );
+        projectObject = this.post(uri, projectSpecification);
 
         if (projectTags && projectTags.length > 0) {
             var projectId = projectObject.id;
 
-            this.createProjectTags(
-                projectId,
-                projectTags
-            );
+            this.createProjectTags(projectId, projectTags);
 
             projectObject.tags = projectTags;
         }
@@ -268,25 +276,28 @@
     ) {
         if (!projectId || typeof projectId !== "string") {
             throw new ReferenceError(
-                "projectId is required and must " +
-                "be of type 'string'"
+                "projectId is required and must " + "be of type 'string'"
             );
         }
 
-        var uri = this.baseUri + "/projects/" + projectId +
-                                "/resource-metadata?" + this.apiVersionParam;
+        var uri =
+            this.baseUri +
+            "/projects/" +
+            projectId +
+            "/resource-metadata?" +
+            this.apiVersionParam;
         var projectMetadataObject;
         var projectTags = [];
 
-        this.log.debug("Getting a list of project tags for project ID '" + projectId + "'");
+        this.log.debug(
+            "Getting a list of project tags for project ID '" + projectId + "'"
+        );
         projectMetadataObject = this.get(uri);
         if (projectMetadataObject.tags) {
             projectTags = projectMetadataObject.tags;
         }
 
-        this.log.debug(
-            "Found " + projectTags.length + " tags"
-        );
+        this.log.debug("Found " + projectTags.length + " tags");
 
         return projectTags;
     };
@@ -305,38 +316,36 @@
     ) {
         if (!projectId || typeof projectId !== "string") {
             throw new ReferenceError(
-                "projectId is required and must " +
-                "be of type 'string'"
+                "projectId is required and must " + "be of type 'string'"
             );
         }
         if (tags && !Array.isArray(tags)) {
             throw new TypeError("tags not of type 'Array/object'");
         } else if (tags && tags.length > 0) {
-            tags.forEach(
-                function(item) {
-                    if (typeof item !== "object") {
-                        throw new TypeError("tags not of type 'Array/object'");
-                    }
+            tags.forEach(function (item) {
+                if (typeof item !== "object") {
+                    throw new TypeError("tags not of type 'Array/object'");
                 }
-            );
+            });
         }
 
-        var uri = this.baseUri + "/projects/" + projectId +
-                                "/resource-metadata?" + this.apiVersionParam;
+        var uri =
+            this.baseUri +
+            "/projects/" +
+            projectId +
+            "/resource-metadata?" +
+            this.apiVersionParam;
         var updatedProjectTags;
         var projectTags = {};
 
         projectTags.tags = tags;
 
-        this.log.debug("Updating project tags for project ID '" + projectId + "'");
-        updatedProjectTags = this.patch(
-            uri,
-            projectTags
-        );
-
         this.log.debug(
-            "Successfully updated tags"
+            "Updating project tags for project ID '" + projectId + "'"
         );
+        updatedProjectTags = this.patch(uri, projectTags);
+
+        this.log.debug("Successfully updated tags");
 
         return updatedProjectTags;
     };
@@ -355,24 +364,24 @@
     ) {
         if (!projectId || typeof projectId !== "string") {
             throw new ReferenceError(
-                "projectId is required and must " +
-                "be of type 'string'"
+                "projectId is required and must " + "be of type 'string'"
             );
         }
         if (!updatedObject || typeof updatedObject !== "object") {
             throw new ReferenceError(
-                "updatedObject is required and must " +
-                "be of type 'object'"
+                "updatedObject is required and must " + "be of type 'object'"
             );
         }
 
-        var uri = this.baseUri + "/projects/" + projectId + "?" + this.apiVersionParam;
+        var uri =
+            this.baseUri +
+            "/projects/" +
+            projectId +
+            "?" +
+            this.apiVersionParam;
         var updatedProjectObject;
 
-        updatedProjectObject = this.patch(
-            uri,
-            updatedObject
-        );
+        updatedProjectObject = this.patch(uri, updatedObject);
 
         return updatedProjectObject;
     };
@@ -383,23 +392,22 @@
      * @public
      * @param {string} projectId - The Project uuid.
      */
-    VCFAutomationProjectService.prototype.deleteProject = function (
-        projectId
-    ) {
+    VCFAutomationProjectService.prototype.deleteProject = function (projectId) {
         if (!projectId || typeof projectId !== "string") {
             throw new ReferenceError(
-                "projectId is required and must " +
-                "be of type 'string'"
+                "projectId is required and must " + "be of type 'string'"
             );
         }
 
         this.log.info("Deleting project with id '" + projectId + "'");
-        var uri = this.baseUri + "/projects/" + projectId + "?" + this.apiVersionParam;
+        var uri =
+            this.baseUri +
+            "/projects/" +
+            projectId +
+            "?" +
+            this.apiVersionParam;
 
-        this.delete(
-            uri,
-            [200]
-        );
+        this.delete(uri, [200]);
         this.log.info("Successfully deleted project");
     };
 

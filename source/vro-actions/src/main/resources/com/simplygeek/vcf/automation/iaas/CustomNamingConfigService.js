@@ -13,16 +13,14 @@
 
         var customNamingConfigPath = "Simplygeek/VCF/Automation";
 
-        this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
-            "Action",
-            "CustomNamingConfigService"
-        );
+        this.log = new (System.getModule(
+            "com.simplygeek.vcf.orchestrator.logging"
+        ).Logger())("Action", "CustomNamingConfigService");
 
         this.customNamingConfigElement = this.getConfigElement(
             "CustomNaming",
             customNamingConfigPath
         );
-
     }
 
     // Extends the ConfigElementService

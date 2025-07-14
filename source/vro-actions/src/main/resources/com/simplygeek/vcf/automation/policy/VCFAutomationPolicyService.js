@@ -13,7 +13,9 @@
      */
     function VCFAutomationPolicyService(restHost, apiToken) {
         if (!restHost || System.getObjectType(restHost) !== "REST:RESTHost") {
-            throw new ReferenceError("restHost must be of type 'REST:RESTHost'");
+            throw new ReferenceError(
+                "restHost must be of type 'REST:RESTHost'"
+            );
         }
         if (!apiToken || typeof apiToken !== "string") {
             throw new ReferenceError("apiToken must be a string");
@@ -22,10 +24,9 @@
         this.restHost = restHost;
         VCFAutomationBackend.call(this);
 
-        this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
-            "Action",
-            "VCFAutomationPolicyService"
-        );
+        this.log = new (System.getModule(
+            "com.simplygeek.vcf.orchestrator.logging"
+        ).Logger())("Action", "VCFAutomationPolicyService");
 
         this.baseUri = "/policy/api";
         this.createAuthenticatedSession(apiToken);
@@ -38,7 +39,8 @@
     VCFAutomationPolicyService.prototype = Object.create(
         VCFAutomationBackend.prototype
     );
-    VCFAutomationPolicyService.prototype.constructor = VCFAutomationPolicyService;
+    VCFAutomationPolicyService.prototype.constructor =
+        VCFAutomationPolicyService;
 
     // ─────────────────────────────────────────────────────────────────────────────
     // /policies
@@ -75,8 +77,7 @@
     ) {
         if (!policyId || typeof policyId !== "string") {
             throw new ReferenceError(
-                "policyId is required and must " +
-                "be of type 'string'"
+                "policyId is required and must " + "be of type 'string'"
             );
         }
 
@@ -93,23 +94,21 @@
             var projectName = policyObject.name;
 
             this.log.debug(
-                "Found policy with name '" + projectName +
-                "' and id '" + policyId + "'"
+                "Found policy with name '" +
+                    projectName +
+                    "' and id '" +
+                    policyId +
+                    "'"
             );
         } else {
             if (throwOnNotFound) {
-                throw new Error(
-                    "Policy with ID '" + policyId + "' not found"
-                );
+                throw new Error("Policy with ID '" + policyId + "' not found");
             } else {
-                this.log.warn(
-                    "Policy with ID '" + policyId + "' not found"
-                );
+                this.log.warn("Policy with ID '" + policyId + "' not found");
             }
         }
 
         return policyObject;
-
     };
 
     /**
@@ -125,7 +124,7 @@
         if (!policySpecification || typeof policySpecification !== "object") {
             throw new ReferenceError(
                 "policySpecification is required and must " +
-                "be of type 'object'"
+                    "be of type 'object'"
             );
         }
 
@@ -146,13 +145,10 @@
      * @param {string} policyId - The policy ID.
      * @returns {void}
      */
-    VCFAutomationPolicyService.prototype.deletePolicy = function (
-        policyId
-    ) {
+    VCFAutomationPolicyService.prototype.deletePolicy = function (policyId) {
         if (!policyId || typeof policyId !== "string") {
             throw new ReferenceError(
-                "policyId is required and must " +
-                "be of type 'string'"
+                "policyId is required and must " + "be of type 'string'"
             );
         }
 
@@ -196,8 +192,7 @@
     ) {
         if (!policyTypeId || typeof policyTypeId !== "string") {
             throw new ReferenceError(
-                "policyTypeId is required and must " +
-                "be of type 'string'"
+                "policyTypeId is required and must " + "be of type 'string'"
             );
         }
 
@@ -211,8 +206,11 @@
             var policyTypeName = policyType.name;
 
             this.log.debug(
-                "Found policy type with name '" + policyTypeName +
-                "' and id '" + policyTypeId + "'"
+                "Found policy type with name '" +
+                    policyTypeName +
+                    "' and id '" +
+                    policyTypeId +
+                    "'"
             );
         } else {
             throw new Error(
@@ -241,14 +239,12 @@
     ) {
         if (!projectId || typeof projectId !== "string") {
             throw new ReferenceError(
-                "projectId is required and must " +
-                "be of type 'string'"
+                "projectId is required and must " + "be of type 'string'"
             );
         }
         if (!policyTypeId || typeof policyTypeId !== "string") {
             throw new ReferenceError(
-                "policyTypeId is required and must " +
-                "be of type 'string'"
+                "policyTypeId is required and must " + "be of type 'string'"
             );
         }
 
@@ -286,8 +282,7 @@
     ) {
         if (!policyDecisionId || typeof policyDecisionId !== "string") {
             throw new ReferenceError(
-                "policyDecisionId is required and must " +
-                "be of type 'string'"
+                "policyDecisionId is required and must " + "be of type 'string'"
             );
         }
 
@@ -301,8 +296,11 @@
             var policyDecisionType = policyDecision.typeId;
 
             this.log.debug(
-                "Found policy decision with type '" + policyDecisionType +
-                "' and id '" + policyDecisionId + "'"
+                "Found policy decision with type '" +
+                    policyDecisionType +
+                    "' and id '" +
+                    policyDecisionId +
+                    "'"
             );
         } else {
             throw new Error(

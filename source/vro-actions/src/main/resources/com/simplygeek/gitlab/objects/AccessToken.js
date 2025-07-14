@@ -12,12 +12,7 @@
      * @param {number} [accessLevel] - Role (access_level) for group access token.
      * @returns {Any} Returns an instance of the AccessToken Class.
      */
-    function AccessToken (
-        name,
-        scopes,
-        expiresAt,
-        accessLevel
-    ) {
+    function AccessToken(name, scopes, expiresAt, accessLevel) {
         var validScopes = [
             "api",
             "read_api",
@@ -27,7 +22,7 @@
             "write_repository",
             "create_runner",
             "ai_features",
-            "k8s_proxy"
+            "k8s_proxy",
         ];
         /* Access Levels
             No access (0)
@@ -38,39 +33,50 @@
             Maintainer (40)
             Owner (50)
         */
-        var validAccessLevels = [
-            0,5,10,20,30,40,50
-        ];
+        var validAccessLevels = [0, 5, 10, 20, 30, 40, 50];
 
         // Mandatory parameters, defaults and type checking.
         if (!name || typeof name !== "string") {
             throw new ReferenceError(
-                "name is required and must " +
-                "be of type 'string'"
+                "name is required and must " + "be of type 'string'"
             );
         }
         if (!scopes || !Array.isArray(scopes)) {
-            throw new TypeError("scopes is required and must be of type 'Array/string'");
-        } else if (scopes && scopes.length > 0) {
-            scopes.forEach(
-                function(item) {
-                    if (typeof item !== "string") {
-                        throw new TypeError("conditions not of type 'Array/string'");
-                    } else if (validScopes.indexOf(item.toLowerCase()) < 0) {
-                        throw new ReferenceError(
-                            "Unsupported Scope '" + item + "'." +
-                            " Supported Scopes: " + validScopes.join(", ")
-                        );
-                    }
-                }
+            throw new TypeError(
+                "scopes is required and must be of type 'Array/string'"
             );
+        } else if (scopes && scopes.length > 0) {
+            scopes.forEach(function (item) {
+                if (typeof item !== "string") {
+                    throw new TypeError(
+                        "conditions not of type 'Array/string'"
+                    );
+                } else if (validScopes.indexOf(item.toLowerCase()) < 0) {
+                    throw new ReferenceError(
+                        "Unsupported Scope '" +
+                            item +
+                            "'." +
+                            " Supported Scopes: " +
+                            validScopes.join(", ")
+                    );
+                }
+            });
         }
-        if ((accessLevel || accessLevel === 0) && typeof accessLevel !== "number") {
+        if (
+            (accessLevel || accessLevel === 0) &&
+            typeof accessLevel !== "number"
+        ) {
             throw new TypeError("accessLevel not of type 'number'");
-        } else if ((accessLevel || accessLevel === 0) && validAccessLevels.indexOf(accessLevel) < 0) {
+        } else if (
+            (accessLevel || accessLevel === 0) &&
+            validAccessLevels.indexOf(accessLevel) < 0
+        ) {
             throw new ReferenceError(
-                "Unsupported Access Level '" + accessLevel + "'." +
-                " Supported Access Levels: " + validAccessLevels.join(", ")
+                "Unsupported Access Level '" +
+                    accessLevel +
+                    "'." +
+                    " Supported Access Levels: " +
+                    validAccessLevels.join(", ")
             );
         }
 

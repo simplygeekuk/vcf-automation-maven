@@ -14,10 +14,9 @@
         var vcfAutomationConfigPath = "Simplygeek/VCF/Automation";
         var restHostConfigPath = "Simplygeek/VCF/Orchestrator/Resthosts";
 
-        this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
-            "Action",
-            "VCFAutomationConfigService"
-        );
+        this.log = new (System.getModule(
+            "com.simplygeek.vcf.orchestrator.logging"
+        ).Logger())("Action", "VCFAutomationConfigService");
 
         this.vcfAutomationConfigElement = this.getConfigElement(
             "VCFAutomationDefaultConfig",
@@ -38,7 +37,8 @@
     VCFAutomationConfigService.prototype = Object.create(
         ConfigElementService.prototype
     );
-    VCFAutomationConfigService.prototype.constructor = VCFAutomationConfigService;
+    VCFAutomationConfigService.prototype.constructor =
+        VCFAutomationConfigService;
 
     /**
      * Defines the getRestHostName method.
@@ -64,9 +64,9 @@
      */
 
     VCFAutomationConfigService.prototype.getRestHost = function () {
-        var vcfAutomationRestHost = System.getModule("com.simplygeek.rest").getRestHost(
-            this.getRestHostName()
-        );
+        var vcfAutomationRestHost = System.getModule(
+            "com.simplygeek.rest"
+        ).getRestHost(this.getRestHostName());
 
         return vcfAutomationRestHost;
     };

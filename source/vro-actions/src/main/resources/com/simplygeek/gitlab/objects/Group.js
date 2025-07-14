@@ -12,34 +12,23 @@
      * @param {number} [parentId] - The parent group ID for creating nested group.
      * @returns {Any} Returns an instance of the Group Class.
      */
-    function Group (
-        name,
-        path,
-        description,
-        parentId
-    ) {
+    function Group(name, path, description, parentId) {
         // Mandatory parameters, defaults and type checking.
         if (!name || typeof name !== "string") {
             throw new ReferenceError(
-                "name is required and must " +
-                "be of type 'string'"
+                "name is required and must " + "be of type 'string'"
             );
         }
         if (!path || typeof path !== "string") {
             throw new ReferenceError(
-                "path is required and must " +
-                "be of type 'string'"
+                "path is required and must " + "be of type 'string'"
             );
         }
         if (description && typeof description !== "string") {
-            throw new ReferenceError(
-                "description must be of type 'string'"
-            );
+            throw new ReferenceError("description must be of type 'string'");
         }
         if (parentId && typeof parentId !== "number") {
-            throw new ReferenceError(
-                "parentId must be of type 'number'"
-            );
+            throw new ReferenceError("parentId must be of type 'number'");
         }
 
         // Construct Object

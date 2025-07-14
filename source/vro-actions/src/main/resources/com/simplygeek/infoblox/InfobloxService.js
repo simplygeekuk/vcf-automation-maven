@@ -9,19 +9,16 @@
      * @param {REST:RESTHost} restHost - The Infoblox HTTP REST host.
      * @returns {Any} An instance of the InfobloxService class.
      */
-    function InfobloxService(
-        restHost
-    ) {
+    function InfobloxService(restHost) {
         if (!restHost || System.getObjectType(restHost) !== "REST:RESTHost") {
             throw new ReferenceError(
                 "restHost is required and must be of type 'REST:RESTHost'"
             );
         }
 
-        this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
-            "Action",
-            "InfobloxService"
-        );
+        this.log = new (System.getModule(
+            "com.simplygeek.vcf.orchestrator.logging"
+        ).Logger())("Action", "InfobloxService");
 
         this.apiVersion = "2.11.3";
         this.mediaType = "application/json";
@@ -49,9 +46,7 @@
         "com.simplygeek.infoblox"
     ).InfobloxBackendService();
 
-    InfobloxService.prototype = Object.create(
-        InfobloxBackendService.prototype
-    );
+    InfobloxService.prototype = Object.create(InfobloxBackendService.prototype);
     InfobloxService.prototype.constructor = InfobloxService;
 
     return InfobloxService;

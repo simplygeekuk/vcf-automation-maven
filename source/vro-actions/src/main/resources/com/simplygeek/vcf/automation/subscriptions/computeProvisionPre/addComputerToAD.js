@@ -4,10 +4,9 @@
  * @returns {Properties} - The updated Custom Properties.
  */
 (function (inputProperties) {
-    var log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
-        "Action",
-        "addComputerToAD"
-    );
+    var log = new (System.getModule(
+        "com.simplygeek.vcf.orchestrator.logging"
+    ).Logger())("Action", "addComputerToAD");
     var addUpdateCustomProperties = new Properties();
     var ouNameRegex = /^OU=([^,]+)/;
     var activeDirectoryDomainName;
@@ -23,24 +22,27 @@
     log.debug("osType: " + osType);
 
     // Get Configuration
-    var windowsConfigService = new (
-        System.getModule(
-            "com.simplygeek.vcf.automation.provisioning"
-        ).WindowsConfigService());
-    var linuxConfigService = new (
-        System.getModule(
-            "com.simplygeek.vcf.automation.provisioning"
-        ).LinuxConfigService());
+    var windowsConfigService = new (System.getModule(
+        "com.simplygeek.vcf.automation.provisioning"
+    ).WindowsConfigService())();
+    var linuxConfigService = new (System.getModule(
+        "com.simplygeek.vcf.automation.provisioning"
+    ).LinuxConfigService())();
 
     if (osType.toLowerCase() === "windows") {
-        activeDirectoryDomainName = windowsConfigService.getActiveDirectoryDomainName();
-        activeDirectoryServerOUDN = windowsConfigService.getActiveDirectoryServerOUDN();
+        activeDirectoryDomainName =
+            windowsConfigService.getActiveDirectoryDomainName();
+        activeDirectoryServerOUDN =
+            windowsConfigService.getActiveDirectoryServerOUDN();
     } else {
-        activeDirectoryDomainName = linuxConfigService.getActiveDirectoryDomainName();
-        activeDirectoryServerOUDN = linuxConfigService.getActiveDirectoryServerOUDN();
+        activeDirectoryDomainName =
+            linuxConfigService.getActiveDirectoryDomainName();
+        activeDirectoryServerOUDN =
+            linuxConfigService.getActiveDirectoryServerOUDN();
     }
 
-    activeDirectoryServerOUName = activeDirectoryServerOUDN.match(ouNameRegex)[1];
+    activeDirectoryServerOUName =
+        activeDirectoryServerOUDN.match(ouNameRegex)[1];
 
     log.info("activeDirectoryDomainName: " + activeDirectoryDomainName);
     log.info("activeDirectoryServerOUDN: " + activeDirectoryServerOUDN);
@@ -48,13 +50,17 @@
 
     // Create Computer in AD
     try {
-        log.info("Creating Active Directory computer account '" + vmName +
-                   "' in OU path '" + activeDirectoryServerOUDN + "'");
+        log.info(
+            "Creating Active Directory computer account '" +
+                vmName +
+                "' in OU path '" +
+                activeDirectoryServerOUDN +
+                "'"
+        );
 
-        var adService = new (
-            System.getModule(
-                "com.simplygeek.ad"
-            ).ActiveDirectoryService())(activeDirectoryDomainName);
+        var adService = new (System.getModule(
+            "com.simplygeek.ad"
+        ).ActiveDirectoryService())(activeDirectoryDomainName);
         var adOrganizationalUnit = adService.getOrganizationalUnit(
             activeDirectoryServerOUName,
             activeDirectoryServerOUDN
@@ -63,10 +69,14 @@
         var adComputer = adService.createComputer(vmName, adOrganizationalUnit);
 
         addUpdateCustomProperties.put("activeDirectoryJoinEnabled", true);
-        addUpdateCustomProperties.put("activeDirectoryDomainName", activeDirectoryDomainName);
+        addUpdateCustomProperties.put(
+            "activeDirectoryDomainName",
+            activeDirectoryDomainName
+        );
         log.info("Successfully created Active Directory computer account.");
     } catch (e) {
-        var errorMessage = "Failed to create Active Directory computer account: " + e;
+        var errorMessage =
+            "Failed to create Active Directory computer account: " + e;
 
         log.error(errorMessage);
         throw new Error(errorMessage);

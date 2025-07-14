@@ -10,16 +10,12 @@
      * @param {string} apiToken - The VCF Automation API Token.
      * @returns {Any} An instance of the VCFAutomationCustomNamingService class.
      */
-    function VCFAutomationCustomNamingService(
-        restHost,
-        apiToken
-    ) {
+    function VCFAutomationCustomNamingService(restHost, apiToken) {
         VCFAutomationBackend.call(this, restHost);
 
-        this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
-            "Action",
-            "VCFAutomationCustomNamingService"
-        );
+        this.log = new (System.getModule(
+            "com.simplygeek.vcf.orchestrator.logging"
+        ).Logger())("Action", "VCFAutomationCustomNamingService");
 
         this.baseUri = "/iaas/api";
         this.apiVersion = this.about().latestApiVersion;
@@ -35,7 +31,8 @@
     VCFAutomationCustomNamingService.prototype = Object.create(
         VCFAutomationBackend.prototype
     );
-    VCFAutomationCustomNamingService.prototype.constructor = VCFAutomationCustomNamingService;
+    VCFAutomationCustomNamingService.prototype.constructor =
+        VCFAutomationCustomNamingService;
 
     /**
      * Defines the getCustomNames method.
@@ -70,25 +67,34 @@
     ) {
         if (!customNamingId || typeof customNamingId !== "string") {
             throw new ReferenceError(
-                "customNamingId is required and must " +
-                "be of type 'string'"
+                "customNamingId is required and must " + "be of type 'string'"
             );
         }
 
         // Default throwOnNotFound to true
         throwOnNotFound = throwOnNotFound !== false;
 
-        var uri = this.baseUri + "/naming/" + customNamingId + "?" + this.apiVersionParam;
+        var uri =
+            this.baseUri +
+            "/naming/" +
+            customNamingId +
+            "?" +
+            this.apiVersionParam;
         var customNamingObject;
 
-        this.log.debug("Getting custom naming with ID '" + customNamingId + "'");
+        this.log.debug(
+            "Getting custom naming with ID '" + customNamingId + "'"
+        );
         customNamingObject = this.get(uri, null, throwOnNotFound);
         if (customNamingObject) {
             var customNamingName = customNamingObject.name;
 
             this.log.debug(
-                "Found custom naming with name '" + customNamingName +
-                "' and id '" + customNamingId + "'"
+                "Found custom naming with name '" +
+                    customNamingName +
+                    "' and id '" +
+                    customNamingId +
+                    "'"
             );
         }
 
@@ -104,58 +110,64 @@
      * @returns {Any} The custom naming object.
      */
 
-    VCFAutomationCustomNamingService.prototype.getCustomNamingByName = function (
-        customNamingName,
-        throwOnNotFound
-    ) {
-        if (!customNamingName || typeof customNamingName !== "string") {
-            throw new ReferenceError(
-                "customNamingName is required and must " +
-                "be of type 'string'"
-            );
-        }
-
-        // Default throwOnNotFound to true
-        throwOnNotFound = throwOnNotFound !== false;
-        var uri = this.baseUri + "/naming?$filter=name eq '" + customNamingName + "'" +
-                                 "&" + this.apiVersionParam;
-        var customNamingObject;
-        var customNamingFullObject;
-
-        this.log.debug(
-            "Getting custom naming profile with name '" +
-            customNamingName + "'"
-        );
-        var results = this.get(
-            uri,
-            null,
-            false
-        );
-
-        if (results && results.length > 1) {
-            throw new Error(
-                "More than one custom naming profile found. Unable to determine correct custom" +
-                " naming profile with name '" + customNamingName + "'"
-            );
-        } else if (results && results.length > 0) {
-            customNamingObject = results[0];
-            customNamingFullObject = this.getCustomNamingById(customNamingObject.id);
-        } else {
-            if (throwOnNotFound) {
-                throw new Error(
-                    "Custom naming profile not found with name '" +
-                    customNamingName + "'"
-                );
-            } else {
-                this.log.warn(
-                    "Custom naming profile not found with name '" +
-                    customNamingName + "'"
+    VCFAutomationCustomNamingService.prototype.getCustomNamingByName =
+        function (customNamingName, throwOnNotFound) {
+            if (!customNamingName || typeof customNamingName !== "string") {
+                throw new ReferenceError(
+                    "customNamingName is required and must " +
+                        "be of type 'string'"
                 );
             }
-        }
 
-        return customNamingFullObject;
-    };
+            // Default throwOnNotFound to true
+            throwOnNotFound = throwOnNotFound !== false;
+            var uri =
+                this.baseUri +
+                "/naming?$filter=name eq '" +
+                customNamingName +
+                "'" +
+                "&" +
+                this.apiVersionParam;
+            var customNamingObject;
+            var customNamingFullObject;
+
+            this.log.debug(
+                "Getting custom naming profile with name '" +
+                    customNamingName +
+                    "'"
+            );
+            var results = this.get(uri, null, false);
+
+            if (results && results.length > 1) {
+                throw new Error(
+                    "More than one custom naming profile found. Unable to determine correct custom" +
+                        " naming profile with name '" +
+                        customNamingName +
+                        "'"
+                );
+            } else if (results && results.length > 0) {
+                customNamingObject = results[0];
+                customNamingFullObject = this.getCustomNamingById(
+                    customNamingObject.id
+                );
+            } else {
+                if (throwOnNotFound) {
+                    throw new Error(
+                        "Custom naming profile not found with name '" +
+                            customNamingName +
+                            "'"
+                    );
+                } else {
+                    this.log.warn(
+                        "Custom naming profile not found with name '" +
+                            customNamingName +
+                            "'"
+                    );
+                }
+            }
+
+            return customNamingFullObject;
+        };
 
     /**
      * Defines the updateCustomNaming method.
@@ -172,24 +184,19 @@
     ) {
         if (!customNamingId || typeof customNamingId !== "string") {
             throw new ReferenceError(
-                "customNamingId is required and must " +
-                "be of type 'string'"
+                "customNamingId is required and must " + "be of type 'string'"
             );
         }
         if (!updatedObject || typeof updatedObject !== "object") {
             throw new ReferenceError(
-                "updatedObject is required and must " +
-                "be of type 'object'"
+                "updatedObject is required and must " + "be of type 'object'"
             );
         }
 
         var uri = this.baseUri + "/naming?" + this.apiVersionParam;
         var updatedCustomNamingObject;
 
-        updatedCustomNamingObject = this.put(
-            uri,
-            updatedObject
-        );
+        updatedCustomNamingObject = this.put(uri, updatedObject);
 
         return updatedCustomNamingObject;
     };
@@ -203,45 +210,55 @@
      * @returns {boolean} Whether the prefix was found.
      */
 
-    VCFAutomationCustomNamingService.prototype.checkCustomNamingPrefixExists = function (
-        customNamingId,
-        prefix
-    ) {
-        if (!customNamingId || typeof customNamingId !== "string") {
-            throw new ReferenceError(
-                "customNamingId is required and must " +
-                "be of type 'string'"
+    VCFAutomationCustomNamingService.prototype.checkCustomNamingPrefixExists =
+        function (customNamingId, prefix) {
+            if (!customNamingId || typeof customNamingId !== "string") {
+                throw new ReferenceError(
+                    "customNamingId is required and must " +
+                        "be of type 'string'"
+                );
+            }
+            if (!prefix || typeof prefix !== "string") {
+                throw new ReferenceError(
+                    "prefix is required and must " + "be of type 'string'"
+                );
+            }
+
+            var prefixFound = false;
+            var customNamingObject = this.getCustomNamingById(customNamingId);
+
+            this.log.debug(
+                "Checking if prefix '" +
+                    prefix +
+                    "' exists in custom naming profile"
             );
-        }
-        if (!prefix || typeof prefix !== "string") {
-            throw new ReferenceError(
-                "prefix is required and must " +
-                "be of type 'string'"
-            );
-        }
+            if (customNamingObject.templates) {
+                this.log.debug(
+                    "Found " +
+                        customNamingObject.templates.length +
+                        " naming templates"
+                );
+                var customNamingTemplates = customNamingObject.templates;
+                var templatesWithPrefix = customNamingTemplates.filter(
+                    function (template) {
+                        var staticPattern =
+                            template.staticPattern.toLowerCase();
 
-        var prefixFound = false;
-        var customNamingObject = this.getCustomNamingById(customNamingId);
+                        return staticPattern === prefix.toLowerCase();
+                    }
+                );
 
-        this.log.debug("Checking if prefix '" + prefix + "' exists in custom naming profile");
-        if (customNamingObject.templates) {
-            this.log.debug("Found " + customNamingObject.templates.length + " naming templates");
-            var customNamingTemplates = customNamingObject.templates;
-            var templatesWithPrefix = customNamingTemplates.filter(
-                function(template) {
-                    var staticPattern = template.staticPattern.toLowerCase();
+                this.log.debug(
+                    "Found " +
+                        templatesWithPrefix.length +
+                        " templates matching prefix"
+                );
+                if (templatesWithPrefix.length > 0) prefixFound = true;
+                this.log.debug("prefixFound: " + prefixFound);
+            }
 
-                    return staticPattern === prefix.toLowerCase();
-                }
-            );
-
-            this.log.debug("Found " + templatesWithPrefix.length + " templates matching prefix");
-            if (templatesWithPrefix.length > 0) prefixFound = true;
-            this.log.debug("prefixFound: " + prefixFound);
-        }
-
-        return prefixFound;
-    };
+            return prefixFound;
+        };
 
     /**
      * Defines the addCustomNamingPrefixToTemplate method.
@@ -255,96 +272,115 @@
      * @returns {Any} The updated Custom Naming object.
      */
 
-    VCFAutomationCustomNamingService.prototype.addCustomNamingPrefixToTemplate = function (
-        customNamingId,
-        prefix,
-        resourceType,
-        startCounter,
-        incrementStep
-    ) {
-        if (!customNamingId || typeof customNamingId !== "string") {
-            throw new ReferenceError(
-                "customNamingId is required and must " +
-                "be of type 'string'"
-            );
-        }
-        if (!prefix || typeof prefix !== "string") {
-            throw new ReferenceError(
-                "prefix is required and must " +
-                "be of type 'string'"
-            );
-        }
-        var validResourceTypes = [
-            "COMPUTE",
-            "NETWORK",
-            "COMPUTE_STORAGE",
-            "LOAD_BALANCER",
-            "RESOURCE_GROUP",
-            "GATEWAY",
-            "NAT",
-            "SECURITY_GROUP",
-            "GENERIC"
-        ];
-
-        if (!resourceType || typeof resourceType !== "string") {
-            throw new ReferenceError(
-                "resourceType is required and must " +
-                "be of type 'string'"
-            );
-        } else if (resourceType && validResourceTypes.indexOf(resourceType.toUpperCase()) < 0) {
-            throw new ReferenceError(
-                "Unsupported resource type '" + resourceType + "'." +
-                " Supported resource types: " + validResourceTypes.join(", "));
-        }
-
-        var customNamingObject = this.getCustomNamingById(customNamingId);
-        var customNamingName = customNamingObject.name;
-
-        this.log.debug(
-            "Adding prefix '" + prefix + "' to custom naming '" +
-            customNamingName + "'"
-        );
-
-        if (!customNamingObject.templates) {
-            throw new Error(
-                "No existing templates were found. A template must already exist" +
-                " for the resource type before a prefix can be added"
-            );
-        }
-
-        this.log.debug("Get default template for resource type '" + resourceType + "'");
-        var customNamingTemplates = customNamingObject.templates;
-        var defaultTemplates = customNamingTemplates.filter(
-            function(template) {
-                return template.resourceType === resourceType.toUpperCase() &&
-                        template.resourceDefault === true;
-            }
-        );
-
-        if (defaultTemplates.length === 0) {
-            throw new Error(
-                "No default template found for resource type '" +
-                resourceType.toUpperCase() + "'");
-        }
-        var pattern = defaultTemplates[0].pattern;
-        var newNamingTemplate = {};
-
-        newNamingTemplate.resourceType = resourceType.toUpperCase();
-        newNamingTemplate.incrementStep = (incrementStep || incrementStep === 0) ? incrementStep : 1;
-        newNamingTemplate.startCounter = (startCounter || startCounter === 0) ? startCounter : 1;
-        newNamingTemplate.pattern = pattern;
-        newNamingTemplate.staticPattern = prefix;
-
-        customNamingObject.templates.push(newNamingTemplate);
-        var updatedCustomNamingObject = this.updateCustomNaming(
+    VCFAutomationCustomNamingService.prototype.addCustomNamingPrefixToTemplate =
+        function (
             customNamingId,
-            customNamingObject
-        );
+            prefix,
+            resourceType,
+            startCounter,
+            incrementStep
+        ) {
+            if (!customNamingId || typeof customNamingId !== "string") {
+                throw new ReferenceError(
+                    "customNamingId is required and must " +
+                        "be of type 'string'"
+                );
+            }
+            if (!prefix || typeof prefix !== "string") {
+                throw new ReferenceError(
+                    "prefix is required and must " + "be of type 'string'"
+                );
+            }
+            var validResourceTypes = [
+                "COMPUTE",
+                "NETWORK",
+                "COMPUTE_STORAGE",
+                "LOAD_BALANCER",
+                "RESOURCE_GROUP",
+                "GATEWAY",
+                "NAT",
+                "SECURITY_GROUP",
+                "GENERIC",
+            ];
 
-        this.log.debug("The prefix '" + prefix + "' has been successfully added");
+            if (!resourceType || typeof resourceType !== "string") {
+                throw new ReferenceError(
+                    "resourceType is required and must " + "be of type 'string'"
+                );
+            } else if (
+                resourceType &&
+                validResourceTypes.indexOf(resourceType.toUpperCase()) < 0
+            ) {
+                throw new ReferenceError(
+                    "Unsupported resource type '" +
+                        resourceType +
+                        "'." +
+                        " Supported resource types: " +
+                        validResourceTypes.join(", ")
+                );
+            }
 
-        return updatedCustomNamingObject;
-    };
+            var customNamingObject = this.getCustomNamingById(customNamingId);
+            var customNamingName = customNamingObject.name;
+
+            this.log.debug(
+                "Adding prefix '" +
+                    prefix +
+                    "' to custom naming '" +
+                    customNamingName +
+                    "'"
+            );
+
+            if (!customNamingObject.templates) {
+                throw new Error(
+                    "No existing templates were found. A template must already exist" +
+                        " for the resource type before a prefix can be added"
+                );
+            }
+
+            this.log.debug(
+                "Get default template for resource type '" + resourceType + "'"
+            );
+            var customNamingTemplates = customNamingObject.templates;
+            var defaultTemplates = customNamingTemplates.filter(
+                function (template) {
+                    return (
+                        template.resourceType === resourceType.toUpperCase() &&
+                        template.resourceDefault === true
+                    );
+                }
+            );
+
+            if (defaultTemplates.length === 0) {
+                throw new Error(
+                    "No default template found for resource type '" +
+                        resourceType.toUpperCase() +
+                        "'"
+                );
+            }
+            var pattern = defaultTemplates[0].pattern;
+            var newNamingTemplate = {};
+
+            newNamingTemplate.resourceType = resourceType.toUpperCase();
+            newNamingTemplate.incrementStep =
+                incrementStep || incrementStep === 0 ? incrementStep : 1;
+            newNamingTemplate.startCounter =
+                startCounter || startCounter === 0 ? startCounter : 1;
+            newNamingTemplate.pattern = pattern;
+            newNamingTemplate.staticPattern = prefix;
+
+            customNamingObject.templates.push(newNamingTemplate);
+            var updatedCustomNamingObject = this.updateCustomNaming(
+                customNamingId,
+                customNamingObject
+            );
+
+            this.log.debug(
+                "The prefix '" + prefix + "' has been successfully added"
+            );
+
+            return updatedCustomNamingObject;
+        };
 
     return VCFAutomationCustomNamingService;
 });

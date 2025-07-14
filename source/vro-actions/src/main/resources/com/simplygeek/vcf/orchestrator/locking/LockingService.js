@@ -8,10 +8,9 @@
      * @class
      */
     function LockingService() {
-        this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
-            "Action",
-            "LockingService"
-        );
+        this.log = new (System.getModule(
+            "com.simplygeek.vcf.orchestrator.logging"
+        ).Logger())("Action", "LockingService");
 
         /**
          * Defines the createLock method.
@@ -35,26 +34,23 @@
         ) {
             if (!lockOwner || typeof lockOwner !== "string") {
                 throw new ReferenceError(
-                    "lockOwner is required and must " +
-                    "be of type 'string'"
+                    "lockOwner is required and must " + "be of type 'string'"
                 );
             }
             if (!lockId || typeof lockId !== "string") {
                 throw new ReferenceError(
-                    "lockId is required and must " +
-                    "be of type 'string'"
+                    "lockId is required and must " + "be of type 'string'"
                 );
             }
             if (retryMaxAttempts && typeof retryMaxAttempts !== "number") {
                 throw new ReferenceError(
                     "retryMaxAttempts is required and must " +
-                    "be of type 'number'"
+                        "be of type 'number'"
                 );
             }
             if (retryDelay && typeof retryDelay !== "number") {
                 throw new ReferenceError(
-                    "retryDelay is required and must " +
-                    "be of type 'number'"
+                    "retryDelay is required and must " + "be of type 'number'"
                 );
             }
 
@@ -67,60 +63,66 @@
             do {
                 try {
                     this.log.debug(
-                        "Creating lock for owner '" + lockOwner +
-                        "' and id '" + lockId + "'"
+                        "Creating lock for owner '" +
+                            lockOwner +
+                            "' and id '" +
+                            lockId +
+                            "'"
                     );
-                    lockAcquired = LockingSystem.lock(lockId,lockOwner);
+                    lockAcquired = LockingSystem.lock(lockId, lockOwner);
                     if (lockAcquired) {
                         this.log.debug("Lock created successfully");
                         break;
                     } else {
                         this.log.debug(
                             "Failed to create lock, retrying..." +
-                            retryAttempt + " of " + retryMaxAttempts
+                                retryAttempt +
+                                " of " +
+                                retryMaxAttempts
                         );
                     }
                 } catch (e) {
                     throw new Error(
-                        "Unexpected error occurred when trying to create lock: " + e
+                        "Unexpected error occurred when trying to create lock: " +
+                            e
                     );
-
                 }
                 if (!lockAcquired && retryAttempt < retryMaxAttempts) {
                     System.sleep(retryDelay * 1000);
                 }
                 retryAttempt++;
-            } while (!lockAcquired && (retryAttempt <= retryMaxAttempts));
+            } while (!lockAcquired && retryAttempt <= retryMaxAttempts);
 
             if (!lockAcquired) {
                 if (autoRemoveLock) {
                     this.log.warn(
-                        "Creating lock failed after " + retryMaxAttempts.toString() +
-                        " attempts. Auto removing lock."
+                        "Creating lock failed after " +
+                            retryMaxAttempts.toString() +
+                            " attempts. Auto removing lock."
                     );
                     try {
                         this.log.debug("Attempting to remove lock");
-                        LockingSystem.unlock(lockId,lockOwner);
+                        LockingSystem.unlock(lockId, lockOwner);
                         this.log.debug("Lock removed successfully");
 
                         this.log.debug("Attempting to re-acquire lock");
-                        lockAcquired = LockingSystem.lock(lockId,lockOwner);
+                        lockAcquired = LockingSystem.lock(lockId, lockOwner);
                         if (lockAcquired) {
                             this.log.debug("Lock created successfully");
                         } else {
-                            throw new Error(
-                                "Failed to re-acquire lock"
-                            );
+                            throw new Error("Failed to re-acquire lock");
                         }
                     } catch (e) {
                         throw new Error(
-                            "Unexpected error occurred when trying to recreate lock: " + e
+                            "Unexpected error occurred when trying to recreate lock: " +
+                                e
                         );
                     }
                 } else {
                     throw new Error(
-                        "Creating lock failed after " + retryMaxAttempts.toString() +
-                        " attempts. Aborting."
+                        "Creating lock failed after " +
+                            retryMaxAttempts.toString() +
+                            " attempts. Aborting."
                     );
                 }
             }
@@ -136,28 +138,31 @@
          * @param {string} lockId - the unique (per lock) id.
          */
 
-        this.removeLock = function (
-            lockOwner,
-            lockId
-        ) {
+        this.removeLock = function (lockOwner, lockId) {
             if (!lockOwner || typeof lockOwner !== "string") {
                 throw new ReferenceError(
-                    "lockOwner is required and must " +
-                    "be of type 'string'"
+                    "lockOwner is required and must " + "be of type 'string'"
                 );
             }
             if (!lockId || typeof lockId !== "string") {
                 throw new ReferenceError(
-                    "lockId is required and must " +
-                    "be of type 'string'"
+                    "lockId is required and must " + "be of type 'string'"
                 );
             }
 
-            this.log.debug("Removing lock for owner '" + lockOwner + "' and id '" + lockId + "'");
+            this.log.debug(
+                "Removing lock for owner '" +
+                    lockOwner +
+                    "' and id '" +
+                    lockId +
+                    "'"
+            );
             try {
-                LockingSystem.unlock(lockId,lockOwner);
+                LockingSystem.unlock(lockId, lockOwner);
             } catch (e) {
-                throw new Error("Unexpected error when trying to remove lock: " + e);
+                throw new Error(
+                    "Unexpected error when trying to remove lock: " + e
+                );
             }
 
             this.log.debug("Lock successfully removed");

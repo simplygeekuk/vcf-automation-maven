@@ -9,10 +9,9 @@
      * @returns {Any} An instance of the ConfigElementService class.
      */
     function ConfigElementService() {
-        this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
-            "Action",
-            "ConfigElementService"
-        );
+        this.log = new (System.getModule(
+            "com.simplygeek.vcf.orchestrator.logging"
+        ).Logger())("Action", "ConfigElementService");
 
         /**
          * Defines the getConfigElement method.
@@ -23,10 +22,7 @@
          * @returns {ConfigurationElement} Configuration Element object.
          */
 
-        this.getConfigElement = function (
-            configElementName,
-            categoryPath
-        ) {
+        this.getConfigElement = function (configElementName, categoryPath) {
             if (!configElementName || typeof configElementName !== "string") {
                 throw new ReferenceError(
                     "configElementName is required and must be of type 'string'"
@@ -44,19 +40,23 @@
             var configElementsFound;
 
             this.log.debug(
-                "Get Configuration Element '" + configElementName +
-                "' in path '" + categoryPath
+                "Get Configuration Element '" +
+                    configElementName +
+                    "' in path '" +
+                    categoryPath
             );
-            configElementCategory = Server.getConfigurationElementCategoryWithPath(categoryPath);
+            configElementCategory =
+                Server.getConfigurationElementCategoryWithPath(categoryPath);
 
             if (configElementCategory) {
                 this.log.debug(
-                    "Get all Configuration Elements in category: " + categoryPath
+                    "Get all Configuration Elements in category: " +
+                        categoryPath
                 );
                 configElements = configElementCategory.allConfigurationElements;
 
                 configElementsFound = configElements.filter(
-                    function(configElement) {
+                    function (configElement) {
                         return configElement.name === configElementName;
                     }
                 );
@@ -64,19 +64,24 @@
                 if (configElementsFound.length > 1) {
                     throw new Error(
                         "More than one Configuration Element was found with the name '" +
-                        configElementName + "'"
+                            configElementName +
+                            "'"
                     );
                 } else if (configElementsFound.length > 0) {
                     configElement = configElementsFound[0];
                 } else {
                     throw new Error(
                         "No Configuration Element found with the name '" +
-                        configElementName + "'"
+                            configElementName +
+                            "'"
                     );
                 }
             } else {
                 throw new Error(
-                    this.log.debug("No configuration element category found '" + categoryPath)
+                    this.log.debug(
+                        "No configuration element category found '" +
+                            categoryPath
+                    )
                 );
             }
 
@@ -96,10 +101,7 @@
          * @returns {ConfigurationElement} Configuration Elemenet object.
          */
 
-        this.createConfigElement = function(
-            configElementName,
-            categoryPath
-        ) {
+        this.createConfigElement = function (configElementName, categoryPath) {
             if (!configElementName || typeof configElementName !== "string") {
                 throw new ReferenceError(
                     "configElementName is required and must be of type 'string'"
@@ -114,8 +116,11 @@
             var configElement;
 
             this.log.debug(
-                "Creating Configuration Element '" + configElementName +
-                "' in path '" + categoryPath + "'"
+                "Creating Configuration Element '" +
+                    configElementName +
+                    "' in path '" +
+                    categoryPath +
+                    "'"
             );
             try {
                 configElement = Server.createConfigurationElement(
@@ -125,7 +130,8 @@
 
                 this.log.debug(
                     "Successfully created Configuration Element '" +
-                    configElement.name + "'"
+                        configElement.name +
+                        "'"
                 );
             } catch (e) {
                 throw new Error("Failed to create Configuration Element: " + e);
@@ -147,7 +153,10 @@
             configElement,
             attributeName
         ) {
-            if (!configElement || System.getObjectType(configElement) !== "ConfigurationElement") {
+            if (
+                !configElement ||
+                System.getObjectType(configElement) !== "ConfigurationElement"
+            ) {
                 throw new ReferenceError(
                     "configElement is required and must be of type 'ConfigurationElement'"
                 );
@@ -164,25 +173,27 @@
             var attributeValue;
             var attributeType;
 
-            this.log.debug("Get Configuration Element Attribute '" + attributeName + "'");
-            attributes = configElement.attributes;
-            attributesFound = attributes.filter(
-                function(attribute) {
-                    return attribute.name === attributeName;
-                }
+            this.log.debug(
+                "Get Configuration Element Attribute '" + attributeName + "'"
             );
+            attributes = configElement.attributes;
+            attributesFound = attributes.filter(function (attribute) {
+                return attribute.name === attributeName;
+            });
 
             if (attributesFound.length > 1) {
                 throw new Error(
                     "More than one Configuration Element Attribute was found with the name '" +
-                    attributeName + "'"
+                        attributeName +
+                        "'"
                 );
             } else if (attributesFound.length > 0) {
                 attribute = attributesFound[0];
             } else {
                 throw new Error(
                     "No Configuration Element Attribute found with the name '" +
-                    attributeName + "'"
+                        attributeName +
+                        "'"
                 );
             }
 
@@ -191,8 +202,13 @@
             attributeType = attribute.type;
             if (attributeType === "SecureString") attributeValue = "******";
             this.log.debug(
-                "Found Configuration Element Attribute '" + attributeName +
-                "' with value '" + attributeValue + "' and type '" + attributeType + "'"
+                "Found Configuration Element Attribute '" +
+                    attributeName +
+                    "' with value '" +
+                    attributeValue +
+                    "' and type '" +
+                    attributeType +
+                    "'"
             );
 
             return attribute;
@@ -209,13 +225,16 @@
          * @returns {Any} Configuration Elemenet Attribute.
          */
 
-        this.createConfigElementAttribute = function(
+        this.createConfigElementAttribute = function (
             configElement,
             attributeName,
             attributeValue,
             attributeType
         ) {
-            if (!configElement || System.getObjectType(configElement) !== "ConfigurationElement") {
+            if (
+                !configElement ||
+                System.getObjectType(configElement) !== "ConfigurationElement"
+            ) {
                 throw new ReferenceError(
                     "configElement is required and must be of type 'ConfigurationElement'"
                 );
@@ -240,8 +259,11 @@
             var existingAttribute;
 
             this.log.debug(
-                "Creating Configuration Element Attribute '" + attributeName +
-                "' in Configuration Element '" + configElement.name + "'"
+                "Creating Configuration Element Attribute '" +
+                    attributeName +
+                    "' in Configuration Element '" +
+                    configElement.name +
+                    "'"
             );
 
             try {
@@ -249,14 +271,16 @@
                     configElement,
                     attributeName
                 );
-            // eslint-disable-next-line no-unused-vars
+                // eslint-disable-next-line no-unused-vars
             } catch (e) {
                 // Catch if attribute not found - This comment is needed.
             }
 
             if (existingAttribute) {
                 throw new Error(
-                    "An existing attribute was found with the name '" + attributeName + "'"
+                    "An existing attribute was found with the name '" +
+                        attributeName +
+                        "'"
                 );
             }
 
@@ -264,7 +288,8 @@
                 configElement.setAttributeWithKey(
                     attributeName,
                     attributeValue,
-                    attributeType);
+                    attributeType
+                );
             } catch (e) {
                 throw new Error(
                     "Failed to create Configuration Element Attribute: " + e
@@ -273,9 +298,12 @@
 
             attribute = this.getConfigElementAttribute(
                 configElement,
-                attributeName);
+                attributeName
+            );
             this.log.debug(
-                "Successfully created Configuration Element Attribute '" + attribute.name + "'"
+                "Successfully created Configuration Element Attribute '" +
+                    attribute.name +
+                    "'"
             );
 
             return attribute;
@@ -292,13 +320,16 @@
          * @returns {Any} Configuration Elemenet Attribute.
          */
 
-        this.updateConfigElementAttribute = function(
+        this.updateConfigElementAttribute = function (
             configElement,
             attributeName,
             attributeValue,
             attributeType
         ) {
-            if (!configElement || System.getObjectType(configElement) !== "ConfigurationElement") {
+            if (
+                !configElement ||
+                System.getObjectType(configElement) !== "ConfigurationElement"
+            ) {
                 throw new ReferenceError(
                     "configElement is required and must be of type 'ConfigurationElement'"
                 );
@@ -323,9 +354,14 @@
             var existingAttribute;
 
             this.log.debug(
-                "Updating Configuration Element Attribute '" + attributeName +
-                "' in Configuration Element '" + configElement.name + "' with " +
-                "value '" + attributeValue + "'"
+                "Updating Configuration Element Attribute '" +
+                    attributeName +
+                    "' in Configuration Element '" +
+                    configElement.name +
+                    "' with " +
+                    "value '" +
+                    attributeValue +
+                    "'"
             );
 
             try {
@@ -333,7 +369,7 @@
                     configElement,
                     attributeName
                 );
-            // eslint-disable-next-line no-unused-vars
+                // eslint-disable-next-line no-unused-vars
             } catch (e) {
                 // Catch if attribute not found - This comment is needed.
             }
@@ -368,7 +404,9 @@
                 attributeName
             );
             this.log.debug(
-                "Successfully updated Configuration Element Attribute '" + attribute.name + "'"
+                "Successfully updated Configuration Element Attribute '" +
+                    attribute.name +
+                    "'"
             );
 
             return attribute;
@@ -383,11 +421,14 @@
          * @returns {void}
          */
 
-        this.removeConfigElementAttribute = function(
+        this.removeConfigElementAttribute = function (
             configElement,
             attributeName
         ) {
-            if (!configElement || System.getObjectType(configElement) !== "ConfigurationElement") {
+            if (
+                !configElement ||
+                System.getObjectType(configElement) !== "ConfigurationElement"
+            ) {
                 throw new ReferenceError(
                     "configElement is required and must be of type 'ConfigurationElement'"
                 );
@@ -399,7 +440,9 @@
             }
 
             this.log.debug(
-                "Removing Configuration Element Attribute '" + attributeName + "'"
+                "Removing Configuration Element Attribute '" +
+                    attributeName +
+                    "'"
             );
 
             try {
@@ -411,7 +454,9 @@
             }
 
             this.log.debug(
-                "Successfully removed Configuration Element Attribute '" + attributeName + "'"
+                "Successfully removed Configuration Element Attribute '" +
+                    attributeName +
+                    "'"
             );
         };
     }

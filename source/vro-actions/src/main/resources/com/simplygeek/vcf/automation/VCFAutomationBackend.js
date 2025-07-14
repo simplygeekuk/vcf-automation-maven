@@ -31,9 +31,7 @@
      */
 
     VCFAutomationBackend.prototype.about = function () {
-        var response = this.get(
-            this.baseUri + "/about"
-        );
+        var response = this.get(this.baseUri + "/about");
 
         return response;
     };
@@ -44,9 +42,7 @@
      */
 
     VCFAutomationBackend.prototype.iaasAbout = function () {
-        var response = this.get(
-            this.iaasBaseUri + "/about"
-        );
+        var response = this.get(this.iaasBaseUri + "/about");
 
         return response;
     };
@@ -61,15 +57,17 @@
      * @returns {Any||Array/Any} The response result or results.
      */
 
-    VCFAutomationBackend.prototype.get = function (
-        uri,
-        expectedResponseCodes
-    ) {
+    VCFAutomationBackend.prototype.get = function (uri, expectedResponseCodes) {
         if (!uri || typeof uri !== "string") {
-            throw new ReferenceError("uri is required and must be of type 'string'");
+            throw new ReferenceError(
+                "uri is required and must be of type 'string'"
+            );
         }
-        if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
-            expectedResponseCodes.length < 1)) {
+        if (
+            !expectedResponseCodes ||
+            (Array.isArray(expectedResponseCodes) &&
+                expectedResponseCodes.length < 1)
+        ) {
             expectedResponseCodes = [200, 201, 204];
         }
 
@@ -83,14 +81,20 @@
         var responseContent = JSON.parse(response.contentAsString);
 
         // Check if we have a collection.
-        if (responseContent.totalElements || responseContent.totalElements === 0) {
+        if (
+            responseContent.totalElements ||
+            responseContent.totalElements === 0
+        ) {
             var numTotalResults = responseContent.totalElements;
             var results = responseContent.content;
             var numResultsOnPage = responseContent.numberOfElements; // || responseContent.size;
 
             this.log.debug(
-                "Found " + numResultsOnPage + " of " +
-                numTotalResults + " results"
+                "Found " +
+                    numResultsOnPage +
+                    " of " +
+                    numTotalResults +
+                    " results"
             );
 
             if (numResultsOnPage > 0) {
@@ -116,12 +120,17 @@
                             expectedResponseCodes,
                             this.sessionHeaders
                         );
-                        var extraResponseContent = JSON.parse(extraResponse.contentAsString);
+                        var extraResponseContent = JSON.parse(
+                            extraResponse.contentAsString
+                        );
 
                         results = results.concat(extraResponseContent.content);
                         this.log.debug(
-                            "Found " + results.length + " of " +
-                            numTotalResults + " results"
+                            "Found " +
+                                results.length +
+                                " of " +
+                                numTotalResults +
+                                " results"
                         );
                         numResultsOnPage += pageSize;
                     } while (results.length < numTotalResults);
@@ -154,10 +163,15 @@
         expectedResponseCodes
     ) {
         if (!uri || typeof uri !== "string") {
-            throw new ReferenceError("uri is required and must be of type 'string'");
+            throw new ReferenceError(
+                "uri is required and must be of type 'string'"
+            );
         }
-        if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
-            expectedResponseCodes.length < 1)) {
+        if (
+            !expectedResponseCodes ||
+            (Array.isArray(expectedResponseCodes) &&
+                expectedResponseCodes.length < 1)
+        ) {
             expectedResponseCodes = [200, 201];
         }
 
@@ -171,7 +185,8 @@
             this.sessionHeaders
         );
 
-        if (response.statusCode !== 204) responseContent = JSON.parse(response.contentAsString);
+        if (response.statusCode !== 204)
+            responseContent = JSON.parse(response.contentAsString);
 
         return responseContent;
     };
@@ -191,14 +206,21 @@
         expectedResponseCodes
     ) {
         if (!uri || typeof uri !== "string") {
-            throw new ReferenceError("uri is required and must be of type 'string'");
+            throw new ReferenceError(
+                "uri is required and must be of type 'string'"
+            );
         }
         if (!content || typeof content !== "object") {
-            throw new ReferenceError("content is required and must be of type 'object'");
+            throw new ReferenceError(
+                "content is required and must be of type 'object'"
+            );
         }
 
-        if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
-            expectedResponseCodes.length < 1)) {
+        if (
+            !expectedResponseCodes ||
+            (Array.isArray(expectedResponseCodes) &&
+                expectedResponseCodes.length < 1)
+        ) {
             expectedResponseCodes = [200, 201];
         }
 
@@ -232,14 +254,21 @@
         expectedResponseCodes
     ) {
         if (!uri || typeof uri !== "string") {
-            throw new ReferenceError("uri is required and must be of type 'string'");
+            throw new ReferenceError(
+                "uri is required and must be of type 'string'"
+            );
         }
         if (!content || typeof content !== "object") {
-            throw new ReferenceError("content is required and must be of type 'object'");
+            throw new ReferenceError(
+                "content is required and must be of type 'object'"
+            );
         }
 
-        if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
-            expectedResponseCodes.length < 1)) {
+        if (
+            !expectedResponseCodes ||
+            (Array.isArray(expectedResponseCodes) &&
+                expectedResponseCodes.length < 1)
+        ) {
             expectedResponseCodes = [200, 201];
         }
 
@@ -273,8 +302,11 @@
             this.log.e("uri has not been defined or not of type 'string'");
         }
 
-        if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
-            expectedResponseCodes.length < 1)) {
+        if (
+            !expectedResponseCodes ||
+            (Array.isArray(expectedResponseCodes) &&
+                expectedResponseCodes.length < 1)
+        ) {
             expectedResponseCodes = [204];
         }
 

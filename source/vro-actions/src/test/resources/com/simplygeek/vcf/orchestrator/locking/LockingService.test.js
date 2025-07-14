@@ -10,7 +10,7 @@ describe("LockingService", function () {
             debug: jasmine.createSpy("debug"),
             warn: jasmine.createSpy("warn"),
             info: jasmine.createSpy("info"),
-            error: jasmine.createSpy("error")
+            error: jasmine.createSpy("error"),
         };
 
         function LoggerConstructor(type, name) {
@@ -18,38 +18,46 @@ describe("LockingService", function () {
             return loggerInstance;
         }
 
-        const getModuleMock = jasmine.createSpy("getModule").and.callFake(function (moduleName) {
-            if (moduleName === "com.simplygeek.vcf.orchestrator.logging") {
-                return {
-                    Logger: jasmine.createSpy("Logger").and.returnValue(LoggerConstructor)
-                };
-            }
-            // if (moduleName === "com.simplygeek.vcf.orchestrator.locking") {
-            //     return {
-            //         LockingService: require(path.resolve(
-            //             __dirname,
-            //             "../../../../../../../main/resources/com/simplygeek/vcf/orchestrator/locking/LockingService"
-            //         ))
-            //     }
-            // }
-            throw new Error("Unknown module: " + moduleName);
-        });
+        const getModuleMock = jasmine
+            .createSpy("getModule")
+            .and.callFake(function (moduleName) {
+                if (moduleName === "com.simplygeek.vcf.orchestrator.logging") {
+                    return {
+                        Logger: jasmine
+                            .createSpy("Logger")
+                            .and.returnValue(LoggerConstructor),
+                    };
+                }
+                // if (moduleName === "com.simplygeek.vcf.orchestrator.locking") {
+                //     return {
+                //         LockingService: require(path.resolve(
+                //             __dirname,
+                //             "../../../../../../../main/resources/com/simplygeek/vcf/orchestrator/locking/LockingService"
+                //         ))
+                //     }
+                // }
+                throw new Error("Unknown module: " + moduleName);
+            });
 
         System = {
             getModule: getModuleMock,
-            sleep: jasmine.createSpy("sleep")
+            sleep: jasmine.createSpy("sleep"),
         };
 
         LockingSystem = {
             lock: jasmine.createSpy("lock"),
-            unlock: jasmine.createSpy("unlock")
+            unlock: jasmine.createSpy("unlock"),
         };
     });
 
-    const LockingService = System.getModule("com.simplygeek.vcf.orchestrator.locking").LockingService();
+    const LockingService = System.getModule(
+        "com.simplygeek.vcf.orchestrator.locking"
+    ).LockingService();
 
     it("should pass the filename as log name", function () {
-        const expectedFileName = path.basename(__filename, ".test.js").replace(".", "");
+        const expectedFileName = path
+            .basename(__filename, ".test.js")
+            .replace(".", "");
         const lockingService = new LockingService();
 
         expect(capturedName).toBe(expectedFileName);
@@ -64,8 +72,12 @@ describe("LockingService", function () {
         expect(result).toBeTrue();
         expect(LockingSystem.lock).toHaveBeenCalledWith("lock1", "user1");
         expect(System.sleep).not.toHaveBeenCalled();
-        expect(lockingService.log.debug).toHaveBeenCalledWith("Creating lock for owner 'user1' and id 'lock1'");
-        expect(lockingService.log.debug).toHaveBeenCalledWith("Lock created successfully");
+        expect(lockingService.log.debug).toHaveBeenCalledWith(
+            "Creating lock for owner 'user1' and id 'lock1'"
+        );
+        expect(lockingService.log.debug).toHaveBeenCalledWith(
+            "Lock created successfully"
+        );
     });
 
     it("should retry acquiring lock before succeeding", function () {

@@ -8,7 +8,7 @@ if (match) {
     const result = {
         specs: parseInt(match[1], 10),
         failures: parseInt(match[2], 10),
-        success: parseInt(match[2], 10) === 0
+        success: parseInt(match[2], 10) === 0,
     };
     console.log(JSON.stringify(result, null, 2));
 } else {

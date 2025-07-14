@@ -8,7 +8,7 @@
      * @class
      * @returns {Any} Returns an instance of the ArrayUtils Class.
      */
-    function ArrayUtils () {}
+    function ArrayUtils() {}
 
     /**
      * Defines the getHighestStringPerPrefix method.
@@ -25,10 +25,14 @@
     ) {
         // Validate input
         if (!Array.isArray(stringList)) {
-            throw new Error("stringList is required and must be of type Array/string.");
+            throw new Error(
+                "stringList is required and must be of type Array/string."
+            );
         }
         if (!prefixPattern || typeof prefixPattern !== "object") {
-            throw new TypeError("prefixPattern is required and must be a valid RegEx object");
+            throw new TypeError(
+                "prefixPattern is required and must be a valid RegEx object"
+            );
         }
 
         // Map to group strings by their prefixes
@@ -45,10 +49,13 @@
                 var number = parseInt(match[2], 10); // Extract the numeric part
 
                 // Update the map only if the prefix is new or the number is higher
-                if (!groupedStrings[prefix] || groupedStrings[prefix].number < number) {
+                if (
+                    !groupedStrings[prefix] ||
+                    groupedStrings[prefix].number < number
+                ) {
                     groupedStrings[prefix] = {
                         original: str,
-                        number: number
+                        number: number,
                     };
                 }
             }

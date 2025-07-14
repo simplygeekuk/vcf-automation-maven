@@ -10,10 +10,7 @@
      * @param {string} apiToken - The VCF Automation API Token.
      * @returns {Any} An instance of the VCFAutomationDeploymentService class.
      */
-    function VCFAutomationDeploymentService(
-        restHost,
-        apiToken
-    ) {
+    function VCFAutomationDeploymentService(restHost, apiToken) {
         if (!restHost || System.getObjectType(restHost) !== "REST:RESTHost") {
             throw new ReferenceError(
                 "restHost is required and must be of type 'REST:RESTHost'"
@@ -21,8 +18,7 @@
         }
         if (!apiToken || typeof apiToken !== "string") {
             throw new ReferenceError(
-                "apiToken is required and must " +
-                "be of type 'string'"
+                "apiToken is required and must " + "be of type 'string'"
             );
         }
 
@@ -30,10 +26,9 @@
 
         VCFAutomationBackend.call(this);
 
-        this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
-            "Action",
-            "VCFAutomationDeploymentService"
-        );
+        this.log = new (System.getModule(
+            "com.simplygeek.vcf.orchestrator.logging"
+        ).Logger())("Action", "VCFAutomationDeploymentService");
 
         this.baseUri = "/deployment/api";
 
@@ -47,7 +42,8 @@
     VCFAutomationDeploymentService.prototype = Object.create(
         VCFAutomationBackend.prototype
     );
-    VCFAutomationDeploymentService.prototype.constructor = VCFAutomationDeploymentService;
+    VCFAutomationDeploymentService.prototype.constructor =
+        VCFAutomationDeploymentService;
 
     // ─────────────────────────────────────────────────────────────────────────────
     // Deployments
@@ -85,72 +81,115 @@
             "FAILED",
             "INPROGRESS",
             "PENDING",
-            "SUCCESSFUL"
+            "SUCCESSFUL",
         ];
 
         if (statuses && !Array.isArray(statuses)) {
             throw new TypeError("statuses not of type 'Array/string'");
         } else if (statuses && statuses.length > 0) {
-            if (!statuses.every(function(x) {return typeof x === "string"})) {
+            if (
+                !statuses.every(function (x) {
+                    return typeof x === "string";
+                })
+            ) {
                 throw new TypeError("statuses not of type 'Array/string'");
-            } else if (!statuses.every(function(x) {return validStatuses.indexOf(x.toUpperCase()) > -1})) {
-                throw new ReferenceError("Unsupported statuses '" + statuses.join(", ") + "'." +
-                                        " Supported statuses: " + validStatuses.join(", "));
+            } else if (
+                !statuses.every(function (x) {
+                    return validStatuses.indexOf(x.toUpperCase()) > -1;
+                })
+            ) {
+                throw new ReferenceError(
+                    "Unsupported statuses '" +
+                        statuses.join(", ") +
+                        "'." +
+                        " Supported statuses: " +
+                        validStatuses.join(", ")
+                );
             }
         }
         if (projects && !Array.isArray(projects)) {
             throw new TypeError("projects not of type 'Array/string'");
         } else if (projects && projects.length > 0) {
-            if (!projects.every(function(x) {return typeof x === "string"})) {
+            if (
+                !projects.every(function (x) {
+                    return typeof x === "string";
+                })
+            ) {
                 throw new TypeError("projects not of type 'Array/string'");
             }
         }
         if (resourceTypes && !Array.isArray(resourceTypes)) {
             throw new TypeError("resourceTypes not of type 'Array/string'");
         } else if (resourceTypes && resourceTypes.length > 0) {
-            if (!resourceTypes.every(function(x) {return typeof x === "string"})) {
+            if (
+                !resourceTypes.every(function (x) {
+                    return typeof x === "string";
+                })
+            ) {
                 throw new TypeError("resourceTypes not of type 'Array/string'");
             }
         }
         if (cloudAccounts && !Array.isArray(cloudAccounts)) {
             throw new TypeError("cloudAccounts not of type 'Array/string'");
         } else if (cloudAccounts && cloudAccounts.length > 0) {
-            if (!cloudAccounts.every(function(x) {return typeof x === "string"})) {
+            if (
+                !cloudAccounts.every(function (x) {
+                    return typeof x === "string";
+                })
+            ) {
                 throw new TypeError("cloudAccounts not of type 'Array/string'");
             }
         }
         if (cloudTypes && !Array.isArray(cloudTypes)) {
             throw new TypeError("cloudTypes not of type 'Array/string'");
         } else if (cloudTypes && cloudTypes.length > 0) {
-            if (!cloudTypes.every(function(x) {return typeof x === "string"})) {
+            if (
+                !cloudTypes.every(function (x) {
+                    return typeof x === "string";
+                })
+            ) {
                 throw new TypeError("cloudTypes not of type 'Array/string'");
             }
         }
         if (requestedBy && !Array.isArray(requestedBy)) {
             throw new TypeError("requestedBy not of type 'Array/string'");
         } else if (requestedBy && requestedBy.length > 0) {
-            if (!requestedBy.every(function(x) {return typeof x === "string"})) {
+            if (
+                !requestedBy.every(function (x) {
+                    return typeof x === "string";
+                })
+            ) {
                 throw new TypeError("requestedBy not of type 'Array/string'");
             }
         }
         if (ownedBy && !Array.isArray(ownedBy)) {
             throw new TypeError("ownedBy not of type 'Array/string'");
         } else if (ownedBy && ownedBy.length > 0) {
-            if (!ownedBy.every(function(x) {return typeof x === "string"})) {
+            if (
+                !ownedBy.every(function (x) {
+                    return typeof x === "string";
+                })
+            ) {
                 throw new TypeError("ownedBy not of type 'Array/string'");
             }
         }
         if (tags && !Array.isArray(tags)) {
             throw new TypeError("ownedBy not of type 'Array/string'");
         } else if (tags && tags.length > 0) {
-            if (!tags.every(function(x) {return typeof x === "string"})) {
+            if (
+                !tags.every(function (x) {
+                    return typeof x === "string";
+                })
+            ) {
                 throw new TypeError("tags not of type 'Array/string'");
             }
         }
 
-        var uri = this.baseUri + "/deployments?expand=blueprint,catalog," +
-                                 "lastRequest,project,resources,inprogressRequests," +
-                                 "metadata,user";
+        var uri =
+            this.baseUri +
+            "/deployments?expand=blueprint,catalog," +
+            "lastRequest,project,resources,inprogressRequests," +
+            "metadata,user";
         var results;
 
         if (statuses && statuses.length > 0) {
@@ -200,18 +239,20 @@
     ) {
         if (!deploymentId || typeof deploymentId !== "string") {
             throw new ReferenceError(
-                "deploymentId is required and must " +
-                "be of type 'string'"
+                "deploymentId is required and must " + "be of type 'string'"
             );
         }
 
         // Default throwOnNotFound to true
         throwOnNotFound = throwOnNotFound !== false;
 
-        var uri = this.baseUri + "/deployments/" + deploymentId +
-                                 "?expand=blueprint,catalog,project," +
-                                 "lastRequest,resources,inprogressRequests," +
-                                 "metadata,user";
+        var uri =
+            this.baseUri +
+            "/deployments/" +
+            deploymentId +
+            "?expand=blueprint,catalog,project," +
+            "lastRequest,resources,inprogressRequests," +
+            "metadata,user";
         var deploymentObject;
 
         this.log.debug("Getting deployment with id '" + deploymentId + "'");
@@ -221,8 +262,11 @@
             var deploymentName = deploymentObject.name;
 
             this.log.debug(
-                "Found deployment with name '" + deploymentName +
-                "' and id '" + deploymentId + "'"
+                "Found deployment with name '" +
+                    deploymentName +
+                    "' and id '" +
+                    deploymentId +
+                    "'"
             );
         } else {
             if (throwOnNotFound) {
@@ -254,39 +298,46 @@
     ) {
         if (!deploymentName || typeof deploymentName !== "string") {
             throw new ReferenceError(
-                "deploymentName is required and must " +
-                "be of type 'string'"
+                "deploymentName is required and must " + "be of type 'string'"
             );
         }
 
         // Default throwOnNotFound to true
         throwOnNotFound = throwOnNotFound !== false;
 
-        var uri = this.baseUri + "/deployments?$filter=name eq '" + deploymentName + "'" +
-                                 "&expand=blueprint,catalog,project," +
-                                 "lastRequest,resources,inprogressRequests," +
-                                 "metadata,user";
+        var uri =
+            this.baseUri +
+            "/deployments?$filter=name eq '" +
+            deploymentName +
+            "'" +
+            "&expand=blueprint,catalog,project," +
+            "lastRequest,resources,inprogressRequests," +
+            "metadata,user";
         var deploymentId;
         var deploymentObject;
 
-        this.log.debug(
-            "Getting deployment with name '" + deploymentName + "'"
-        );
+        this.log.debug("Getting deployment with name '" + deploymentName + "'");
 
         var results = this.get(uri);
 
         if (results.length > 1) {
             throw new Error(
                 "More than one deployment found. Unable to determine correct " +
-                "deployment with name '" + deploymentName + "'"
+                    "deployment with name '" +
+                    deploymentName +
+                    "'"
             );
         } else if (results.length > 0) {
             deploymentObject = results[0];
             deploymentId = deploymentObject.id;
 
             this.log.debug(
-                "Found deployment '" + deploymentName + "' with " +
-                "id '" + deploymentId + "'"
+                "Found deployment '" +
+                    deploymentName +
+                    "' with " +
+                    "id '" +
+                    deploymentId +
+                    "'"
             );
         } else {
             if (throwOnNotFound) {
@@ -318,14 +369,16 @@
     ) {
         if (!deploymentId || typeof deploymentId !== "string") {
             throw new ReferenceError(
-                "deploymentId is required and must " +
-                "be of type 'string'"
+                "deploymentId is required and must " + "be of type 'string'"
             );
         }
-        if (!updatedDeploymentObject || typeof updatedDeploymentObject !== "object") {
+        if (
+            !updatedDeploymentObject ||
+            typeof updatedDeploymentObject !== "object"
+        ) {
             throw new ReferenceError(
                 "updatedDeploymentObject is required and must " +
-                "be of type 'object'"
+                    "be of type 'object'"
             );
         }
 
@@ -334,7 +387,9 @@
 
         this.log.debug("Updating deployment with id '" + deploymentId + "'");
         deploymentObject = this.patch(uri, updatedDeploymentObject);
-        this.log.debug("Deployment with id '" + deploymentId + "' updated with success");
+        this.log.debug(
+            "Deployment with id '" + deploymentId + "' updated with success"
+        );
 
         return deploymentObject;
     };
@@ -357,8 +412,7 @@
     ) {
         if (!deploymentId || typeof deploymentId !== "string") {
             throw new ReferenceError(
-                "deploymentId is required and must " +
-                "be of type 'string'"
+                "deploymentId is required and must " + "be of type 'string'"
             );
         }
 
@@ -370,7 +424,9 @@
 
         this.log.debug("Deleting deployment with id '" + deploymentId + "'");
         request = this.delete(uri);
-        this.log.debug("Deployment delete request submitted with id '" + request.id + "'");
+        this.log.debug(
+            "Deployment delete request submitted with id '" + request.id + "'"
+        );
 
         if (wait) {
             return this.pollRequestStatus(
@@ -395,8 +451,7 @@
     ) {
         if (!deploymentId || typeof deploymentId !== "string") {
             throw new ReferenceError(
-                "deploymentId is required and must " +
-                "be of type 'string'"
+                "deploymentId is required and must " + "be of type 'string'"
             );
         }
 
@@ -418,43 +473,47 @@
      * @param {string} actionId - The action ID.
      * @returns {object} The deployment action.
      */
-    VCFAutomationDeploymentService.prototype.getDeploymentActionById = function (
-        deploymentId,
-        actionId
-    ) {
-        if (!deploymentId || typeof deploymentId !== "string") {
-            throw new ReferenceError(
-                "deploymentId is required and must " +
-                "be of type 'string'"
-            );
-        }
-        if (!actionId || typeof actionId !== "string") {
-            throw new ReferenceError(
-                "actionId is required and must " +
-                "be of type 'string'"
-            );
-        }
+    VCFAutomationDeploymentService.prototype.getDeploymentActionById =
+        function (deploymentId, actionId) {
+            if (!deploymentId || typeof deploymentId !== "string") {
+                throw new ReferenceError(
+                    "deploymentId is required and must " + "be of type 'string'"
+                );
+            }
+            if (!actionId || typeof actionId !== "string") {
+                throw new ReferenceError(
+                    "actionId is required and must " + "be of type 'string'"
+                );
+            }
 
-        var uri = this.baseUri + "/deployments/" + deploymentId + "/actions/" + actionId;
-        var action;
-
-        this.log.debug("Getting deployment action with ID '" + actionId + "'");
-        action = this.get(uri, [200, 404]);
-        if (action) {
-            var actionName = action.name;
+            var uri =
+                this.baseUri +
+                "/deployments/" +
+                deploymentId +
+                "/actions/" +
+                actionId;
+            var action;
 
             this.log.debug(
-                "Found action with name '" + actionName +
-                "' and id '" + actionId + "'"
+                "Getting deployment action with ID '" + actionId + "'"
             );
-        } else {
-            throw new Error(
-                "Action with id '" + actionId + "' not found"
-            );
-        }
+            action = this.get(uri, [200, 404]);
+            if (action) {
+                var actionName = action.name;
 
-        return action;
-    };
+                this.log.debug(
+                    "Found action with name '" +
+                        actionName +
+                        "' and id '" +
+                        actionId +
+                        "'"
+                );
+            } else {
+                throw new Error("Action with id '" + actionId + "' not found");
+            }
+
+            return action;
+        };
 
     /**
      * Runs a Day-2 action on a deployment.
@@ -478,28 +537,32 @@
     ) {
         if (!deploymentId || typeof deploymentId !== "string") {
             throw new ReferenceError(
-                "deploymentId is required and must " +
-                "be of type 'string'"
+                "deploymentId is required and must " + "be of type 'string'"
             );
         }
         if (!actionId || typeof actionId !== "string") {
             throw new ReferenceError(
-                "actionId is required and must " +
-                "be of type 'string'"
+                "actionId is required and must " + "be of type 'string'"
             );
         }
 
         var uri = this.baseUri + "/deployments/" + deploymentId + "/requests";
         var payload = {
             actionId: actionId,
-            inputs: inputs || {}
+            inputs: inputs || {},
         };
         var request;
 
         // Default wait to true, unless explicitly set to false.
         wait = wait !== false;
 
-        this.log.debug("Running action '" + actionId + "' on deployment '" + deploymentId + "'");
+        this.log.debug(
+            "Running action '" +
+                actionId +
+                "' on deployment '" +
+                deploymentId +
+                "'"
+        );
         request = this.post(uri, payload);
         this.log.debug("Request submitted with ID '" + request.id + "'");
 
@@ -519,18 +582,21 @@
      * @param {string} deploymentId - The deployment ID.
      * @returns {Array} List of request objects.
      */
-    VCFAutomationDeploymentService.prototype.getDeploymentRequests = function (deploymentId) {
+    VCFAutomationDeploymentService.prototype.getDeploymentRequests = function (
+        deploymentId
+    ) {
         if (!deploymentId || typeof deploymentId !== "string") {
             throw new ReferenceError(
-                "deploymentId is required and must " +
-                "be of type 'string'"
+                "deploymentId is required and must " + "be of type 'string'"
             );
         }
 
         var uri = this.baseUri + "/deployments/" + deploymentId + "/requests";
         var requests;
 
-        this.log.debug("Getting request history for deployment '" + deploymentId + "'");
+        this.log.debug(
+            "Getting request history for deployment '" + deploymentId + "'"
+        );
         requests = this.get(uri);
         this.log.debug("Found " + requests.length + " requests");
 
@@ -548,18 +614,21 @@
      * @param {string} deploymentId - The deployment ID.
      * @returns {Array/Any} List of resources for the deployment.
      */
-    VCFAutomationDeploymentService.prototype.getDeploymentResources = function (deploymentId) {
+    VCFAutomationDeploymentService.prototype.getDeploymentResources = function (
+        deploymentId
+    ) {
         if (!deploymentId || typeof deploymentId !== "string") {
             throw new ReferenceError(
-                "deploymentId is required and must " +
-                "be of type 'string'"
+                "deploymentId is required and must " + "be of type 'string'"
             );
         }
 
         var uri = this.baseUri + "/deployments/" + deploymentId + "/resources";
         var resources;
 
-        this.log.debug("Getting resources for deployment '" + deploymentId + "'");
+        this.log.debug(
+            "Getting resources for deployment '" + deploymentId + "'"
+        );
         resources = this.get(uri);
         this.log.debug("Found " + resources.length + " resources");
 
@@ -575,53 +644,62 @@
      * @param {boolean} [throwOnNotFound] - Whether to throw if not found.
      * @returns {object|null} The resource object or null if not found.
      */
-    VCFAutomationDeploymentService.prototype.getDeploymentResourceById = function (
-        deploymentId,
-        resourceId,
-        throwOnNotFound
-    ) {
-        if (!deploymentId || typeof deploymentId !== "string") {
-            throw new ReferenceError(
-                "deploymentId is required and must " +
-                "be of type 'string'"
-            );
-        }
-        if (!resourceId || typeof resourceId !== "string") {
-            throw new ReferenceError(
-                "resourceId is required and must " +
-                "be of type 'string'"
-            );
-        }
-
-        throwOnNotFound = throwOnNotFound !== false;
-
-        var uri = this.baseUri + "/deployments/" + deploymentId + "/resources/" + resourceId;
-        var resourceObject;
-
-        this.log.debug("Getting resource with ID '" + resourceId + "' from deployment '" + deploymentId + "'");
-        resourceObject = this.get(uri, [200, 404]);
-
-        if (resourceObject) {
-            var resourceName = resourceObject.name;
-
-            this.log.debug(
-                "Found resource with name '" + resourceName +
-                "' and id '" + resourceId + "'"
-            );
-        } else {
-            if (throwOnNotFound) {
-                throw new Error(
-                    "Resource with id '" + resourceId + "' not found"
-                );
-            } else {
-                this.log.warn(
-                    "Resource with id '" + resourceId + "' not found"
+    VCFAutomationDeploymentService.prototype.getDeploymentResourceById =
+        function (deploymentId, resourceId, throwOnNotFound) {
+            if (!deploymentId || typeof deploymentId !== "string") {
+                throw new ReferenceError(
+                    "deploymentId is required and must " + "be of type 'string'"
                 );
             }
-        }
+            if (!resourceId || typeof resourceId !== "string") {
+                throw new ReferenceError(
+                    "resourceId is required and must " + "be of type 'string'"
+                );
+            }
 
-        return resourceObject;
-    };
+            throwOnNotFound = throwOnNotFound !== false;
+
+            var uri =
+                this.baseUri +
+                "/deployments/" +
+                deploymentId +
+                "/resources/" +
+                resourceId;
+            var resourceObject;
+
+            this.log.debug(
+                "Getting resource with ID '" +
+                    resourceId +
+                    "' from deployment '" +
+                    deploymentId +
+                    "'"
+            );
+            resourceObject = this.get(uri, [200, 404]);
+
+            if (resourceObject) {
+                var resourceName = resourceObject.name;
+
+                this.log.debug(
+                    "Found resource with name '" +
+                        resourceName +
+                        "' and id '" +
+                        resourceId +
+                        "'"
+                );
+            } else {
+                if (throwOnNotFound) {
+                    throw new Error(
+                        "Resource with id '" + resourceId + "' not found"
+                    );
+                } else {
+                    this.log.warn(
+                        "Resource with id '" + resourceId + "' not found"
+                    );
+                }
+            }
+
+            return resourceObject;
+        };
 
     /**
      * Deletes a resource within a deployment.
@@ -634,46 +712,56 @@
      * @param {number} [timeoutSeconds] - Timeout. Default 300
      * @returns {object} The final or initial request object.
      */
-    VCFAutomationDeploymentService.prototype.deleteDeploymentResource = function (
-        deploymentId,
-        resourceId,
-        wait,
-        intervalSeconds,
-        timeoutSeconds
-    ) {
-        if (!deploymentId || typeof deploymentId !== "string") {
-            throw new ReferenceError(
-                "deploymentId is required and must " +
-                "be of type 'string'"
+    VCFAutomationDeploymentService.prototype.deleteDeploymentResource =
+        function (
+            deploymentId,
+            resourceId,
+            wait,
+            intervalSeconds,
+            timeoutSeconds
+        ) {
+            if (!deploymentId || typeof deploymentId !== "string") {
+                throw new ReferenceError(
+                    "deploymentId is required and must " + "be of type 'string'"
+                );
+            }
+            if (!resourceId || typeof resourceId !== "string") {
+                throw new ReferenceError(
+                    "resourceId is required and must " + "be of type 'string'"
+                );
+            }
+
+            var uri =
+                this.baseUri +
+                "/deployments/" +
+                deploymentId +
+                "/resources/" +
+                resourceId;
+            var request;
+
+            // Default wait to true, unless explicitly set to false.
+            wait = wait !== false;
+
+            this.log.debug(
+                "Deleting deployment resource with id '" + resourceId + "'"
             );
-        }
-        if (!resourceId || typeof resourceId !== "string") {
-            throw new ReferenceError(
-                "resourceId is required and must " +
-                "be of type 'string'"
+            request = this.delete(uri);
+            this.log.debug(
+                "Deployment resource delete request submitted with id '" +
+                    request.id +
+                    "'"
             );
-        }
 
-        var uri = this.baseUri + "/deployments/" + deploymentId + "/resources/" + resourceId;
-        var request;
+            if (wait) {
+                return this.pollRequestStatus(
+                    request.id,
+                    intervalSeconds || 10,
+                    timeoutSeconds || 300
+                );
+            }
 
-        // Default wait to true, unless explicitly set to false.
-        wait = wait !== false;
-
-        this.log.debug("Deleting deployment resource with id '" + resourceId + "'");
-        request = this.delete(uri);
-        this.log.debug("Deployment resource delete request submitted with id '" + request.id + "'");
-
-        if (wait) {
-            return this.pollRequestStatus(
-                request.id,
-                intervalSeconds || 10,
-                timeoutSeconds || 300
-            );
-        }
-
-        return request;
-    };
+            return request;
+        };
 
     /**
      * Gets available Day-2 actions for a resource within a deployment.
@@ -683,32 +771,40 @@
      * @param {string} resourceId - The deployment resource ID.
      * @returns {Array} The list of available actions.
      */
-    VCFAutomationDeploymentService.prototype.getDeploymentResourceActions = function (
-        deploymentId,
-        resourceId
-    ) {
-        if (!deploymentId || typeof deploymentId !== "string") {
-            throw new ReferenceError(
-                "deploymentId is required and must " +
-                "be of type 'string'"
+    VCFAutomationDeploymentService.prototype.getDeploymentResourceActions =
+        function (deploymentId, resourceId) {
+            if (!deploymentId || typeof deploymentId !== "string") {
+                throw new ReferenceError(
+                    "deploymentId is required and must " + "be of type 'string'"
+                );
+            }
+            if (!resourceId || typeof resourceId !== "string") {
+                throw new ReferenceError(
+                    "resourceId is required and must " + "be of type 'string'"
+                );
+            }
+
+            var uri =
+                this.baseUri +
+                "/deployments/" +
+                deploymentId +
+                "/resources/" +
+                resourceId +
+                "/actions";
+            var actions;
+
+            this.log.debug(
+                "Getting actions for resource with ID '" +
+                    resourceId +
+                    "' in deployment '" +
+                    deploymentId +
+                    "'"
             );
-        }
-        if (!resourceId || typeof resourceId !== "string") {
-            throw new ReferenceError(
-                "resourceId is required and must " +
-                "be of type 'string'"
-            );
-        }
+            actions = this.get(uri);
+            this.log.debug("Found " + actions.length + " actions");
 
-        var uri = this.baseUri + "/deployments/" + deploymentId + "/resources/" + resourceId + "/actions";
-        var actions;
-
-        this.log.debug("Getting actions for resource with ID '" + resourceId + "' in deployment '" + deploymentId + "'");
-        actions = this.get(uri);
-        this.log.debug("Found " + actions.length + " actions");
-
-        return actions;
-    };
+            return actions;
+        };
 
     /**
      * Gets a specific Day-2 action by its ID for a resource within a deployment.
@@ -719,50 +815,54 @@
      * @param {string} actionId - The action ID.
      * @returns {object} The deployment action.
      */
-    VCFAutomationDeploymentService.prototype.getDeploymentResourceActionById = function (
-        deploymentId,
-        resourceId,
-        actionId
-    ) {
-        if (!deploymentId || typeof deploymentId !== "string") {
-            throw new ReferenceError(
-                "deploymentId is required and must " +
-                "be of type 'string'"
-            );
-        }
-        if (!resourceId || typeof resourceId !== "string") {
-            throw new ReferenceError(
-                "resourceId is required and must " +
-                "be of type 'string'"
-            );
-        }
-        if (!actionId || typeof actionId !== "string") {
-            throw new ReferenceError(
-                "actionId is required and must " +
-                "be of type 'string'"
-            );
-        }
+    VCFAutomationDeploymentService.prototype.getDeploymentResourceActionById =
+        function (deploymentId, resourceId, actionId) {
+            if (!deploymentId || typeof deploymentId !== "string") {
+                throw new ReferenceError(
+                    "deploymentId is required and must " + "be of type 'string'"
+                );
+            }
+            if (!resourceId || typeof resourceId !== "string") {
+                throw new ReferenceError(
+                    "resourceId is required and must " + "be of type 'string'"
+                );
+            }
+            if (!actionId || typeof actionId !== "string") {
+                throw new ReferenceError(
+                    "actionId is required and must " + "be of type 'string'"
+                );
+            }
 
-        var uri = this.baseUri + "/deployments/" + deploymentId + "/resources/" + resourceId + "/actions/" + actionId;
-        var action;
-
-        this.log.debug("Getting deployment resource action with ID '" + actionId + "'");
-        action = this.get(uri, [200, 404]);
-        if (action) {
-            var actionName = action.name;
+            var uri =
+                this.baseUri +
+                "/deployments/" +
+                deploymentId +
+                "/resources/" +
+                resourceId +
+                "/actions/" +
+                actionId;
+            var action;
 
             this.log.debug(
-                "Found action with name '" + actionName +
-                "' and id '" + actionId + "'"
+                "Getting deployment resource action with ID '" + actionId + "'"
             );
-        } else {
-            throw new Error(
-                "Action with id '" + actionId + "' not found"
-            );
-        }
+            action = this.get(uri, [200, 404]);
+            if (action) {
+                var actionName = action.name;
 
-        return action;
-    };
+                this.log.debug(
+                    "Found action with name '" +
+                        actionName +
+                        "' and id '" +
+                        actionId +
+                        "'"
+                );
+            } else {
+                throw new Error("Action with id '" + actionId + "' not found");
+            }
+
+            return action;
+        };
 
     /**
      * Runs a Day-2 action on a resource within a deployment.
@@ -777,58 +877,70 @@
      * @param {number} [timeoutSeconds] - Timeout. Default 300
      * @returns {object} The final or initial request object.
      */
-    VCFAutomationDeploymentService.prototype.runDeploymentResourceAction = function (
-        deploymentId,
-        resourceId,
-        actionId,
-        inputs,
-        wait,
-        intervalSeconds,
-        timeoutSeconds
-    ) {
-        if (!deploymentId || typeof deploymentId !== "string") {
-            throw new ReferenceError(
-                "deploymentId is required and must " +
-                "be of type 'string'"
-            );
-        }
-        if (!resourceId || typeof resourceId !== "string") {
-            throw new ReferenceError(
-                "resourceId is required and must " +
-                "be of type 'string'"
-            );
-        }
-        if (!actionId || typeof actionId !== "string") {
-            throw new ReferenceError(
-                "actionId is required and must " +
-                "be of type 'string'"
-            );
-        }
+    VCFAutomationDeploymentService.prototype.runDeploymentResourceAction =
+        function (
+            deploymentId,
+            resourceId,
+            actionId,
+            inputs,
+            wait,
+            intervalSeconds,
+            timeoutSeconds
+        ) {
+            if (!deploymentId || typeof deploymentId !== "string") {
+                throw new ReferenceError(
+                    "deploymentId is required and must " + "be of type 'string'"
+                );
+            }
+            if (!resourceId || typeof resourceId !== "string") {
+                throw new ReferenceError(
+                    "resourceId is required and must " + "be of type 'string'"
+                );
+            }
+            if (!actionId || typeof actionId !== "string") {
+                throw new ReferenceError(
+                    "actionId is required and must " + "be of type 'string'"
+                );
+            }
 
-        var uri = this.baseUri + "/deployments/" + deploymentId + "/resources/" + resourceId + "/requests";
-        var payload = {
-            actionId: actionId,
-            inputs: inputs || {}
+            var uri =
+                this.baseUri +
+                "/deployments/" +
+                deploymentId +
+                "/resources/" +
+                resourceId +
+                "/requests";
+            var payload = {
+                actionId: actionId,
+                inputs: inputs || {},
+            };
+            var request;
+
+            // Default wait to true, unless explicitly set to false.
+            wait = wait !== false;
+
+            this.log.debug(
+                "Running action '" +
+                    actionId +
+                    "' on resource '" +
+                    resourceId +
+                    "' in deployment '" +
+                    deploymentId +
+                    "'"
+            );
+            request = this.post(uri, payload);
+            this.log.debug("Request submitted with ID '" + request.id + "'");
+
+            if (wait) {
+                return this.pollRequestStatus(
+                    request.id,
+                    intervalSeconds || 10,
+                    timeoutSeconds || 300
+                );
+            }
+
+            return request;
         };
-        var request;
-
-        // Default wait to true, unless explicitly set to false.
-        wait = wait !== false;
-
-        this.log.debug("Running action '" + actionId + "' on resource '" + resourceId + "' in deployment '" + deploymentId + "'");
-        request = this.post(uri, payload);
-        this.log.debug("Request submitted with ID '" + request.id + "'");
-
-        if (wait) {
-            return this.pollRequestStatus(
-                request.id,
-                intervalSeconds || 10,
-                timeoutSeconds || 300
-            );
-        }
-
-        return request;
-    };
 
     // ─────────────────────────────────────────────────────────────────────────────
     // Resources
@@ -863,22 +975,26 @@
     ) {
         if (!resourceTypeId || typeof resourceTypeId !== "string") {
             throw new ReferenceError(
-                "resourceTypeId is required and must " +
-                "be of type 'string'"
+                "resourceTypeId is required and must " + "be of type 'string'"
             );
         }
 
         var uri = this.baseUri + "/resource-types/" + resourceTypeId;
         var resourceType;
 
-        this.log.debug("Getting resource-type with ID '" + resourceTypeId + "'");
+        this.log.debug(
+            "Getting resource-type with ID '" + resourceTypeId + "'"
+        );
         resourceType = this.get(uri, [200, 404]);
         if (resourceType) {
             var resourceTypeName = resourceType.name;
 
             this.log.debug(
-                "Found resource-type with name '" + resourceTypeName +
-                "' and id '" + resourceTypeId + "'"
+                "Found resource-type with name '" +
+                    resourceTypeName +
+                    "' and id '" +
+                    resourceTypeId +
+                    "'"
             );
         } else {
             throw new Error(
@@ -912,53 +1028,83 @@
         syncStatuses,
         isManaged
     ) {
-        var validSyncStatuses = [
-            "MISSING",
-            "STALE"
-        ];
+        var validSyncStatuses = ["MISSING", "STALE"];
 
         if (syncStatuses && !Array.isArray(syncStatuses)) {
             throw new TypeError("syncStatuses not of type 'Array/string'");
         } else if (syncStatuses && syncStatuses.length > 0) {
-            if (!syncStatuses.every(function(x) {return typeof x === "string"})) {
+            if (
+                !syncStatuses.every(function (x) {
+                    return typeof x === "string";
+                })
+            ) {
                 throw new TypeError("syncStatuses not of type 'Array/string'");
-            } else if (!syncStatuses.every(function(x) {return validSyncStatuses.indexOf(x.toUpperCase()) > -1})) {
-                throw new ReferenceError("Unsupported syncStatuses '" + syncStatuses.join(", ") + "'." +
-                                        " Supported syncStatuses: " + validSyncStatuses.join(", "));
+            } else if (
+                !syncStatuses.every(function (x) {
+                    return validSyncStatuses.indexOf(x.toUpperCase()) > -1;
+                })
+            ) {
+                throw new ReferenceError(
+                    "Unsupported syncStatuses '" +
+                        syncStatuses.join(", ") +
+                        "'." +
+                        " Supported syncStatuses: " +
+                        validSyncStatuses.join(", ")
+                );
             }
         }
         if (projects && !Array.isArray(projects)) {
             throw new TypeError("projects not of type 'Array/string'");
         } else if (projects && projects.length > 0) {
-            if (!projects.every(function(x) {return typeof x === "string"})) {
+            if (
+                !projects.every(function (x) {
+                    return typeof x === "string";
+                })
+            ) {
                 throw new TypeError("projects not of type 'Array/string'");
             }
         }
         if (resourceTypes && !Array.isArray(resourceTypes)) {
             throw new TypeError("resourceTypes not of type 'Array/string'");
         } else if (resourceTypes && resourceTypes.length > 0) {
-            if (!resourceTypes.every(function(x) {return typeof x === "string"})) {
+            if (
+                !resourceTypes.every(function (x) {
+                    return typeof x === "string";
+                })
+            ) {
                 throw new TypeError("resourceTypes not of type 'Array/string'");
             }
         }
         if (cloudAccounts && !Array.isArray(cloudAccounts)) {
             throw new TypeError("cloudAccounts not of type 'Array/string'");
         } else if (cloudAccounts && cloudAccounts.length > 0) {
-            if (!cloudAccounts.every(function(x) {return typeof x === "string"})) {
+            if (
+                !cloudAccounts.every(function (x) {
+                    return typeof x === "string";
+                })
+            ) {
                 throw new TypeError("cloudAccounts not of type 'Array/string'");
             }
         }
         if (cloudTypes && !Array.isArray(cloudTypes)) {
             throw new TypeError("cloudTypes not of type 'Array/string'");
         } else if (cloudTypes && cloudTypes.length > 0) {
-            if (!cloudTypes.every(function(x) {return typeof x === "string"})) {
+            if (
+                !cloudTypes.every(function (x) {
+                    return typeof x === "string";
+                })
+            ) {
                 throw new TypeError("cloudTypes not of type 'Array/string'");
             }
         }
         if (tags && !Array.isArray(tags)) {
             throw new TypeError("ownedBy not of type 'Array/string'");
         } else if (tags && tags.length > 0) {
-            if (!tags.every(function(x) {return typeof x === "string"})) {
+            if (
+                !tags.every(function (x) {
+                    return typeof x === "string";
+                })
+            ) {
                 throw new TypeError("tags not of type 'Array/string'");
             }
         }
@@ -966,13 +1112,11 @@
         // Default isManaged to true, unless explicitly set to false.
         isManaged = isManaged !== false;
 
-        var managedOrigins = [
-            "DEPLOYED",
-            "ONBOARDED",
-            "MIGRATED"
-        ];
-        var uri = this.baseUri + "/resources?expand=project,deployment," +
-                                 "currentRequest,inprogressRequests,user";
+        var managedOrigins = ["DEPLOYED", "ONBOARDED", "MIGRATED"];
+        var uri =
+            this.baseUri +
+            "/resources?expand=project,deployment," +
+            "currentRequest,inprogressRequests,user";
         var results;
 
         if (projects && projects.length > 0) {
@@ -1019,14 +1163,16 @@
     ) {
         if (!resourceId || typeof resourceId !== "string") {
             throw new ReferenceError(
-                "resourceId is required and must " +
-                "be of type 'string'"
+                "resourceId is required and must " + "be of type 'string'"
             );
         }
 
-        var uri = this.baseUri + "/resources/" + resourceId +
-                                 "?expand=project,deployment,currentRequest," +
-                                 "inprogressRequests,user";
+        var uri =
+            this.baseUri +
+            "/resources/" +
+            resourceId +
+            "?expand=project,deployment,currentRequest," +
+            "inprogressRequests,user";
         var resourceObject;
 
         this.log.debug("Getting resource with id '" + resourceId + "'");
@@ -1036,8 +1182,11 @@
             var resourceName = resourceObject.name;
 
             this.log.debug(
-                "Found resource with name '" + resourceName +
-                "' and id '" + resourceId + "'"
+                "Found resource with name '" +
+                    resourceName +
+                    "' and id '" +
+                    resourceId +
+                    "'"
             );
         } else {
             if (throwOnNotFound) {
@@ -1066,8 +1215,7 @@
     ) {
         if (!resourceId || typeof resourceId !== "string") {
             throw new ReferenceError(
-                "resourceId is required and must " +
-                "be of type 'string'"
+                "resourceId is required and must " + "be of type 'string'"
             );
         }
 
@@ -1095,18 +1243,17 @@
     ) {
         if (!resourceId || typeof resourceId !== "string") {
             throw new ReferenceError(
-                "resourceId is required and must " +
-                "be of type 'string'"
+                "resourceId is required and must " + "be of type 'string'"
             );
         }
         if (!actionId || typeof actionId !== "string") {
             throw new ReferenceError(
-                "actionId is required and must " +
-                "be of type 'string'"
+                "actionId is required and must " + "be of type 'string'"
             );
         }
 
-        var uri = this.baseUri + "/resources/" + resourceId + "/actions/" + actionId;
+        var uri =
+            this.baseUri + "/resources/" + resourceId + "/actions/" + actionId;
         var action;
 
         this.log.debug("Getting resource action with ID '" + actionId + "'");
@@ -1115,13 +1262,14 @@
             var actionName = action.name;
 
             this.log.debug(
-                "Found action with name '" + actionName +
-                "' and id '" + actionId + "'"
+                "Found action with name '" +
+                    actionName +
+                    "' and id '" +
+                    actionId +
+                    "'"
             );
         } else {
-            throw new Error(
-                "Action with id '" + actionId + "' not found"
-            );
+            throw new Error("Action with id '" + actionId + "' not found");
         }
 
         return action;
@@ -1149,28 +1297,28 @@
     ) {
         if (!resourceId || typeof resourceId !== "string") {
             throw new ReferenceError(
-                "resourceId is required and must " +
-                "be of type 'string'"
+                "resourceId is required and must " + "be of type 'string'"
             );
         }
         if (!actionId || typeof actionId !== "string") {
             throw new ReferenceError(
-                "actionId is required and must " +
-                "be of type 'string'"
+                "actionId is required and must " + "be of type 'string'"
             );
         }
 
         var uri = this.baseUri + "/resources/" + resourceId + "/requests";
         var payload = {
             actionId: actionId,
-            inputs: inputs || {}
+            inputs: inputs || {},
         };
         var request;
 
         // Default wait to true, unless explicitly set to false.
         wait = wait !== false;
 
-        this.log.debug("Running action '" + actionId + "' on resource '" + resourceId + "'");
+        this.log.debug(
+            "Running action '" + actionId + "' on resource '" + resourceId + "'"
+        );
         request = this.post(uri, payload);
         this.log.debug("Request submitted with ID '" + request.id + "'");
 
@@ -1195,15 +1343,16 @@
     ) {
         if (!resourceId || typeof resourceId !== "string") {
             throw new ReferenceError(
-                "resourceId is required and must " +
-                "be of type 'string'"
+                "resourceId is required and must " + "be of type 'string'"
             );
         }
 
         var uri = this.baseUri + "/resources/" + resourceId + "/requests";
         var requests;
 
-        this.log.debug("Getting request history for resource '" + resourceId + "'");
+        this.log.debug(
+            "Getting request history for resource '" + resourceId + "'"
+        );
         requests = this.get(uri);
         this.log.debug("Found " + requests.length + " requests");
 
@@ -1236,27 +1385,45 @@
         var status;
         var result;
 
-        this.log.debug("Polling request status for request ID '" + requestId + "'");
+        this.log.debug(
+            "Polling request status for request ID '" + requestId + "'"
+        );
 
         while (elapsed < timeoutSeconds) {
             result = this.get(uri);
             status = result.status;
 
-            this.log.debug("Request status: " + status + " (elapsed: " + elapsed + "s)");
+            this.log.debug(
+                "Request status: " + status + " (elapsed: " + elapsed + "s)"
+            );
 
             if (status === "SUCCESSFUL") {
-                this.log.debug("Request '" + requestId + "' completed successfully");
+                this.log.debug(
+                    "Request '" + requestId + "' completed successfully"
+                );
 
                 return result;
-            } else if (status === "FAILED" || status === "CANCELLED" || status === "REJECTED") {
-                throw new Error("Request '" + requestId + "' ended with status: " + status);
+            } else if (
+                status === "FAILED" ||
+                status === "CANCELLED" ||
+                status === "REJECTED"
+            ) {
+                throw new Error(
+                    "Request '" + requestId + "' ended with status: " + status
+                );
             }
 
             System.sleep(intervalSeconds * 1000); // milliseconds
             elapsed += intervalSeconds;
         }
 
-        throw new Error("Request '" + requestId + "' timed out after " + timeoutSeconds + " seconds");
+        throw new Error(
+            "Request '" +
+                requestId +
+                "' timed out after " +
+                timeoutSeconds +
+                " seconds"
+        );
     };
 
     return VCFAutomationDeploymentService;
