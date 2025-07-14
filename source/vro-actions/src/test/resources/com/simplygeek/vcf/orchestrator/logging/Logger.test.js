@@ -31,7 +31,16 @@ describe("Logger", function () {
         const logger = new Logger("action", "myAction");
         logger.info("Test message");
 
-        expect(System.log).toHaveBeenCalledWith("[action: myAction] Test message");
+        expect(System.log).toHaveBeenCalledWith(
+            "[action: myAction] Test message"
+        );
+    });
+
+    it("should log an empty info message", function () {
+        const logger = new Logger("action", "myAction");
+        logger.info();
+
+        expect(System.log).toHaveBeenCalledWith("[action: myAction]");
     });
 
     it("should log a warning message", function () {
