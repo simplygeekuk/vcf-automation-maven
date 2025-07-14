@@ -184,4 +184,6 @@ A function that converts a JSON body to a form-url-encoded string
 |------|------|-------------|
 | content | `Any` | The request content. |
 
+**Returns:** `string` — The form url encoded string.
+
 ---

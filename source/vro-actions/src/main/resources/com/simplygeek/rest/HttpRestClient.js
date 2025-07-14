@@ -30,10 +30,9 @@
             throw new TypeError("retryDelay must be of type 'number'");
         }
 
-        this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
-            "Action",
-            "HttpRestClient"
-        );
+        this.log = new (System.getModule(
+            "com.simplygeek.vcf.orchestrator.logging"
+        ).Logger())("Action", "HttpRestClient");
 
         this.restHost = restHost;
         this.retryMaxAttempts = retryMaxAttempts || 5;
@@ -67,7 +66,9 @@
             var uriRegex = /^[-a-zA-Z0-9()@:%_$,.~#?&\|\'\"\+\/\/=\s]*$/i;
 
             if (!uri || typeof uri !== "string") {
-                throw new ReferenceError("uri is required and must be of type 'string'");
+                throw new ReferenceError(
+                    "uri is required and must be of type 'string'"
+                );
             } else if (uri && !uri.match(uriRegex)) {
                 throw new ReferenceError("uri not a valid URI");
             }
@@ -80,16 +81,24 @@
             if (content && typeof content !== "object") {
                 throw new TypeError("content must be of type 'object'");
             }
-            if (expectedResponseCodes && !Array.isArray(expectedResponseCodes)) {
-                throw new TypeError("expectedResponseCodes must be of type 'Array/number'");
-            } else if (expectedResponseCodes && expectedResponseCodes.length > 0) {
-                expectedResponseCodes.forEach(
-                    function(code) {
-                        if (typeof code !== "number") {
-                            throw new TypeError("expectedResponseCodes must be of type 'Array/number'");
-                        }
-                    }
+            if (
+                expectedResponseCodes &&
+                !Array.isArray(expectedResponseCodes)
+            ) {
+                throw new TypeError(
+                    "expectedResponseCodes must be of type 'Array/number'"
                 );
+            } else if (
+                expectedResponseCodes &&
+                expectedResponseCodes.length > 0
+            ) {
+                expectedResponseCodes.forEach(function (code) {
+                    if (typeof code !== "number") {
+                        throw new TypeError(
+                            "expectedResponseCodes must be of type 'Array/number'"
+                        );
+                    }
+                });
             }
             if (headers && System.getObjectType(headers) !== "Properties") {
                 throw new TypeError("headers must be of type 'Properties'");
@@ -100,9 +109,11 @@
             var retryAttempt = 1;
 
             // Default to status code '200' if no expected status codes have been defined.
-            if (!expectedResponseCodes ||
+            if (
+                !expectedResponseCodes ||
                 (Array.isArray(expectedResponseCodes) &&
-                expectedResponseCodes.length < 1)) {
+                    expectedResponseCodes.length < 1)
+            ) {
                 expectedResponseCodes = [200, 201, 204];
             }
 
@@ -143,32 +154,39 @@
                     }
                 } catch (e) {
                     this.log.warn(
-                        "Request failed: " + e + " retrying..." +
-                        retryAttempt + " of " + this.retryMaxAttempts
+                        "Request failed: " +
+                            e +
+                            " retrying..." +
+                            retryAttempt +
+                            " of " +
+                            this.retryMaxAttempts
                     );
-                    if (retryAttempt < this.retryMaxAttempts) System.sleep(this.retryDelay * 1000);
+                    if (retryAttempt < this.retryMaxAttempts)
+                        System.sleep(this.retryDelay * 1000);
                 }
                 retryAttempt++;
-            } while (!response && (retryAttempt <= this.retryMaxAttempts));
+            } while (!response && retryAttempt <= this.retryMaxAttempts);
 
             if (!response) {
                 throw new Error(
-                    "Request failed after " + this.retryMaxAttempts.toString() +
-                    " attempts. Aborting."
+                    "Request failed after " +
+                        this.retryMaxAttempts.toString() +
+                        " attempts. Aborting."
                 );
             }
 
             if (expectedResponseCodes.indexOf(statusCode) > -1) {
                 this.log.debug(
-                    "Request completed successfully with status: " +
-                    statusCode
+                    "Request completed successfully with status: " + statusCode
                 );
             } else {
                 throw new Error(
                     "Request failed, incorrect response code received: '" +
-                    statusCode + "' expected one of: '" +
-                    expectedResponseCodes.join(",") +
-                    "'\n" + response.contentAsString
+                        statusCode +
+                        "' expected one of: '" +
+                        expectedResponseCodes.join(",") +
+                        "'\n" +
+                        response.contentAsString
                 );
             }
 
@@ -198,10 +216,14 @@
         ) {
             // Perform URL encoding.
             if (contentType === "application/x-www-form-urlencoded") {
-                this.log.debug("x-www-form-urlencoded will be used for URL encoding.");
+                this.log.debug(
+                    "x-www-form-urlencoded will be used for URL encoding."
+                );
             } else {
                 if (uri.indexOf("%") > -1) {
-                    this.log.debug("Possible encoding detected in URI, encoder will not be used.");
+                    this.log.debug(
+                        "Possible encoding detected in URI, encoder will not be used."
+                    );
                 } else {
                     this.log.debug("Performing URL encoding.");
                     uri = encodeURI(uri);
@@ -216,13 +238,12 @@
 
             // Create request
             this.log.debug("Creating REST request...");
-            this.log.debug("Setting Content-Type to '" + this.contentType + "'");
+            this.log.debug(
+                "Setting Content-Type to '" + this.contentType + "'"
+            );
 
-            if (!content ) {
-                this.request = this.restHost.createRequest(
-                    restMethod,
-                    uri
-                );
+            if (!content) {
+                this.request = this.restHost.createRequest(restMethod, uri);
                 this.request.contentType = this.contentType;
             } else {
                 if (contentType === "application/x-www-form-urlencoded") {
@@ -252,22 +273,24 @@
          * @param {Properties} [headers] - A key/value set of headers to include in the request.
          */
 
-        this.setHeaders = function (
-            headers
-        ) {
+        this.setHeaders = function (headers) {
             this.log.debug("Adding Header: Accept: " + this.acceptType);
             this.request.setHeader("Accept", this.acceptType);
             this.log.debug("Adding Header: Content-Type: " + this.contentType);
             this.request.setHeader("Content-Type", this.contentType);
             if (headers) {
-                headers.keys.forEach(
-                    function (headerKey) {
-                        var headerValue = headers.get(headerKey);
+                headers.keys.forEach(function (headerKey) {
+                    var headerValue = headers.get(headerKey);
 
-                        this.log.debug("Adding Header: '" + headerKey + ": " + headerValue + "'");
-                        this.request.setHeader(headerKey, headerValue);
-                    }, this
-                );
+                    this.log.debug(
+                        "Adding Header: '" +
+                            headerKey +
+                            ": " +
+                            headerValue +
+                            "'"
+                    );
+                    this.request.setHeader(headerKey, headerValue);
+                }, this);
             }
         };
 
@@ -276,26 +299,28 @@
          * @function
          * @private
          * @param {Any} [content] - The request content.
+         * @returns {string} The form url encoded string.
          */
 
-        this.xwwwformurlencoder = function (
-            content
-        ) {
+        this.xwwwformurlencoder = function (content) {
             this.log.debug("Performing Form URL Encoding");
             var contentUrlEncoded = "";
             var keys = Object.keys(content);
 
-            for (var i = 0; i < keys.length; i++){
+            for (var i = 0; i < keys.length; i++) {
                 var key = keys[i];
                 var value;
 
-                if (key.toLowerCase() === "password" || key.toLowerCase() === "secret") {
+                if (
+                    key.toLowerCase() === "password" ||
+                    key.toLowerCase() === "secret"
+                ) {
                     value = content[keys[i]];
                 } else {
                     value = encodeURIComponent(content[keys[i]]);
                 }
                 contentUrlEncoded += encodeURIComponent(key) + "=" + value;
-                if (i < (keys.length - 1 )) contentUrlEncoded += "&";
+                if (i < keys.length - 1) contentUrlEncoded += "&";
             }
 
             return contentUrlEncoded;
