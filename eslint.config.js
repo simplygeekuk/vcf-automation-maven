@@ -1,6 +1,8 @@
 import js from "@eslint/js";
 import jsdoc from "eslint-plugin-jsdoc";
 import jasmine from "eslint-plugin-jasmine";
+import prettierPlugin from "eslint-plugin-prettier";
+import eslintConfigPrettier from "eslint-config-prettier/flat";
 
 export default [
     // Ignore files globally
@@ -23,6 +25,7 @@ export default [
 
         plugins: {
             jsdoc,
+            prettier: prettierPlugin,
         },
         languageOptions: {
             ecmaVersion: 2015,
@@ -240,4 +243,7 @@ export default [
             "no-undef": "off", // if Jasmine globals conflict
         },
     },
+
+    // Disable ESLint rules that conflict with Prettier
+    eslintConfigPrettier,
 ];
