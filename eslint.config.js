@@ -215,6 +215,8 @@ export default [
                 },
                 { blankLine: "always", prev: "function", next: "*" },
                 { blankLine: "always", prev: "*", next: "return" },
+                // Always blank line after an if (i.e. between the closing '}' and the next statement)
+                { blankLine: "always", prev: "if", next: "*" },
             ],
             "no-caller": ["error"],
         },
