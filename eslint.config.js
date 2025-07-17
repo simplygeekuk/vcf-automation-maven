@@ -85,7 +85,6 @@ export default [
         rules: {
             ...js.configs.recommended.rules,
             ...jsdoc.configs.recommended.rules,
-            "jsdoc/check-access": "warn",
             "jsdoc/require-description": "warn",
             "jsdoc/valid-types": "off",
             "jsdoc/no-undefined-types": "off",
