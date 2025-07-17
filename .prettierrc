@@ -10,6 +10,7 @@
     "objectWrap": "preserve",
     "proseWrap": "preserve",
     "endOfLine": "crlf",
+
     "overrides": [
         {
             "files": "*.json",
