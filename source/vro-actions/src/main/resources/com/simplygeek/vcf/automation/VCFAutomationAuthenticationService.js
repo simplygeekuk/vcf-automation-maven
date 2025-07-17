@@ -7,10 +7,8 @@
      * Defines The VCFAutomationAuthenticationService class.
      * @class
      * @param {REST:RESTHost} restHost - The VCF Automation HTTP REST host.
-     *
      * @returns {Any} An instance of The VCFAutomationAuthenticationService class.
      */
-
     function VCFAutomationAuthenticationService(restHost) {
         if (!restHost || System.getObjectType(restHost) !== "REST:RESTHost") {
             throw new ReferenceError(
@@ -18,12 +16,12 @@
             );
         }
 
-        this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
-            "Action",
-            "VCFAutomationAuthenticationService"
-        );
+        HttpRestClient.call(this, restHost);
 
-        this.rest = new (System.getModule("com.simplygeek.rest").HttpRestClient())(restHost);
+        this.log = new (System.getModule(
+            "com.simplygeek.vcf.orchestrator.logging"
+        ).Logger())("Action", "VCFAutomationAuthenticationService");
+
         this.mediaType = "application/json";
         this.iaasBaseUri = "/iaas/api";
         this.cspBaseUri = "/csp/gateway/am/api";
@@ -33,38 +31,42 @@
         this.sessionHeaders = headers;
     }
 
+    var HttpRestClient = System.getModule(
+        "com.simplygeek.rest"
+    ).HttpRestClient();
+
+    VCFAutomationAuthenticationService.prototype = Object.create(
+        HttpRestClient.prototype
+    );
+    VCFAutomationAuthenticationService.prototype.constructor =
+        VCFAutomationAuthenticationService;
+
     /**
      * Defines the createAuthenticatedSession method.
-     * @method
+     * @function
      * @public
      * @param {string} refreshToken - The refresh token.
-     *
      */
 
-    VCFAutomationAuthenticationService.prototype.createAuthenticatedSession = function (
-        refreshToken
-    ) {
-        if (!refreshToken || typeof refreshToken !== "string") {
-            throw new ReferenceError(
-                "refreshToken is required and must " +
-                "be of type 'string'"
-            );
-        }
+    VCFAutomationAuthenticationService.prototype.createAuthenticatedSession =
+        function (refreshToken) {
+            if (!refreshToken || typeof refreshToken !== "string") {
+                throw new ReferenceError(
+                    "refreshToken is required and must " + "be of type 'string'"
+                );
+            }
 
-        var session;
+            var session;
 
-        session = this.createSession(
-            refreshToken
-        );
-        this.sessionHeaders.put("Authorization", "Bearer " + session.token);
-    };
+            session = this.createSession(refreshToken);
+            this.sessionHeaders.put("Authorization", "Bearer " + session.token);
+        };
 
     /**
      * Defines the createSession method.
-     * @method
+     * @function
      * @public
      * @param {string} refreshToken - The refresh token.
-     *
      * @returns {Any} The session object.
      */
 
@@ -73,19 +75,18 @@
     ) {
         if (!refreshToken || typeof refreshToken !== "string") {
             throw new ReferenceError(
-                "refreshToken is required and must " +
-                "be of type 'string'"
+                "refreshToken is required and must " + "be of type 'string'"
             );
         }
 
         var session;
         var uri = this.iaasBaseUri + "/login";
         var content = {
-            refreshToken: refreshToken
+            refreshToken: refreshToken,
         };
 
         this.log.debug("Creating API session.");
-        var response = this.rest.post(
+        var response = this.httpPost(
             uri,
             this.mediaType,
             content,
@@ -100,12 +101,11 @@
 
     /**
      * Defines the getRefreshToken method.
-     * @method
+     * @function
      * @public
      * @param {string} username - CSP username.
      * @param {SecureString} password - CSP password.
      * @param {string} [domain] - CSP domain.
-     *
      * @returns {string} The refresh token
      */
 
@@ -116,8 +116,7 @@
     ) {
         if (!username || typeof username !== "string") {
             throw new ReferenceError(
-                "username is required and must " +
-                "be of type 'string'"
+                "username is required and must " + "be of type 'string'"
             );
         }
 
@@ -127,11 +126,11 @@
         var content = {
             username: username,
             password: password,
-            domain: domain || "System Domain"
+            domain: domain || "System Domain",
         };
 
         this.log.debug("Creating Refresh token.");
-        var response = this.rest.post(
+        var response = this.httpPost(
             uri,
             this.mediaType,
             content,

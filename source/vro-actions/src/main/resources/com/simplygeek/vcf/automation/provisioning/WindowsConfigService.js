@@ -6,23 +6,20 @@
     /**
      * Defines the WindowsConfigService class.
      * @class
-     *
      * @returns {Any} An instance of the WindowsConfigService class.
      */
-
     function WindowsConfigService() {
         ConfigElementService.call(this);
 
         var provisioningConfigPath = "Simplygeek/VCF/Automation/Provisioning";
 
-        this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
-            "Action",
-            "WindowsConfigService"
-        );
+        this.log = new (System.getModule(
+            "com.simplygeek.vcf.orchestrator.logging"
+        ).Logger())("Action", "WindowsConfigService");
 
         this.defaultConfigService = new (System.getModule(
             "com.simplygeek.vcf.automation.provisioning"
-        ).DefaultConfigService());
+        ).DefaultConfigService())();
 
         this.configElement = this.getConfigElement(
             "Windows",
@@ -47,16 +44,13 @@
     /**
      * Defines the getUsername method.
      * @description Gets the username used for machine login.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The username used for machine login.
      */
 
     WindowsConfigService.prototype.getUsername = function () {
-        var username = this.__getConfigValue(
-            "username"
-        );
+        var username = this.__getConfigValue("username");
 
         return username;
     };
@@ -64,16 +58,13 @@
     /**
      * Defines the getPassword method.
      * @description Gets the password used for machine login.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The password used for machine login.
      */
 
     WindowsConfigService.prototype.getPassword = function () {
-        var password = this.__getConfigValue(
-            "password"
-        );
+        var password = this.__getConfigValue("password");
 
         return password;
     };
@@ -85,9 +76,8 @@
     /**
      * Defines the getCustomNamingProfileName method.
      * @description Gets the Custom Naming profile name used for machine naming.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Custom Naming Profile Name.
      */
 
@@ -106,9 +96,8 @@
     /**
      * Defines the getActiveDirectoryDomainName method.
      * @description Gets the Active Directory Domain Name for Machine joins.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Active Directory Domain Name.
      */
 
@@ -123,9 +112,8 @@
     /**
      * Defines the getActiveDirectoryDNSSuffix method.
      * @description Gets the Active Directory DNS Suffix.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Active Directory DNS Suffix.
      */
 
@@ -140,9 +128,8 @@
     /**
      * Defines the getActiveDirectoryServerOUDN method.
      * @description Gets the Active Directory Server OU Distinguished Name.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Active Directory Server OU Distinguished Name.
      */
 
@@ -155,21 +142,22 @@
     };
 
     /**
-     * Defines the getActiveDirectoryServerOUDN method.
-     * @description Gets the Active Directory Server OU Distinguished Name.
-     * @method
+     * Defines the getActiveDirectoryGroupPolicyUpdateWaitTime method.
+     * @description Gets the Active Directory Group Policy update wait time.
+     * @function
      * @public
-     *
-     * @returns {string} The Active Directory Server OU Distinguished Name.
+     * @returns {number} The time to wait for Group Policy updates to apply (in mins).
      */
 
-    WindowsConfigService.prototype.getActiveDirectoryServerOUDN = function () {
-        var activeDirectoryServerOUDN = this.__getConfigValue(
-            "activeDirectoryServerOUDN"
-        );
+    WindowsConfigService.prototype.getActiveDirectoryGroupPolicyUpdateWaitTime =
+        function () {
+            var activeDirectoryGroupPolicyUpdateWaitTime =
+                this.__getConfigValue(
+                    "activeDirectoryGroupPolicyUpdateWaitTime"
+                );
 
-        return activeDirectoryServerOUDN;
-    };
+            return activeDirectoryGroupPolicyUpdateWaitTime;
+        };
 
     // ###########################
     // ## Ansible Configuration ##
@@ -178,16 +166,13 @@
     /**
      * Defines the getAnsibleRestHostName method.
      * @description Gets the Ansible Rest Host name.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Ansible Rest Host name.
      */
 
     WindowsConfigService.prototype.getAnsibleRestHostName = function () {
-        var ansibleRestHostName = this.__getConfigValue(
-            "ansibleRestHostName"
-        );
+        var ansibleRestHostName = this.__getConfigValue("ansibleRestHostName");
 
         return ansibleRestHostName;
     };
@@ -195,16 +180,13 @@
     /**
      * Defines the getAnsibleProjectName method.
      * @description Gets the Ansible Project name for Playbook execution.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Ansible Project name.
      */
 
     WindowsConfigService.prototype.getAnsibleProjectName = function () {
-        var ansibleProjectName = this.__getConfigValue(
-            "ansibleProjectName"
-        );
+        var ansibleProjectName = this.__getConfigValue("ansibleProjectName");
 
         return ansibleProjectName;
     };
@@ -212,50 +194,47 @@
     /**
      * Defines the getAnsibleProvisioningJobTemplateName method.
      * @description Gets the Ansible Job Template used for machine provisioning.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Ansible Job Template name.
      */
 
-    WindowsConfigService.prototype.getAnsibleProvisioningJobTemplateName = function () {
-        var ansibleProvisioningJobTemplateName = this.__getConfigValue(
-            "ansibleProvisioningJobTemplateName"
-        );
+    WindowsConfigService.prototype.getAnsibleProvisioningJobTemplateName =
+        function () {
+            var ansibleProvisioningJobTemplateName = this.__getConfigValue(
+                "ansibleProvisioningJobTemplateName"
+            );
 
-        return ansibleProvisioningJobTemplateName;
-    };
+            return ansibleProvisioningJobTemplateName;
+        };
 
     /**
      * Defines the getAnsibleDeProvisioningJobTemplateName method.
      * @description Gets the Ansible Job Template used for machine de-provisioning.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Ansible Job Template name.
      */
 
-    WindowsConfigService.prototype.getAnsibleDeProvisioningJobTemplateName = function () {
-        var ansibleDeProvisioningJobTemplateName = this.__getConfigValue(
-            "ansibleDeProvisioningJobTemplateName"
-        );
+    WindowsConfigService.prototype.getAnsibleDeProvisioningJobTemplateName =
+        function () {
+            var ansibleDeProvisioningJobTemplateName = this.__getConfigValue(
+                "ansibleDeProvisioningJobTemplateName"
+            );
 
-        return ansibleDeProvisioningJobTemplateName;
-    };
+            return ansibleDeProvisioningJobTemplateName;
+        };
 
     /**
      * Defines the getAnsibleJobTags method.
      * @description Gets the Ansible job tags to include.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Ansible job tags.
      */
 
     WindowsConfigService.prototype.getAnsibleJobTags = function () {
-        var ansibleJobTags = this.__getConfigValue(
-            "ansibleJobTags"
-        );
+        var ansibleJobTags = this.__getConfigValue("ansibleJobTags");
 
         return ansibleJobTags;
     };
@@ -263,16 +242,13 @@
     /**
      * Defines the getAnsibleSkipTags method.
      * @description Gets the Ansible job tags to skip.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Ansible skip tags.
      */
 
     WindowsConfigService.prototype.getAnsibleSkipTags = function () {
-        var ansibleSkipTags = this.__getConfigValue(
-            "ansibleSkipTags"
-        );
+        var ansibleSkipTags = this.__getConfigValue("ansibleSkipTags");
 
         return ansibleSkipTags;
     };
@@ -280,16 +256,13 @@
     /**
      * Defines the getAnsibleGroupName method.
      * @description Gets the Ansible Group name to assign to the inventory host.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Ansible group name.
      */
 
     WindowsConfigService.prototype.getAnsibleGroupName = function () {
-        var ansibleGroupName = this.__getConfigValue(
-            "ansibleGroupName"
-        );
+        var ansibleGroupName = this.__getConfigValue("ansibleGroupName");
 
         return ansibleGroupName;
     };
@@ -297,16 +270,13 @@
     /**
      * Defines the getAnsibleConnection method.
      * @description Gets the Ansible connection method for connecting to inventory hosts.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Ansible group name.
      */
 
     WindowsConfigService.prototype.getAnsibleConnection = function () {
-        var ansibleGroupName = this.__getConfigValue(
-            "ansibleGroupName"
-        );
+        var ansibleGroupName = this.__getConfigValue("ansibleGroupName");
 
         return ansibleGroupName;
     };
@@ -314,16 +284,13 @@
     /**
      * Defines the getAnsiblePort method.
      * @description Gets the port used for the Ansible connection.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The port used for the Ansible connection.
      */
 
     WindowsConfigService.prototype.getAnsiblePort = function () {
-        var ansiblePort = this.__getConfigValue(
-            "ansiblePort"
-        );
+        var ansiblePort = this.__getConfigValue("ansiblePort");
 
         return ansiblePort;
     };
@@ -331,15 +298,12 @@
     /**
      * Defines the __getConfigValue method.
      * @description Gets a configuration value (or default value if none is found)
-     * @method
+     * @function
      * @private
-     *
      * @returns {Any} The configuration value
      */
 
-    WindowsConfigService.prototype.__getConfigValue = function (
-        configKey
-    ) {
+    WindowsConfigService.prototype.__getConfigValue = function (configKey) {
         var configValue;
         var configElementAttribute;
 
@@ -349,20 +313,24 @@
                 this.configElement,
                 configKey
             );
+            configValue = configElementAttribute.value;
             if (configElementAttribute.type === "SecureString") {
-                configValue = "******";
+                this.log.info("Found " + configKey + ": " + "******");
             } else {
-                configValue = configElementAttribute.value;
+                this.log.info("Found " + configKey + ": " + configValue);
             }
-            this.log.info("Found " + configKey + ": " + configValue);
         } catch (e) {
-            if (e.message.indexOf("No Configuration Element Attribute found") !== -1) {
-                this.log.info("No " + configKey + " found, getting default value");
+            if (
+                e.message.indexOf(
+                    "No Configuration Element Attribute found"
+                ) !== -1
+            ) {
+                this.log.info(
+                    "No " + configKey + " found, getting default value"
+                );
                 try {
                     configValue = this.defaultConfigService[configKey];
-                    this.log.info("Found " + configKey + ": " + configValue);
                 } catch (e) {
-                    this.log.warn("Failed to get any value for " + configKey);
                     throw new Error(e);
                 }
             } else {

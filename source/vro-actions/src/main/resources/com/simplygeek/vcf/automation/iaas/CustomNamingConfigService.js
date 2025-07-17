@@ -6,25 +6,21 @@
     /**
      * Defines the CustomNamingConfigService class.
      * @class
-     *
      * @returns {Any} An instance of the CustomNamingConfigService class.
      */
-
     function CustomNamingConfigService() {
         ConfigElementService.call(this);
 
         var customNamingConfigPath = "Simplygeek/VCF/Automation";
 
-        this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
-            "Action",
-            "CustomNamingConfigService"
-        );
+        this.log = new (System.getModule(
+            "com.simplygeek.vcf.orchestrator.logging"
+        ).Logger())("Action", "CustomNamingConfigService");
 
         this.customNamingConfigElement = this.getConfigElement(
             "CustomNaming",
             customNamingConfigPath
         );
-
     }
 
     // Extends the ConfigElementService
@@ -40,9 +36,8 @@
     /**
      * Defines the getStartCounter method.
      * @description Gets the default start counter number for a custom naming prefix
-     * @method
+     * @function
      * @public
-     *
      * @returns {number} The start counter number.
      */
 
@@ -58,9 +53,8 @@
     /**
      * Defines the getIncrementStep method.
      * @description Gets the default increment step number for a custom naming prefix
-     * @method
+     * @function
      * @public
-     *
      * @returns {number} The increment step number.
      */
 

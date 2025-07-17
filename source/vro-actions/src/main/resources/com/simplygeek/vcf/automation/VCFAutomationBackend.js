@@ -4,28 +4,13 @@
  */
 (function () {
     /**
-     * Defines The VCFAutomationGenericBackendService class.
+     * Defines The VCFAutomationBackend class.
      * @class
-     * @param {REST:RESTHost} restHost - The VCF Automation HTTP REST host.
-     *
-     * @returns {Any} An instance of The VCFAutomationGenericBackendService class.
+     * @returns {Any} An instance of The VCFAutomationBackend class.
      */
+    function VCFAutomationBackend() {
+        VCFAutomationAuthenticationService.call(this, this.restHost);
 
-    function VCFAutomationGenericBackendService(restHost) {
-        if (!restHost || System.getObjectType(restHost) !== "REST:RESTHost") {
-            throw new ReferenceError(
-                "restHost is required and must be of type 'REST:RESTHost'"
-            );
-        }
-
-        VCFAutomationAuthenticationService.call(this, restHost);
-
-        this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
-            "Action",
-            "VCFAutomationGenericBackendService"
-        );
-
-        this.rest = new (System.getModule("com.simplygeek.rest").HttpRestClient())(restHost);
         this.mediaType = "application/json";
     }
 
@@ -33,74 +18,62 @@
         "com.simplygeek.vcf.automation"
     ).VCFAutomationAuthenticationService();
 
-    VCFAutomationGenericBackendService.prototype = Object.create(
+    VCFAutomationBackend.prototype = Object.create(
         VCFAutomationAuthenticationService.prototype
     );
-    VCFAutomationGenericBackendService.prototype.constructor = VCFAutomationGenericBackendService;
+    VCFAutomationBackend.prototype.constructor = VCFAutomationBackend;
 
     // ## Methods ##
 
     /**
      * Defines the about method.
-     *
      * @returns {Any} The API About object.
      */
 
-    VCFAutomationGenericBackendService.prototype.about = function () {
-        var response = this.get(
-            this.baseUri + "/about"
-        );
+    VCFAutomationBackend.prototype.about = function () {
+        var response = this.get(this.baseUri + "/about");
 
         return response;
     };
 
     /**
      * Defines the IaaS about method.
-     *
      * @returns {Any} The API About object.
      */
 
-    VCFAutomationGenericBackendService.prototype.iaasAbout = function () {
-        var response = this.get(
-            this.iaasBaseUri + "/about"
-        );
+    VCFAutomationBackend.prototype.iaasAbout = function () {
+        var response = this.get(this.iaasBaseUri + "/about");
 
         return response;
     };
 
     /**
      * Defines the GET method.
-     * @method
+     * @function
      * @private
      * @param {string} uri - The request uri.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any||Array/Any} The response result or results.
      */
 
-    VCFAutomationGenericBackendService.prototype.get = function (
-        uri,
-        expectedResponseCodes,
-        throwOnNotFound
-    ) {
+    VCFAutomationBackend.prototype.get = function (uri, expectedResponseCodes) {
         if (!uri || typeof uri !== "string") {
-            throw new ReferenceError("uri is required and must be of type 'string'");
-        }
-        if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
-            expectedResponseCodes.length < 1)) {
-            expectedResponseCodes = [200];
+            throw new ReferenceError(
+                "uri is required and must be of type 'string'"
+            );
         }
 
-        // Default throwOnNotFound to true, unless explicitly set to false.
-        throwOnNotFound = throwOnNotFound !== false;
-
-        if (!throwOnNotFound) {
-            expectedResponseCodes.push(404);
+        if (
+            !expectedResponseCodes ||
+            (Array.isArray(expectedResponseCodes) &&
+                expectedResponseCodes.length < 1)
+        ) {
+            expectedResponseCodes = [200, 201, 204];
         }
 
         var result;
-        var response = this.rest.get(
+        var response = this.httpGet(
             uri,
             this.mediaType,
             expectedResponseCodes,
@@ -109,14 +82,20 @@
         var responseContent = JSON.parse(response.contentAsString);
 
         // Check if we have a collection.
-        if (responseContent.totalElements || responseContent.totalElements === 0) {
+        if (
+            responseContent.totalElements ||
+            responseContent.totalElements === 0
+        ) {
             var numTotalResults = responseContent.totalElements;
             var results = responseContent.content;
-            var numResultsOnPage = responseContent.numberOfElements || responseContent.size;
+            var numResultsOnPage = responseContent.numberOfElements; // || responseContent.size;
 
             this.log.debug(
-                "Found " + numResultsOnPage + " of " +
-                numTotalResults + " results"
+                "Found " +
+                    numResultsOnPage +
+                    " of " +
+                    numTotalResults +
+                    " results"
             );
 
             if (numResultsOnPage > 0) {
@@ -136,27 +115,30 @@
                         this.log.debug("Getting additional results");
                         var uriParam1 = "$skip=" + numResultsOnPage;
                         var uriWithParams = uri + uriParam1;
-                        var extraResponse = this.rest.get(
+                        var extraResponse = this.httpGet(
                             uriWithParams,
                             this.mediaType,
                             expectedResponseCodes,
                             this.sessionHeaders
                         );
-                        var extraResponseContent = JSON.parse(extraResponse.contentAsString);
+                        var extraResponseContent = JSON.parse(
+                            extraResponse.contentAsString
+                        );
 
                         results = results.concat(extraResponseContent.content);
                         this.log.debug(
-                            "Found " + results.length + " of " +
-                            numTotalResults + " results"
+                            "Found " +
+                                results.length +
+                                " of " +
+                                numTotalResults +
+                                " results"
                         );
                         numResultsOnPage += pageSize;
                     } while (results.length < numTotalResults);
                 }
-            } else {
-                if (throwOnNotFound) throw new Error("No results found");
             }
         } else {
-            if (response.statusCode === "404" && !throwOnNotFound) {
+            if (response.statusCode === 404) {
                 result = null;
             } else {
                 result = responseContent;
@@ -168,30 +150,35 @@
 
     /**
      * Defines the POST method.
-     * @method
+     * @function
      * @private
      * @param {string} uri - The request uri.
      * @param {Any} [content] - The request content.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
-     *
      * @returns {Any} The response content object.
      */
 
-    VCFAutomationGenericBackendService.prototype.post = function (
+    VCFAutomationBackend.prototype.post = function (
         uri,
         content,
         expectedResponseCodes
     ) {
         if (!uri || typeof uri !== "string") {
-            throw new ReferenceError("uri is required and must be of type 'string'");
+            throw new ReferenceError(
+                "uri is required and must be of type 'string'"
+            );
         }
-        if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
-            expectedResponseCodes.length < 1)) {
-            expectedResponseCodes = [201];
+
+        if (
+            !expectedResponseCodes ||
+            (Array.isArray(expectedResponseCodes) &&
+                expectedResponseCodes.length < 1)
+        ) {
+            expectedResponseCodes = [200, 201];
         }
 
         var responseContent;
-        var response = this.rest.post(
+        var response = this.httpPost(
             uri,
             this.mediaType,
             content,
@@ -200,40 +187,48 @@
             this.sessionHeaders
         );
 
-        if (response.statusCode !== 204) responseContent = JSON.parse(response.contentAsString);
+        if (response.statusCode !== 204)
+            responseContent = JSON.parse(response.contentAsString);
 
         return responseContent;
     };
 
     /**
      * Defines the PUT method.
-     * @method
+     * @function
      * @param {string} uri - The request uri.
      * @param {Any} content - The request content.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
-     *
      * @returns {Any} The response content object.
      */
 
-    VCFAutomationGenericBackendService.prototype.put = function (
+    VCFAutomationBackend.prototype.put = function (
         uri,
         content,
         expectedResponseCodes
     ) {
         if (!uri || typeof uri !== "string") {
-            throw new ReferenceError("uri is required and must be of type 'string'");
-        }
-        if (!content || typeof content !== "object") {
-            throw new ReferenceError("content is required and must be of type 'object'");
+            throw new ReferenceError(
+                "uri is required and must be of type 'string'"
+            );
         }
 
-        if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
-            expectedResponseCodes.length < 1)) {
-            expectedResponseCodes = [200];
+        if (!content || typeof content !== "object") {
+            throw new ReferenceError(
+                "content is required and must be of type 'object'"
+            );
+        }
+
+        if (
+            !expectedResponseCodes ||
+            (Array.isArray(expectedResponseCodes) &&
+                expectedResponseCodes.length < 1)
+        ) {
+            expectedResponseCodes = [200, 201];
         }
 
         var responseContent;
-        var response = this.rest.put(
+        var response = this.httpPut(
             uri,
             this.mediaType,
             content,
@@ -249,33 +244,40 @@
 
     /**
      * Defines the PATCH method.
-     * @method
+     * @function
      * @param {string} uri - The request uri.
      * @param {Any} content - The request content.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
-     *
      * @returns {Any} The response content object.
      */
 
-    VCFAutomationGenericBackendService.prototype.patch = function (
+    VCFAutomationBackend.prototype.patch = function (
         uri,
         content,
         expectedResponseCodes
     ) {
         if (!uri || typeof uri !== "string") {
-            throw new ReferenceError("uri is required and must be of type 'string'");
-        }
-        if (!content || typeof content !== "object") {
-            throw new ReferenceError("content is required and must be of type 'object'");
+            throw new ReferenceError(
+                "uri is required and must be of type 'string'"
+            );
         }
 
-        if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
-            expectedResponseCodes.length < 1)) {
-            expectedResponseCodes = [200];
+        if (!content || typeof content !== "object") {
+            throw new ReferenceError(
+                "content is required and must be of type 'object'"
+            );
+        }
+
+        if (
+            !expectedResponseCodes ||
+            (Array.isArray(expectedResponseCodes) &&
+                expectedResponseCodes.length < 1)
+        ) {
+            expectedResponseCodes = [200, 201];
         }
 
         var responseContent;
-        var response = this.rest.patch(
+        var response = this.httpPatch(
             uri,
             this.mediaType,
             content,
@@ -291,12 +293,12 @@
 
     /**
      * Defines the DELETE method.
-     * @method
+     * @function
      * @param {string} uri - The request uri.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
      */
 
-    VCFAutomationGenericBackendService.prototype.delete = function (
+    VCFAutomationBackend.prototype.delete = function (
         uri,
         expectedResponseCodes
     ) {
@@ -304,12 +306,15 @@
             this.log.e("uri has not been defined or not of type 'string'");
         }
 
-        if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
-            expectedResponseCodes.length < 1)) {
+        if (
+            !expectedResponseCodes ||
+            (Array.isArray(expectedResponseCodes) &&
+                expectedResponseCodes.length < 1)
+        ) {
             expectedResponseCodes = [204];
         }
 
-        this.rest.delete(
+        this.httpDelete(
             uri,
             this.mediaType,
             expectedResponseCodes,
@@ -317,5 +322,5 @@
         );
     };
 
-    return VCFAutomationGenericBackendService;
+    return VCFAutomationBackend;
 });

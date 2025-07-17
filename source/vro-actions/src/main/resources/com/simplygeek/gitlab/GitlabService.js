@@ -8,28 +8,22 @@
      * @class
      * @param {REST:RESTHost} restHost - The Gitlab HTTP REST host.
      * @param {string} accessToken -  Personal Access Token for authentication.
-     *
      * @returns {Any} An instance of the GitlabService class.
      */
-
-    function GitlabService(
-        restHost,
-        accessToken
-    ) {
+    function GitlabService(restHost, accessToken) {
         if (!restHost || System.getObjectType(restHost) !== "REST:RESTHost") {
             throw new ReferenceError(
                 "restHost is required and must be of type 'REST:RESTHost'"
             );
         }
 
-        this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
-            "Action",
-            "GitlabService"
-        );
+        this.log = new (System.getModule(
+            "com.simplygeek.vcf.orchestrator.logging"
+        ).Logger())("Action", "GitlabService");
         this.baseUri = "/api/v4";
-        this.rest = new (System.getModule("com.simplygeek.rest").HttpRestClient())(
-            restHost
-        );
+        this.rest = new (System.getModule(
+            "com.simplygeek.rest"
+        ).HttpRestClient())(restHost);
         this.mediaType = "application/json";
         this.sessionHeaders = new Properties();
         this.sessionHeaders.put("PRIVATE-TOKEN", accessToken);
@@ -39,9 +33,8 @@
 
     /**
      * Defines the getGroups method.
-     * @method
+     * @function
      * @public
-     *
      * @returns {Array/Any} The list of Groups.
      */
 
@@ -58,44 +51,34 @@
 
     /**
      * Defines the getGroupById method.
-     * @method
+     * @function
      * @public
      * @param {number} groupId - The group id.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The group object.
      */
 
-    GitlabService.prototype.getGroupById = function (
-        groupId,
-        throwOnNotFound
-    ) {
+    GitlabService.prototype.getGroupById = function (groupId, throwOnNotFound) {
         if ((!groupId && groupId !== 0) || typeof groupId !== "number") {
             throw new ReferenceError(
-                "groupId is required and must " +
-                "be of type 'number'"
+                "groupId is required and must " + "be of type 'number'"
             );
         }
 
         // Default throwOnNotFound to true
         throwOnNotFound = throwOnNotFound !== false;
 
-        var groupObj = this.getResourceById(
-            groupId,
-            "groups",
-            throwOnNotFound
-        );
+        var groupObj = this.getResourceById(groupId, "groups", throwOnNotFound);
 
         return groupObj;
     };
 
     /**
      * Defines the getGroupByName method.
-     * @method
+     * @function
      * @public
      * @param {string} groupName - The group name.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The group object.
      */
 
@@ -105,8 +88,7 @@
     ) {
         if (!groupName || typeof groupName !== "string") {
             throw new ReferenceError(
-                "groupName is required and must " +
-                "be of type 'string'"
+                "groupName is required and must " + "be of type 'string'"
             );
         }
 
@@ -124,20 +106,17 @@
 
     /**
      * Defines the createGroup method.
-     * @method
+     * @function
      * @public
      * @param {Any} groupSpecification - The group specification.
-     *
      * @returns {Any} The new group object.
      */
 
-    GitlabService.prototype.createGroup = function (
-        groupSpecification
-    ) {
+    GitlabService.prototype.createGroup = function (groupSpecification) {
         if (!groupSpecification || typeof groupSpecification !== "object") {
             throw new ReferenceError(
                 "groupSpecification is required and must " +
-                "be of type 'object'"
+                    "be of type 'object'"
             );
         }
 
@@ -151,28 +130,25 @@
             parentGroup = this.getGroupById(parentId);
             if (parentGroup.parent_id !== null) {
                 throw new Error(
-                    "Group specification references parent with id '" + parentId.toString() +
-                    "' but is not a valid parent group"
+                    "Group specification references parent with id '" +
+                        parentId.toString() +
+                        "' but is not a valid parent group"
                 );
             }
         }
 
-        groupObject = this.post(
-            uri,
-            groupSpecification
-        );
+        groupObject = this.post(uri, groupSpecification);
 
         return groupObject;
     };
 
     /**
      * Defines the deleteGroup method.
-     * @method
+     * @function
      * @public
      * @param {number} groupId - The group ID.
      * @param {boolean} [permamentlyRemove] - The group ID.
      * @param {string} [fullPath] - The group ID.
-     *
      */
 
     GitlabService.prototype.deleteGroup = function (
@@ -182,18 +158,14 @@
     ) {
         if (!groupId || typeof groupId !== "number") {
             throw new ReferenceError(
-                "groupId is required and must " +
-                "be of type 'number'"
+                "groupId is required and must " + "be of type 'number'"
             );
         }
 
         this.log.debug("Deleting group with id '" + groupId + "'");
         var uri = this.baseUri + "/groups/" + groupId.toString();
 
-        this.delete(
-            uri,
-            [202]
-        );
+        this.delete(uri, [202]);
         // Can't get this to work
         // if (permamentlyRemove) {
         //     uri += "?permamently_remove=" + permamentlyRemove +
@@ -208,40 +180,33 @@
 
     /**
      * Defines the restoreGroup method.
-     * @method
+     * @function
      * @public
      * @param {number} groupId - The group ID.
-     *
      */
 
-    GitlabService.prototype.restoreGroup = function (
-        groupId
-    ) {
+    GitlabService.prototype.restoreGroup = function (groupId) {
         if (!groupId || typeof groupId !== "number") {
             throw new ReferenceError(
-                "groupId is required and must " +
-                "be of type 'number'"
+                "groupId is required and must " + "be of type 'number'"
             );
         }
 
         this.log.debug("Restoring group with id '" + groupId + "'");
         var uri = this.baseUri + "/groups/" + groupId.toString() + "/restore";
 
-        this.post(
-            uri
-        );
+        this.post(uri);
 
         this.log.debug("Successfully restored group with id '" + groupId + "'");
     };
 
     /**
      * Defines the getSamlGroupLink method.
-     * @method
+     * @function
      * @public
      * @param {number} groupId - The group id.
      * @param {string} samlGroupName - Name of the SAML group.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The SAML group object.
      */
 
@@ -252,14 +217,13 @@
     ) {
         if ((!groupId && groupId !== 0) || typeof groupId !== "number") {
             throw new ReferenceError(
-                "groupId is required and must " +
-                "be of type 'number'"
+                "groupId is required and must " + "be of type 'number'"
             );
         }
+
         if (!samlGroupName || typeof samlGroupName !== "string") {
             throw new ReferenceError(
-                "samlGroupName is required and must " +
-                "be of type 'string'"
+                "samlGroupName is required and must " + "be of type 'string'"
             );
         }
 
@@ -277,11 +241,10 @@
 
     /**
      * Defines the createSamlGroupLink method.
-     * @method
+     * @function
      * @public
      * @param {number} groupId - The group id.
      * @param {Any} samlGroupLinkSpecification - The SAML group spec.
-     *
      * @returns {Any} The SAML group link object.
      */
 
@@ -291,44 +254,40 @@
     ) {
         if ((!groupId && groupId !== 0) || typeof groupId !== "number") {
             throw new ReferenceError(
-                "groupId is required and must " +
-                "be of type 'number'"
+                "groupId is required and must " + "be of type 'number'"
             );
         }
-        if (!samlGroupLinkSpecification || typeof samlGroupLinkSpecification !== "object") {
+
+        if (
+            !samlGroupLinkSpecification ||
+            typeof samlGroupLinkSpecification !== "object"
+        ) {
             throw new ReferenceError(
                 "samlGroupLinkSpecification is required and must " +
-                "be of type 'object'"
+                    "be of type 'object'"
             );
         }
 
         var uri = this.baseUri + "/groups/" + groupId + "/saml_group_links";
         var samlGroupLinkObject;
 
-        samlGroupLinkObject = this.post(
-            uri,
-            samlGroupLinkSpecification
-        );
+        samlGroupLinkObject = this.post(uri, samlGroupLinkSpecification);
 
         return samlGroupLinkObject;
     };
 
     /**
      * Defines the getGroupAccessTokens method.
-     * @method
+     * @function
      * @public
      * @param {number} groupId - The group id.
-     *
      * @returns {Array/Any} The list of group access tokens.
      */
 
-    GitlabService.prototype.getGroupAccessTokens = function (
-        groupId
-    ) {
+    GitlabService.prototype.getGroupAccessTokens = function (groupId) {
         if ((!groupId && groupId !== 0) || typeof groupId !== "number") {
             throw new ReferenceError(
-                "groupId is required and must " +
-                "be of type 'number'"
+                "groupId is required and must " + "be of type 'number'"
             );
         }
 
@@ -344,12 +303,11 @@
 
     /**
      * Defines the getGroupAccessTokenById method.
-     * @method
+     * @function
      * @public
      * @param {number} groupId - The group id.
      * @param {number} accessTokenId - The Access Token id.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The access token object.
      */
 
@@ -360,14 +318,16 @@
     ) {
         if ((!groupId && groupId !== 0) || typeof groupId !== "number") {
             throw new ReferenceError(
-                "groupId is required and must " +
-                "be of type 'number'"
+                "groupId is required and must " + "be of type 'number'"
             );
         }
-        if ((!accessTokenId && accessTokenId !== 0) || typeof accessTokenId !== "number") {
+
+        if (
+            (!accessTokenId && accessTokenId !== 0) ||
+            typeof accessTokenId !== "number"
+        ) {
             throw new ReferenceError(
-                "accessTokenId is required and must " +
-                "be of type 'number'"
+                "accessTokenId is required and must " + "be of type 'number'"
             );
         }
 
@@ -385,12 +345,11 @@
 
     /**
      * Defines the getAccessTokenByName method.
-     * @method
+     * @function
      * @public
      * @param {number} groupId - The group id.
      * @param {string} accessTokenName - The access token name.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The access token object.
      */
 
@@ -401,14 +360,13 @@
     ) {
         if ((!groupId && groupId !== 0) || typeof groupId !== "number") {
             throw new ReferenceError(
-                "groupId is required and must " +
-                "be of type 'number'"
+                "groupId is required and must " + "be of type 'number'"
             );
         }
+
         if (!accessTokenName || typeof accessTokenName !== "string") {
             throw new ReferenceError(
-                "accessTokenName is required and must " +
-                "be of type 'string'"
+                "accessTokenName is required and must " + "be of type 'string'"
             );
         }
 
@@ -426,11 +384,10 @@
 
     /**
      * Defines the createGroupAccessToken method.
-     * @method
+     * @function
      * @public
      * @param {number} groupId - The group id.
      * @param {Any} accessTokenSpecification - The Access Token spec.
-     *
      * @returns {Any} The group access token object.
      */
 
@@ -440,36 +397,36 @@
     ) {
         if ((!groupId && groupId !== 0) || typeof groupId !== "number") {
             throw new ReferenceError(
-                "groupId is required and must " +
-                "be of type 'number'"
+                "groupId is required and must " + "be of type 'number'"
             );
         }
-        if (!accessTokenSpecification || typeof accessTokenSpecification !== "object") {
+
+        if (
+            !accessTokenSpecification ||
+            typeof accessTokenSpecification !== "object"
+        ) {
             throw new ReferenceError(
                 "accessTokenSpecification is required and must " +
-                "be of type 'object'"
+                    "be of type 'object'"
             );
         }
 
-        var uri = this.baseUri + "/groups/" + groupId.toString() + "/access_tokens";
+        var uri =
+            this.baseUri + "/groups/" + groupId.toString() + "/access_tokens";
         var accessTokenObject;
 
-        accessTokenObject = this.post(
-            uri,
-            accessTokenSpecification
-        );
+        accessTokenObject = this.post(uri, accessTokenSpecification);
 
         return accessTokenObject;
     };
 
     /**
      * Defines the rotateGroupAccessToken method.
-     * @method
+     * @function
      * @public
      * @param {number} groupId - The group id.
      * @param {number} accessTokenId - The group access token id.
      * @param {Date} expiresAt - Expiration date of the access token in ISO format (YYYY-MM-DD).
-     *
      * @returns {Any} The group access token object.
      */
 
@@ -480,39 +437,43 @@
     ) {
         if ((!groupId && groupId !== 0) || typeof groupId !== "number") {
             throw new ReferenceError(
-                "groupId is required and must " +
-                "be of type 'number'"
-            );
-        }
-        if ((!accessTokenId && accessTokenId !== 0) || typeof accessTokenId !== "number") {
-            throw new ReferenceError(
-                "accessTokenId is required and must " +
-                "be of type 'number'"
+                "groupId is required and must " + "be of type 'number'"
             );
         }
 
-        var uri = this.baseUri + "/groups/" + groupId.toString() +
-                                "/access_tokens/" + accessTokenId + "/rotate";
+        if (
+            (!accessTokenId && accessTokenId !== 0) ||
+            typeof accessTokenId !== "number"
+        ) {
+            throw new ReferenceError(
+                "accessTokenId is required and must " + "be of type 'number'"
+            );
+        }
+
+        var uri =
+            this.baseUri +
+            "/groups/" +
+            groupId.toString() +
+            "/access_tokens/" +
+            accessTokenId +
+            "/rotate";
         var content = {};
 
         if (expiresAt) {
             content.expires_at = expiresAt;
             //uri += "?expires_at=" + expiresAt;
         }
+
         var accessTokenObject;
 
-        accessTokenObject = this.post(
-            uri,
-            content,
-            [200]
-        );
+        accessTokenObject = this.post(uri, content, [200]);
 
         return accessTokenObject;
     };
 
     /**
      * Defines the revokeGroupAccessToken method.
-     * @method
+     * @function
      * @public
      * @param {number} groupId - The group id.
      * @param {number} accessTokenId - The group access token id.
@@ -524,28 +485,33 @@
     ) {
         if ((!groupId && groupId !== 0) || typeof groupId !== "number") {
             throw new ReferenceError(
-                "groupId is required and must " +
-                "be of type 'number'"
-            );
-        }
-        if ((!accessTokenId && accessTokenId !== 0) || typeof accessTokenId !== "number") {
-            throw new ReferenceError(
-                "accessTokenId is required and must " +
-                "be of type 'number'"
+                "groupId is required and must " + "be of type 'number'"
             );
         }
 
-        var uri = this.baseUri + "/groups/" + groupId.toString() +
-                                "/access_tokens/" + accessTokenId.toString();
+        if (
+            (!accessTokenId && accessTokenId !== 0) ||
+            typeof accessTokenId !== "number"
+        ) {
+            throw new ReferenceError(
+                "accessTokenId is required and must " + "be of type 'number'"
+            );
+        }
+
+        var uri =
+            this.baseUri +
+            "/groups/" +
+            groupId.toString() +
+            "/access_tokens/" +
+            accessTokenId.toString();
 
         this.delete(uri);
     };
 
     /**
      * Defines the getProjects method.
-     * @method
+     * @function
      * @public
-     *
      * @returns {Array/Any} The list of Projects.
      */
 
@@ -562,11 +528,10 @@
 
     /**
      * Defines the getProjectById method.
-     * @method
+     * @function
      * @public
      * @param {number} projectId - The project id.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The project object.
      */
 
@@ -576,8 +541,7 @@
     ) {
         if ((!projectId && projectId !== 0) || typeof projectId !== "number") {
             throw new ReferenceError(
-                "projectId is required and must " +
-                "be of type 'number'"
+                "projectId is required and must " + "be of type 'number'"
             );
         }
 
@@ -595,11 +559,10 @@
 
     /**
      * Defines the getProjectByName method.
-     * @method
+     * @function
      * @public
      * @param {number} projectName - The project name.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The project object.
      */
 
@@ -609,8 +572,7 @@
     ) {
         if (!projectName || typeof projectName !== "string") {
             throw new ReferenceError(
-                "projectName is required and must " +
-                "be of type 'string'"
+                "projectName is required and must " + "be of type 'string'"
             );
         }
 
@@ -628,41 +590,34 @@
 
     /**
      * Defines the createProject method.
-     * @method
+     * @function
      * @public
      * @param {Any} projectSpecification - The Project spec.
-     *
      * @returns {Any} The project object.
      */
 
-    GitlabService.prototype.createProject = function (
-        projectSpecification
-    ) {
+    GitlabService.prototype.createProject = function (projectSpecification) {
         if (!projectSpecification || typeof projectSpecification !== "object") {
             throw new ReferenceError(
                 "projectSpecification is required and must " +
-                "be of type 'object'"
+                    "be of type 'object'"
             );
         }
 
         var uri = this.baseUri + "/projects";
         var projectObject;
 
-        projectObject = this.post(
-            uri,
-            projectSpecification
-        );
+        projectObject = this.post(uri, projectSpecification);
 
         return projectObject;
     };
 
     /**
      * Defines the updateProject method.
-     * @method
+     * @function
      * @public
      * @param {number} projectId - The Project id.
      * @param {Any} projectSpecification - The updated Project spec.
-     *
      * @returns {Any} The updated project object.
      */
 
@@ -672,24 +627,24 @@
     ) {
         if ((!projectId && projectId !== 0) || typeof projectId !== "number") {
             throw new ReferenceError(
-                "projectId is required and must " +
-                "be of type 'number'"
+                "projectId is required and must " + "be of type 'number'"
             );
         }
-        if (!updatedProjectSpecification || typeof updatedProjectSpecification !== "object") {
+
+        if (
+            !updatedProjectSpecification ||
+            typeof updatedProjectSpecification !== "object"
+        ) {
             throw new ReferenceError(
                 "updatedProjectSpecification is required and must " +
-                "be of type 'object'"
+                    "be of type 'object'"
             );
         }
 
         var uri = this.baseUri + "/projects/" + projectId;
         var projectObject;
 
-        projectObject = this.put(
-            uri,
-            updatedProjectSpecification
-        );
+        projectObject = this.put(uri, updatedProjectSpecification);
 
         return projectObject;
     };
@@ -698,12 +653,11 @@
 
     /**
      * Defines the getResourceById method.
-     * @method
+     * @function
      * @public
      * @param {string} resourceId - The resource id.
      * @param {string} resource - The resource URI.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The resource object.
      */
 
@@ -715,15 +669,20 @@
         var uri = this.baseUri + "/" + resource + "/" + resourceId.toString();
         var resourceObj;
 
-        this.log.debug("Getting resource with ID '" + resourceId.toString() + "'");
+        this.log.debug(
+            "Getting resource with ID '" + resourceId.toString() + "'"
+        );
         resourceObj = this.get(uri, null, throwOnNotFound);
 
         if (resourceObj) {
             var resourceName = resourceObj.name;
 
             this.log.debug(
-                "Found resource with name '" + resourceName +
-                "' and id '" + resourceId.toString() + "'"
+                "Found resource with name '" +
+                    resourceName +
+                    "' and id '" +
+                    resourceId.toString() +
+                    "'"
             );
         }
 
@@ -732,12 +691,11 @@
 
     /**
      * Defines the getResourceByName method.
-     * @method
+     * @function
      * @public
      * @param {string} resourceName - The resource name.
      * @param {string} resource - The resource URI.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The resource object.
      */
 
@@ -751,17 +709,14 @@
         var resourceId;
         var groupMatchesByName = [];
 
-        this.log.debug(
-            "Getting resource with name '" + resourceName + "'");
+        this.log.debug("Getting resource with name '" + resourceName + "'");
 
         var results = this.get(uri, null, throwOnNotFound);
 
         if (results && Array.isArray(results)) {
-            groupMatchesByName = results.filter(
-                function(resource) {
-                    return resource.name === resourceName;
-                }
-            );
+            groupMatchesByName = results.filter(function (resource) {
+                return resource.name === resourceName;
+            });
         } else {
             groupMatchesByName = results;
         }
@@ -773,19 +728,21 @@
             resourceId = resourceObj.id;
 
             this.log.debug(
-                "Found resource '" + resourceName + "' with " +
-                "id '" + resourceId.toString() + "'"
+                "Found resource '" +
+                    resourceName +
+                    "' with " +
+                    "id '" +
+                    resourceId.toString() +
+                    "'"
             );
         } else {
             if (throwOnNotFound) {
                 throw new Error(
-                    "Resource not found with name '" +
-                    resourceName + "'"
+                    "Resource not found with name '" + resourceName + "'"
                 );
             } else {
                 this.log.warn(
-                    "Resource not found with name '" +
-                    resourceName + "'"
+                    "Resource not found with name '" + resourceName + "'"
                 );
             }
         }
@@ -795,12 +752,11 @@
 
     /**
      * Defines the GET method.
-     * @method
+     * @function
      * @private
      * @param {string} uri - The request uri.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any||Array/Any} The response result or results.
      */
 
@@ -810,10 +766,16 @@
         throwOnNotFound
     ) {
         if (!uri || typeof uri !== "string") {
-            throw new ReferenceError("uri is required and must be of type 'string'");
+            throw new ReferenceError(
+                "uri is required and must be of type 'string'"
+            );
         }
-        if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
-            expectedResponseCodes.length < 1)) {
+
+        if (
+            !expectedResponseCodes ||
+            (Array.isArray(expectedResponseCodes) &&
+                expectedResponseCodes.length < 1)
+        ) {
             expectedResponseCodes = [200];
         }
 
@@ -850,8 +812,11 @@
             var numResultsOnPage = results.length;
 
             this.log.debug(
-                "Found " + numResultsOnPage + " of " +
-                numTotalResults + " results"
+                "Found " +
+                    numResultsOnPage +
+                    " of " +
+                    numTotalResults +
+                    " results"
             );
 
             if (numResultsOnPage > 0) {
@@ -870,12 +835,17 @@
                             expectedResponseCodes,
                             this.sessionHeaders
                         );
-                        var extraResponseContent = JSON.parse(extraResponse.contentAsString);
+                        var extraResponseContent = JSON.parse(
+                            extraResponse.contentAsString
+                        );
 
                         results = results.concat(extraResponseContent);
                         this.log.debug(
-                            "Found " + results.length + " of " +
-                            numTotalResults + " results"
+                            "Found " +
+                                results.length +
+                                " of " +
+                                numTotalResults +
+                                " results"
                         );
                         nextPage++;
                     } while (results.length < numTotalResults);
@@ -896,12 +866,11 @@
 
     /**
      * Defines the POST method.
-     * @method
+     * @function
      * @private
      * @param {string} uri - The request uri.
      * @param {Any} [content] - The request content.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
-     *
      * @returns {Any} The response content object.
      */
 
@@ -911,10 +880,16 @@
         expectedResponseCodes
     ) {
         if (!uri || typeof uri !== "string") {
-            throw new ReferenceError("uri is required and must be of type 'string'");
+            throw new ReferenceError(
+                "uri is required and must be of type 'string'"
+            );
         }
-        if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
-            expectedResponseCodes.length < 1)) {
+
+        if (
+            !expectedResponseCodes ||
+            (Array.isArray(expectedResponseCodes) &&
+                expectedResponseCodes.length < 1)
+        ) {
             expectedResponseCodes = [201];
         }
 
@@ -928,18 +903,18 @@
             this.sessionHeaders
         );
 
-        if (response.statusCode !== 204) responseContent = JSON.parse(response.contentAsString);
+        if (response.statusCode !== 204)
+            responseContent = JSON.parse(response.contentAsString);
 
         return responseContent;
     };
 
     /**
      * Defines the PUT method.
-     * @method
+     * @function
      * @param {string} uri - The request uri.
      * @param {Any} content - The request content.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
-     *
      * @returns {Any} The response content object.
      */
 
@@ -949,14 +924,22 @@
         expectedResponseCodes
     ) {
         if (!uri || typeof uri !== "string") {
-            throw new ReferenceError("uri is required and must be of type 'string'");
-        }
-        if (!content || typeof content !== "object") {
-            throw new ReferenceError("content is required and must be of type 'object'");
+            throw new ReferenceError(
+                "uri is required and must be of type 'string'"
+            );
         }
 
-        if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
-            expectedResponseCodes.length < 1)) {
+        if (!content || typeof content !== "object") {
+            throw new ReferenceError(
+                "content is required and must be of type 'object'"
+            );
+        }
+
+        if (
+            !expectedResponseCodes ||
+            (Array.isArray(expectedResponseCodes) &&
+                expectedResponseCodes.length < 1)
+        ) {
             expectedResponseCodes = [200];
         }
 
@@ -977,11 +960,10 @@
 
     /**
      * Defines the PATCH method.
-     * @method
+     * @function
      * @param {string} uri - The request uri.
      * @param {Any} content - The request content.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
-     *
      * @returns {Any} The response content object.
      */
 
@@ -991,14 +973,22 @@
         expectedResponseCodes
     ) {
         if (!uri || typeof uri !== "string") {
-            throw new ReferenceError("uri is required and must be of type 'string'");
-        }
-        if (!content || typeof content !== "object") {
-            throw new ReferenceError("content is required and must be of type 'object'");
+            throw new ReferenceError(
+                "uri is required and must be of type 'string'"
+            );
         }
 
-        if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
-            expectedResponseCodes.length < 1)) {
+        if (!content || typeof content !== "object") {
+            throw new ReferenceError(
+                "content is required and must be of type 'object'"
+            );
+        }
+
+        if (
+            !expectedResponseCodes ||
+            (Array.isArray(expectedResponseCodes) &&
+                expectedResponseCodes.length < 1)
+        ) {
             expectedResponseCodes = [200];
         }
 
@@ -1019,21 +1009,21 @@
 
     /**
      * Defines the DELETE method.
-     * @method
+     * @function
      * @param {string} uri - The request uri.
      * @param {Array/number} [expectedResponseCodes] - A list of expected response codes.
      */
 
-    GitlabService.prototype.delete = function (
-        uri,
-        expectedResponseCodes
-    ) {
+    GitlabService.prototype.delete = function (uri, expectedResponseCodes) {
         if (!uri || typeof uri !== "string") {
             this.log.e("uri has not been defined or not of type 'string'");
         }
 
-        if (!expectedResponseCodes || (Array.isArray(expectedResponseCodes) &&
-            expectedResponseCodes.length < 1)) {
+        if (
+            !expectedResponseCodes ||
+            (Array.isArray(expectedResponseCodes) &&
+                expectedResponseCodes.length < 1)
+        ) {
             expectedResponseCodes = [204];
         }
 

@@ -6,39 +6,34 @@
     /**
      * Defines the DateUtils class.
      * @class
-     *
      * @returns {Any} Returns an instance of the DateUtils Class.
      */
-
-    function DateUtils () {}
+    function DateUtils() {}
 
     /**
      * Defines the addMonthsToDate method.
-     * @method
+     * @function
      * @public
      * @param {Date} inputDate - The input date.
      * @param {number} months - The number of months to add/remove from the inputDate.
      *                          Note: This can also be a negative value.
-     *
      * @returns {Date} The updated Date.
      */
 
-    DateUtils.prototype.addMonthsToDate = function (
-        inputDate,
-        months
-    ) {
+    DateUtils.prototype.addMonthsToDate = function (inputDate, months) {
         if (!inputDate || !(inputDate instanceof Date)) {
             throw new ReferenceError(
-                "inputDate is required and must " +
-                "be of type 'Date'"
+                "inputDate is required and must " + "be of type 'Date'"
             );
         }
+
         if (!months || typeof months !== "number") {
             throw new ReferenceError(
                 "months is required and must " +
-                "be of type 'number' and a value other than 0"
+                    "be of type 'number' and a value other than 0"
             );
         }
+
         var dateUpdated = inputDate;
         var month = (inputDate.getUTCMonth() + months) % 12;
         //create a new Date object that gets the last day of the desired month
@@ -56,20 +51,16 @@
 
     /**
      * Defines the getISODate method.
-     * @method
+     * @function
      * @public
      * @param {Date} inputDate - The input date.
-     *
      * @returns {Date} The Date in ISO 8601 format (YYYY-MM-DD).
      */
 
-    DateUtils.prototype.getISODate = function (
-        inputDate
-    ) {
+    DateUtils.prototype.getISODate = function (inputDate) {
         if (!inputDate || !(inputDate instanceof Date)) {
             throw new ReferenceError(
-                "inputDate is required and must " +
-                "be of type 'Date'"
+                "inputDate is required and must " + "be of type 'Date'"
             );
         }
 

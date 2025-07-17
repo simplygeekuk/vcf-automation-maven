@@ -1,14 +1,12 @@
 /**
  * Write a brief description of the purpose of the action.
  * @param {Properties} inputProperties - The input properties Subscription payload.
- *
  * @returns {void} - describe the return type as well
  */
 (function (inputProperties) {
-    var log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
-        "Action",
-        "configureDisks"
-    );
+    var log = new (System.getModule(
+        "com.simplygeek.vcf.orchestrator.logging"
+    ).Logger())("Action", "configureDisks");
     // Get values from Input Properties
     var customProps = inputProperties.get("customProperties");
     var resourceIds = inputProperties.get("resourceIds");
@@ -20,9 +18,9 @@
     log.debug("vcServerInstanceUuid: " + vcServerInstanceUuid);
     log.debug("vcVmInstanceUuid: " + vcVmInstanceUuid);
 
-    var vcSdkConnection = System.getModule("com.simplygeek.vcenter").getVcServer(
-        vcServerInstanceUuid
-    );
+    var vcSdkConnection = System.getModule(
+        "com.simplygeek.vcenter"
+    ).getVcServer(vcServerInstanceUuid);
     var vcVm = System.getModule("com.simplygeek.vcenter.vm").getVcVm(
         vcVmInstanceUuid,
         vcSdkConnection
@@ -30,20 +28,21 @@
     // Get Provisioning Configuration
     var configService = new (System.getModule(
         "com.simplygeek.vcf.orchestrator.configurations"
-    ).ConfigElementService());
+    ).ConfigElementService())();
     var provisioningConfigPath = "Simplygeek/VCF/Automation/Provisioning";
     var restHostConfigPath = "Simplygeek/VCF/Orchestrator/Resthosts";
     var provisioningDefaultsConfigElement = configService.getConfigElement(
-        "Defaults", provisioningConfigPath
+        "Defaults",
+        provisioningConfigPath
     );
     // Get VCF Automation Resthost
     var vcfAutomationRestHostName = configService.getConfigElementAttribute(
         provisioningDefaultsConfigElement,
         "vcfAutomationRestHostName"
     ).value;
-    var vcfAutomationRestHost = System.getModule("com.simplygeek.rest").getRestHost(
-        vcfAutomationRestHostName
-    );
+    var vcfAutomationRestHost = System.getModule(
+        "com.simplygeek.rest"
+    ).getRestHost(vcfAutomationRestHostName);
     var vcfAutomationRestHostConfigElement = configService.getConfigElement(
         vcfAutomationRestHostName,
         restHostConfigPath
@@ -52,17 +51,16 @@
         vcfAutomationRestHostConfigElement,
         "refreshToken"
     ).value;
-    var vcfIaasService = new (
-        System.getModule(
-            "com.simplygeek.vcf.automation.iaas"
-        ).VCFAutomationIaasService())(vcfAutomationRestHost, vcfAutomationApiToken);
+    var vcfIaasService = new (System.getModule(
+        "com.simplygeek.vcf.automation.iaas"
+    ).VCFAutomationIaasService())(vcfAutomationRestHost, vcfAutomationApiToken);
     var machineDisks = vcfIaasService.getMachineDisks(machineResourceId);
-    var additionalDisks = machineDisks.filter(
-        function(disk) {
-            return disk.type === "HDD" &&
-                   disk.customProperties.providerUniqueIdentifier !== "Hard disk 1";
-        }
-    );
+    var additionalDisks = machineDisks.filter(function (disk) {
+        return (
+            disk.type === "HDD" &&
+            disk.customProperties.providerUniqueIdentifier !== "Hard disk 1"
+        );
+    });
     // Initialize an array to hold all disk information
     var vcVmDisks = [];
     var ansibleDisks = [];
@@ -82,30 +80,28 @@
                     fileName: device.backing.fileName,
                     datastore: device.backing.datastore.name,
                     diskMode: device.backing.diskMode,
-                    uuid: device.backing.uuid
+                    uuid: device.backing.uuid,
                 },
                 unitNumber: device.unitNumber,
-                controllerKey: device.controllerKey
+                controllerKey: device.controllerKey,
             });
         }
     }
 
-    additionalDisks.forEach(
-        function(disk) {
-            var ansibleDiskProps = {};
-            var vcDisk = vcVmDisks.filter(
-                function(vcDisk) {
-                    // return vcDisk.label === disk.customProperties.providerUniqueIdentifier;
-                    return vcDisk.backingInfo.fileName === disk.customProperties.diskFile;
-                }
-            )[0];
+    additionalDisks.forEach(function (disk) {
+        var ansibleDiskProps = {};
+        var vcDisk = vcVmDisks.filter(function (vcDisk) {
+            // return vcDisk.label === disk.customProperties.providerUniqueIdentifier;
+            return (
+                vcDisk.backingInfo.fileName === disk.customProperties.diskFile
+            );
+        })[0];
 
-            ansibleDiskProps.diskUuid = vcDisk.backingInfo.uuid;
-            ansibleDiskProps.mountPoint = disk.customProperties.drive;
-            ansibleDiskProps.capacityInGB = disk.capacityInGB;
-            ansibleDisks.push(ansibleDiskProps);
-        }
-    );
+        ansibleDiskProps.diskUuid = vcDisk.backingInfo.uuid;
+        ansibleDiskProps.mountPoint = disk.customProperties.drive;
+        ansibleDiskProps.capacityInGB = disk.capacityInGB;
+        ansibleDisks.push(ansibleDiskProps);
+    });
 
     log.info(JSON.stringify(ansibleDisks));
 });

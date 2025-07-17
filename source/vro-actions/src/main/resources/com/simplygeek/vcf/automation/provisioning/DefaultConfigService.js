@@ -6,19 +6,16 @@
     /**
      * Defines the DefaultConfigService class.
      * @class
-     *
      * @returns {Any} An instance of the DefaultConfigService class.
      */
-
     function DefaultConfigService() {
         ConfigElementService.call(this);
 
         var provisioningConfigPath = "Simplygeek/VCF/Automation/Provisioning";
 
-        this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
-            "Action",
-            "DefaultConfigService"
-        );
+        this.log = new (System.getModule(
+            "com.simplygeek.vcf.orchestrator.logging"
+        ).Logger())("Action", "DefaultConfigService");
 
         this.configElement = this.getConfigElement(
             "Default",
@@ -49,9 +46,8 @@
     /**
      * Defines the getCustomNamingProfileName method.
      * @description Gets the Custom Naming profile name used for machine naming.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Custom Naming Profile Name.
      */
 
@@ -70,9 +66,8 @@
     /**
      * Defines the getActiveDirectoryDomainName method.
      * @description Gets the Active Directory Domain Name for Machine joins.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Active Directory Domain Name.
      */
 
@@ -87,9 +82,8 @@
     /**
      * Defines the getActiveDirectoryDNSSuffix method.
      * @description Gets the Active Directory DNS Suffix.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Active Directory DNS Suffix.
      */
 
@@ -104,9 +98,8 @@
     /**
      * Defines the getActiveDirectoryServerOUDN method.
      * @description Gets the Active Directory Server OU Distinguished Name.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Active Directory Server OU Distinguished Name.
      */
 
@@ -125,23 +118,26 @@
     /**
      * Defines the getAnsibleRestHostName method.
      * @description Gets the Ansible Rest Host name.
-     * @method
+     * @function
      * @public
-     *
      * @returns {string} The Ansible Rest Host name.
      */
 
     DefaultConfigService.prototype.getAnsibleRestHostName = function () {
-        var ansibleRestHostName = this.__getConfigValue(
-            "ansibleRestHostName"
-        );
+        var ansibleRestHostName = this.__getConfigValue("ansibleRestHostName");
 
         return ansibleRestHostName;
     };
 
-    DefaultConfigService.prototype.__getConfigValue = function (
-        configKey
-    ) {
+    /**
+     * Defines the __getConfigValue method.
+     * @description Gets a configuration value.
+     * @function
+     * @private
+     * @returns {Any} The configuration value
+     */
+
+    DefaultConfigService.prototype.__getConfigValue = function (configKey) {
         var configValue;
         var configElementAttribute;
 
@@ -149,10 +145,11 @@
             this.configElement,
             configKey
         );
+        configValue = configElementAttribute.value;
         if (configElementAttribute.type === "SecureString") {
-            configValue = "******";
+            this.log.info("Found " + configKey + ": " + "******");
         } else {
-            configValue = configElementAttribute.value;
+            this.log.info("Found " + configKey + ": " + configValue);
         }
 
         return configValue;

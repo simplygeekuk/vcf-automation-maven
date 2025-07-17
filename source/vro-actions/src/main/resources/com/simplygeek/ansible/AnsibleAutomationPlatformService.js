@@ -7,23 +7,44 @@
      * Defines the AnsibleAutomationPlatformService class.
      * @class
      * @param {REST:RESTHost} restHost - The AAP HTTP REST host.
-     *
+     * @param {string} username - The basic auth username.
+     * @param {string} password - The basic auth password.
      * @returns {Any} An instance of the AnsibleAutomationPlatformService class.
      */
-
-    function AnsibleAutomationPlatformService(restHost) {
+    function AnsibleAutomationPlatformService(restHost, username, password) {
         if (!restHost || System.getObjectType(restHost) !== "REST:RESTHost") {
             throw new ReferenceError(
                 "restHost is required and must be of type 'REST:RESTHost'"
             );
         }
 
-        AnsibleAutomationBackendService.call(this, restHost);
-
-        this.log = new (System.getModule("com.simplygeek.vcf.orchestrator.logging").Logger())(
-            "Action",
-            "AnsibleAutomationPlatformService"
+        // This RESTHost Authentication block allows a username and password to be used
+        // for Basic Auth that is not configured on the host in the inventory. This allows
+        // Credentials to be used from Config Elements or other sources.
+        var basicAuth = RESTAuthenticationManager.createAuthentication(
+            "Basic",
+            ["Shared Session", username, password]
         );
+
+        restHost.authentication = basicAuth;
+        var restHostWithBasicAuth =
+            RESTHostManager.createTransientHostFrom(restHost);
+
+        RESTHostManager.reloadConfiguration();
+
+        this.restHost = restHostWithBasicAuth;
+        this.mediaType = "application/json";
+        this.baseUri = "/api/v2";
+
+        var headers = new Properties();
+
+        this.sessionHeaders = headers;
+
+        AnsibleAutomationBackendService.call(this, this.restHost);
+
+        this.log = new (System.getModule(
+            "com.simplygeek.vcf.orchestrator.logging"
+        ).Logger())("Action", "AnsibleAutomationPlatformService");
     }
 
     var AnsibleAutomationBackendService = System.getModule(
@@ -33,7 +54,8 @@
     AnsibleAutomationPlatformService.prototype = Object.create(
         AnsibleAutomationBackendService.prototype
     );
-    AnsibleAutomationPlatformService.prototype.constructor = AnsibleAutomationPlatformService;
+    AnsibleAutomationPlatformService.prototype.constructor =
+        AnsibleAutomationPlatformService;
 
     // ####################
     // ## Authentication ##
@@ -41,11 +63,10 @@
 
     /**
      * Defines the createSession method.
-     * @method
+     * @function
      * @public
      * @param {number} applicationId - The Ansible Application ID.
      * @param {string} scope - The authorization scope.
-     *
      * @returns {Any} The request response object.
      */
 
@@ -53,16 +74,16 @@
         applicationId,
         scope
     ) {
-        if ((!applicationId && applicationId !== 0) || typeof applicationId !== "number") {
+        if (
+            (!applicationId && applicationId !== 0) ||
+            typeof applicationId !== "number"
+        ) {
             throw new ReferenceError(
-                "applicationId is required and must " +
-                "be of type 'number'"
+                "applicationId is required and must " + "be of type 'number'"
             );
         }
-        var validScopes = [
-            "read",
-            "write"
-        ];
+
+        var validScopes = ["read", "write"];
 
         if (!scope || typeof scope !== "string") {
             throw new TypeError(
@@ -70,8 +91,11 @@
             );
         } else if (scope && validScopes.indexOf(scope) < 0) {
             throw new ReferenceError(
-                "Invalid scope '" + scope + "'." +
-                " Supported scope types: " + validScopes.join(", ")
+                "Invalid scope '" +
+                    scope +
+                    "'." +
+                    " Supported scope types: " +
+                    validScopes.join(", ")
             );
         }
 
@@ -79,11 +103,11 @@
         var uri = this.baseUri + "/tokens/";
         var content = {
             application: applicationId,
-            scope: scope
+            scope: scope,
         };
 
         this.log.debug("Creating API session.");
-        var response = this.rest.post(
+        var response = this.httpPost(
             uri,
             this.mediaType,
             content,
@@ -92,12 +116,15 @@
         );
 
         this.session = JSON.parse(response.contentAsString);
-        this.sessionHeaders.put("Authorization", "Bearer " + this.session.token);
+        this.sessionHeaders.put(
+            "Authorization",
+            "Bearer " + this.session.token
+        );
     };
 
     /**
      * Defines the closeSession method.
-     * @method
+     * @function
      * @public
      */
 
@@ -106,14 +133,11 @@
 
         this.log.debug("Closing API session.");
         try {
-            this.rest.delete(
-                uri,
-                this.mediaType,
-                [204],
-                this.sessionHeaders
-            );
+            this.httpDelete(uri, this.mediaType, [204], this.sessionHeaders);
         } catch (e) {
-            this.log.warn("Failed to close session, perhaps it has already expired. " + e);
+            this.log.warn(
+                "Failed to close session, perhaps it has already expired. " + e
+            );
         }
     };
 
@@ -123,11 +147,10 @@
 
     /**
      * Defines the getApplicationById method.
-     * @method
+     * @function
      * @public
      * @param {number} applicationId - The application ID.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The application object.
      */
 
@@ -135,10 +158,12 @@
         applicationId,
         throwOnNotFound
     ) {
-        if ((!applicationId && applicationId !== 0) || typeof applicationId !== "number") {
+        if (
+            (!applicationId && applicationId !== 0) ||
+            typeof applicationId !== "number"
+        ) {
             throw new ReferenceError(
-                "applicationId is required and must " +
-                "be of type 'number'"
+                "applicationId is required and must " + "be of type 'number'"
             );
         }
 
@@ -154,11 +179,10 @@
 
     /**
      * Defines the getApplicationByName method.
-     * @method
+     * @function
      * @public
      * @param {number} applicationName - The application name.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The application object.
      */
 
@@ -168,8 +192,7 @@
     ) {
         if (!applicationName || typeof applicationName !== "string") {
             throw new ReferenceError(
-                "applicationName is required and must " +
-                "be of type 'string'"
+                "applicationName is required and must " + "be of type 'string'"
             );
         }
 
@@ -189,9 +212,8 @@
 
     /**
      * Defines the getOrganizations method.
-     * @method
+     * @function
      * @public
-     *
      * @returns {Array/Any} The list of organizations.
      */
 
@@ -208,11 +230,10 @@
 
     /**
      * Defines the getOrganizationById method.
-     * @method
+     * @function
      * @public
      * @param {number} organizationId - The organization ID.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The organization object.
      */
 
@@ -220,10 +241,12 @@
         organizationId,
         throwOnNotFound
     ) {
-        if ((!organizationId && organizationId !== 0) || typeof organizationId !== "number") {
+        if (
+            (!organizationId && organizationId !== 0) ||
+            typeof organizationId !== "number"
+        ) {
             throw new ReferenceError(
-                "organizationId is required and must " +
-                "be of type 'number'"
+                "organizationId is required and must " + "be of type 'number'"
             );
         }
 
@@ -239,35 +262,31 @@
 
     /**
      * Defines the getOrganizationByName method.
-     * @method
+     * @function
      * @public
      * @param {string} organizationName - The organization name.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The organization object.
      */
 
-    AnsibleAutomationPlatformService.prototype.getOrganizationByName = function (
-        organizationName,
-        throwOnNotFound
-    ) {
-        if (!organizationName || typeof organizationName !== "string") {
-            throw new ReferenceError(
-                "organizationName is required and must " +
-                "be of type 'string'"
+    AnsibleAutomationPlatformService.prototype.getOrganizationByName =
+        function (organizationName, throwOnNotFound) {
+            if (!organizationName || typeof organizationName !== "string") {
+                throw new ReferenceError(
+                    "organizationName is required and must " +
+                        "be of type 'string'"
+                );
+            }
+
+            var resourceType = "organizations";
+            var organizationObject = this.getResourceByName(
+                organizationName,
+                resourceType,
+                throwOnNotFound
             );
-        }
 
-        var resourceType = "organizations";
-        var organizationObject = this.getResourceByName(
-            organizationName,
-            resourceType,
-            throwOnNotFound
-        );
-
-        return organizationObject;
-
-    };
+            return organizationObject;
+        };
 
     // #################
     // ## Credentials ##
@@ -275,14 +294,12 @@
 
     /**
      * Defines the getCredentials method.
-     * @method
+     * @function
      * @public
-     *
      * @returns {Array/Any} The list of credentials.
      */
 
     AnsibleAutomationPlatformService.prototype.getCredentials = function () {
-
         var uri = this.baseUri + "/credentials/?order_by=name";
         var results;
 
@@ -295,11 +312,10 @@
 
     /**
      * Defines the getCredentialById method.
-     * @method
+     * @function
      * @public
      * @param {number} credentialId - The credential ID.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The credential object.
      */
 
@@ -307,10 +323,12 @@
         credentialId,
         throwOnNotFound
     ) {
-        if ((!credentialId && credentialId !== 0) || typeof credentialId !== "number") {
+        if (
+            (!credentialId && credentialId !== 0) ||
+            typeof credentialId !== "number"
+        ) {
             throw new ReferenceError(
-                "credentialId is required and must " +
-                "be of type 'number'"
+                "credentialId is required and must " + "be of type 'number'"
             );
         }
 
@@ -326,11 +344,10 @@
 
     /**
      * Defines the getCredentialByName method.
-     * @method
+     * @function
      * @public
      * @param {string} credentialName - The credential name.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The credential object.
      */
 
@@ -340,8 +357,7 @@
     ) {
         if (!credentialName || typeof credentialName !== "string") {
             throw new ReferenceError(
-                "credentialName is required and must " +
-                "be of type 'string'"
+                "credentialName is required and must " + "be of type 'string'"
             );
         }
 
@@ -357,20 +373,22 @@
 
     /**
      * Defines the createCredential method.
-     * @method
+     * @function
      * @public
      * @param {Any} credentialSpecification - The credential specification.
-     *
      * @returns {Any} The new credential object.
      */
 
     AnsibleAutomationPlatformService.prototype.createCredential = function (
         credentialSpecification
     ) {
-        if (!credentialSpecification || typeof credentialSpecification !== "object") {
+        if (
+            !credentialSpecification ||
+            typeof credentialSpecification !== "object"
+        ) {
             throw new ReferenceError(
                 "credentialSpecification is required and must " +
-                "be of type 'object'"
+                    "be of type 'object'"
             );
         }
 
@@ -378,10 +396,7 @@
         var credentialObject;
 
         this.log.debug("Creating credential " + credentialSpecification.name);
-        credentialObject = this.post(
-            uri,
-            credentialSpecification
-        );
+        credentialObject = this.post(uri, credentialSpecification);
         this.log.debug("Credential successfully created");
 
         return credentialObject;
@@ -389,11 +404,10 @@
 
     /**
      * Defines the updateCredential method.
-     * @method
+     * @function
      * @public
      * @param {number} credentialId - The credential ID.
      * @param {Any} credentialSpecification - The credential specification.
-     *
      * @returns {Any} The updated credential object.
      */
 
@@ -401,25 +415,24 @@
         credentialId,
         credentialSpecification
     ) {
-        if (!credentialSpecification || typeof credentialSpecification !== "object") {
+        if (
+            !credentialSpecification ||
+            typeof credentialSpecification !== "object"
+        ) {
             throw new ReferenceError(
                 "credentialSpecification is required and must " +
-                "be of type 'object'"
+                    "be of type 'object'"
             );
         }
 
-        var uri = this.baseUri + "/credentials/" + credentialId.toString() + "/";
+        var uri =
+            this.baseUri + "/credentials/" + credentialId.toString() + "/";
         var updatedCredentialObject;
-        var credential = this.getCredentialById(
-            credentialId
-        );
+        var credential = this.getCredentialById(credentialId);
         var credentialName = credential.name;
 
         this.log.debug("Updating credential " + credentialName);
-        updatedCredentialObject = this.patch(
-            uri,
-            credentialSpecification
-        );
+        updatedCredentialObject = this.patch(uri, credentialSpecification);
         this.log.debug("Credential successfully updated");
 
         return updatedCredentialObject;
@@ -431,85 +444,81 @@
 
     /**
      * Defines the getCredentialTypes method.
-     * @method
+     * @function
      * @public
-     *
      * @returns {Array/Any} The list of credential types.
      */
 
-    AnsibleAutomationPlatformService.prototype.getCredentialTypes = function () {
+    AnsibleAutomationPlatformService.prototype.getCredentialTypes =
+        function () {
+            var uri = this.baseUri + "/credential_types/?order_by=name";
+            var results;
 
-        var uri = this.baseUri + "/credential_types/?order_by=name";
-        var results;
+            this.log.debug("Getting list of credential types");
+            results = this.get(uri);
+            this.log.debug("Found " + results.length + " credential types");
 
-        this.log.debug("Getting list of credential types");
-        results = this.get(uri);
-        this.log.debug("Found " + results.length + " credential types");
-
-        return results;
-    };
+            return results;
+        };
 
     /**
      * Defines the getCredentialTypeById method.
-     * @method
+     * @function
      * @public
      * @param {number} credentialTypeId - The credential type ID.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The credential type object.
      */
 
-    AnsibleAutomationPlatformService.prototype.getCredentialTypeById = function (
-        credentialTypeId,
-        throwOnNotFound
-    ) {
-        if ((!credentialTypeId && credentialTypeId !== 0) || typeof credentialTypeId !== "number") {
-            throw new ReferenceError(
-                "credentialTypeId is required and must " +
-                "be of type 'number'"
+    AnsibleAutomationPlatformService.prototype.getCredentialTypeById =
+        function (credentialTypeId, throwOnNotFound) {
+            if (
+                (!credentialTypeId && credentialTypeId !== 0) ||
+                typeof credentialTypeId !== "number"
+            ) {
+                throw new ReferenceError(
+                    "credentialTypeId is required and must " +
+                        "be of type 'number'"
+                );
+            }
+
+            var resourceType = "credential_types";
+            var credentialTypeObject = this.getResourceById(
+                credentialTypeId,
+                resourceType,
+                throwOnNotFound
             );
-        }
 
-        var resourceType = "credential_types";
-        var credentialTypeObject = this.getResourceById(
-            credentialTypeId,
-            resourceType,
-            throwOnNotFound
-        );
-
-        return credentialTypeObject;
-    };
+            return credentialTypeObject;
+        };
 
     /**
      * Defines the getCredentialTypeByName method.
-     * @method
+     * @function
      * @public
      * @param {string} credentialTypeName - The credential type name.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The credential type object.
      */
 
-    AnsibleAutomationPlatformService.prototype.getCredentialTypeByName = function (
-        credentialTypeName,
-        throwOnNotFound
-    ) {
-        if (!credentialTypeName || typeof credentialTypeName !== "string") {
-            throw new ReferenceError(
-                "credentialTypeName is required and must " +
-                "be of type 'string'"
+    AnsibleAutomationPlatformService.prototype.getCredentialTypeByName =
+        function (credentialTypeName, throwOnNotFound) {
+            if (!credentialTypeName || typeof credentialTypeName !== "string") {
+                throw new ReferenceError(
+                    "credentialTypeName is required and must " +
+                        "be of type 'string'"
+                );
+            }
+
+            var resourceType = "credential_types";
+            var credentialTypeObject = this.getResourceByName(
+                credentialTypeName,
+                resourceType,
+                throwOnNotFound
             );
-        }
 
-        var resourceType = "credential_types";
-        var credentialTypeObject = this.getResourceByName(
-            credentialTypeName,
-            resourceType,
-            throwOnNotFound
-        );
-
-        return credentialTypeObject;
-    };
+            return credentialTypeObject;
+        };
 
     // ###########
     // ## Teams ##
@@ -517,14 +526,12 @@
 
     /**
      * Defines the getTeams method.
-     * @method
+     * @function
      * @public
-     *
      * @returns {Array/Any} The list of teams.
      */
 
     AnsibleAutomationPlatformService.prototype.getTeams = function () {
-
         var uri = this.baseUri + "/teams/?order_by=name";
         var results;
 
@@ -537,11 +544,10 @@
 
     /**
      * Defines the getTeamById method.
-     * @method
+     * @function
      * @public
      * @param {number} teamId - The team ID.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The team object.
      */
 
@@ -551,8 +557,7 @@
     ) {
         if ((!teamId && teamId !== 0) || typeof teamId !== "number") {
             throw new ReferenceError(
-                "teamId is required and must " +
-                "be of type 'number'"
+                "teamId is required and must " + "be of type 'number'"
             );
         }
 
@@ -568,11 +573,10 @@
 
     /**
      * Defines the getTeamByName method.
-     * @method
+     * @function
      * @public
      * @param {string} teamName - The team name.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The team object.
      */
 
@@ -582,8 +586,7 @@
     ) {
         if (!teamName || typeof teamName !== "string") {
             throw new ReferenceError(
-                "teamName is required and must " +
-                "be of type 'string'"
+                "teamName is required and must " + "be of type 'string'"
             );
         }
 
@@ -599,10 +602,9 @@
 
     /**
      * Defines the createTeam method.
-     * @method
+     * @function
      * @public
      * @param {Any} teamSpecification - The team specification.
-     *
      * @returns {Any} The new team object.
      */
 
@@ -612,7 +614,7 @@
         if (!teamSpecification || typeof teamSpecification !== "object") {
             throw new ReferenceError(
                 "teamSpecification is required and must " +
-                "be of type 'object'"
+                    "be of type 'object'"
             );
         }
 
@@ -620,10 +622,7 @@
         var teamObject;
 
         this.log.debug("Creating team " + teamSpecification.name);
-        teamObject = this.post(
-            uri,
-            teamSpecification
-        );
+        teamObject = this.post(uri, teamSpecification);
         this.log.debug("Team successfully created");
 
         return teamObject;
@@ -631,11 +630,10 @@
 
     /**
      * Defines the assignRoleToTeam method.
-     * @method
+     * @function
      * @public
      * @param {number} teamId - The team ID.
      * @param {number} roleId - The role ID.
-     *
      * @returns {Any} The role object.
      */
 
@@ -645,32 +643,31 @@
     ) {
         if ((!teamId && teamId !== 0) || typeof teamId !== "number") {
             throw new ReferenceError(
-                "teamId is required and must " +
-                "be of type 'number'"
+                "teamId is required and must " + "be of type 'number'"
             );
         }
+
         if ((!roleId && roleId !== 0) || typeof roleId !== "number") {
             throw new ReferenceError(
-                "roleId is required and must " +
-                "be of type 'number'"
+                "roleId is required and must " + "be of type 'number'"
             );
         }
 
         var uri = this.baseUri + "/teams/" + teamId.toString() + "/roles/";
         var roleObject;
         var content = {
-            id: roleId
+            id: roleId,
         };
 
         this.log.debug(
-            "Assigning role to team with team id '" + teamId + "'" +
-            " and role id '" + roleId + "'"
+            "Assigning role to team with team id '" +
+                teamId +
+                "'" +
+                " and role id '" +
+                roleId +
+                "'"
         );
-        roleObject = this.post(
-            uri,
-            content,
-            [204]
-        );
+        roleObject = this.post(uri, content, [204]);
 
         this.log.debug("Role successfully assigned to team");
 
@@ -683,12 +680,11 @@
 
     /**
      * Defines the getRoles method.
-     * @method
+     * @function
      * @public
      * @param {name} [roleName] - filter by role name.
      * @param {name} [resourceType] - filter by resource type.
      * @param {name} [resourceName] - filter by resource name.
-     *
      * @returns {Array/Any} The response results.
      */
 
@@ -700,9 +696,11 @@
         if (roleName && typeof roleName !== "string") {
             throw new ReferenceError("roleName must be of type 'string'");
         }
+
         if (resourceType && typeof resourceType !== "string") {
             throw new ReferenceError("resourceType must be of type 'string'");
         }
+
         if (resourceName && typeof resourceName !== "string") {
             throw new ReferenceError("resourceName must be of type 'string'");
         }
@@ -714,27 +712,24 @@
         roles = this.get(uri);
 
         if (roleName) {
-            roles = roles.filter(
-                function(role) {
-                    return role.name === roleName;
-                }
-            );
+            roles = roles.filter(function (role) {
+                return role.name === roleName;
+            });
         }
 
         if (resourceType) {
-            roles = roles.filter(
-                function(role) {
-                    return role.summary_fields.resource_type === resourceType.toLowerCase();
-                }
-            );
+            roles = roles.filter(function (role) {
+                return (
+                    role.summary_fields.resource_type ===
+                    resourceType.toLowerCase()
+                );
+            });
         }
 
         if (resourceName) {
-            roles = roles.filter(
-                function(role) {
-                    return role.summary_fields.resource_name === resourceName;
-                }
-            );
+            roles = roles.filter(function (role) {
+                return role.summary_fields.resource_name === resourceName;
+            });
         }
 
         this.log.debug("Found " + roles.length + " roles");
@@ -744,11 +739,10 @@
 
     /**
      * Defines the getRoleById method.
-     * @method
+     * @function
      * @public
      * @param {number} roleId - The Role ID.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The role object.
      */
 
@@ -758,8 +752,7 @@
     ) {
         if ((!roleId && roleId !== 0) || typeof roleId !== "number") {
             throw new ReferenceError(
-                "roleId is required and must " +
-                "be of type 'number'"
+                "roleId is required and must " + "be of type 'number'"
             );
         }
 
@@ -772,8 +765,11 @@
             var roleName = roleObject.name;
 
             this.log.debug(
-                "Found role with name '" + roleName +
-                "' and id '" + roleId + "'"
+                "Found role with name '" +
+                    roleName +
+                    "' and id '" +
+                    roleId +
+                    "'"
             );
         }
 
@@ -786,14 +782,12 @@
 
     /**
      * Defines the getInventories method.
-     * @method
+     * @function
      * @public
-     *
      * @returns {Array/Any} The list of inventories.
      */
 
     AnsibleAutomationPlatformService.prototype.getInventories = function () {
-
         var uri = this.baseUri + "/inventories/?order_by=name";
         var results;
 
@@ -806,11 +800,10 @@
 
     /**
      * Defines the getInventoryById method.
-     * @method
+     * @function
      * @public
      * @param {number} inventoryId - The inventory ID.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The inventory object.
      */
 
@@ -818,10 +811,12 @@
         inventoryId,
         throwOnNotFound
     ) {
-        if ((!inventoryId && inventoryId !== 0) || typeof inventoryId !== "number") {
+        if (
+            (!inventoryId && inventoryId !== 0) ||
+            typeof inventoryId !== "number"
+        ) {
             throw new ReferenceError(
-                "inventoryId is required and must " +
-                "be of type 'number'"
+                "inventoryId is required and must " + "be of type 'number'"
             );
         }
 
@@ -833,16 +828,14 @@
         );
 
         return inventoryObject;
-
     };
 
     /**
      * Defines the getInventoryByName method.
-     * @method
+     * @function
      * @public
      * @param {string} inventoryName - The inventory name.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The inventory object.
      */
 
@@ -852,8 +845,7 @@
     ) {
         if (!inventoryName || typeof inventoryName !== "string") {
             throw new ReferenceError(
-                "inventoryName is required and must " +
-                "be of type 'string'"
+                "inventoryName is required and must " + "be of type 'string'"
             );
         }
 
@@ -869,20 +861,22 @@
 
     /**
      * Defines the createInventory method.
-     * @method
+     * @function
      * @public
      * @param {Any} inventorySpecification - The inventory specification.
-     *
      * @returns {Any} The new inventory object.
      */
 
     AnsibleAutomationPlatformService.prototype.createInventory = function (
         inventorySpecification
     ) {
-        if (!inventorySpecification || typeof inventorySpecification !== "object") {
+        if (
+            !inventorySpecification ||
+            typeof inventorySpecification !== "object"
+        ) {
             throw new ReferenceError(
                 "inventorySpecification is required and must " +
-                "be of type 'object'"
+                    "be of type 'object'"
             );
         }
 
@@ -890,10 +884,7 @@
         var inventoryObject;
 
         this.log.debug("Creating inventory " + inventorySpecification.name);
-        inventoryObject = this.post(
-            uri,
-            inventorySpecification
-        );
+        inventoryObject = this.post(uri, inventorySpecification);
         this.log.debug("Inventory successfully created");
 
         return inventoryObject;
@@ -905,24 +896,29 @@
 
     /**
      * Defines the getInventoryHosts method.
-     * @method
+     * @function
      * @public
      * @param {number} inventoryId - The inventory ID.
-     *
      * @returns {Array/Any} The list of inventory hosts.
      */
 
     AnsibleAutomationPlatformService.prototype.getInventoryHosts = function (
         inventoryId
     ) {
-        if ((!inventoryId && inventoryId !== 0) || typeof inventoryId !== "number") {
+        if (
+            (!inventoryId && inventoryId !== 0) ||
+            typeof inventoryId !== "number"
+        ) {
             throw new ReferenceError(
-                "inventoryId is required and must " +
-                "be of type 'number'"
+                "inventoryId is required and must " + "be of type 'number'"
             );
         }
 
-        var uri = this.baseUri + "/inventories/" + inventoryId.toString() + "/hosts/?order_by=name";
+        var uri =
+            this.baseUri +
+            "/inventories/" +
+            inventoryId.toString() +
+            "/hosts/?order_by=name";
         var results;
 
         this.log.debug("Getting list of inventory hosts");
@@ -934,45 +930,47 @@
 
     /**
      * Defines the getInventoryHostByName method.
-     * @method
+     * @function
      * @public
      * @param {number} inventoryId - The inventory ID.
      * @param {string} hostName - The inventory host name.
      * @param {boolean} [throwOnNotFound] - Whether to throw an exception if no results found.
-     *
      * @returns {Any} The inventory host object.
      */
 
-    AnsibleAutomationPlatformService.prototype.getInventoryHostByName = function (
-        inventoryId,
-        hostName,
-        throwOnNotFound
-    ) {
-        if ((!inventoryId && inventoryId !== 0) || typeof inventoryId !== "number") {
-            throw new ReferenceError(
-                "inventoryId is required and must " +
-                "be of type 'number'"
+    AnsibleAutomationPlatformService.prototype.getInventoryHostByName =
+        function (inventoryId, hostName, throwOnNotFound) {
+            if (
+                (!inventoryId && inventoryId !== 0) ||
+                typeof inventoryId !== "number"
+            ) {
+                throw new ReferenceError(
+                    "inventoryId is required and must " + "be of type 'number'"
+                );
+            }
+
+            if (!hostName || typeof hostName !== "string") {
+                throw new ReferenceError(
+                    "hostName is required and must " + "be of type 'string'"
+                );
+            }
+
+            this.log.info("Get inventory host with name '" + hostName + "'");
+            var resourceType =
+                "inventories/" + inventoryId.toString() + "/hosts";
+            var inventoryHostObject = this.getResourceByName(
+                hostName,
+                resourceType,
+                throwOnNotFound
             );
-        }
-        if (!hostName || typeof hostName !== "string") {
-            throw new ReferenceError(
-                "hostName is required and must " +
-                "be of type 'string'"
-            );
-        }
 
-        this.log.info("Get inventory host with name '" + hostName + "'");
-        var resourceType = "inventories/" + inventoryId.toString() + "/hosts";
-        var inventoryHostObject = this.getResourceByName(
-            hostName,
-            resourceType,
-            throwOnNotFound
-        );
+            if (inventoryHostObject)
+                this.log.info(
+                    "Found inventory host with name '" + hostName + "'"
+                );
 
-        if (inventoryHostObject) this.log.info("Found inventory host with name '" + hostName + "'");
-
-        return inventoryHostObject;
-    };
+            return inventoryHostObject;
+        };
 
     return AnsibleAutomationPlatformService;
 });
