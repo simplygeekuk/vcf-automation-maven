@@ -26,12 +26,14 @@
                 "inputDate is required and must " + "be of type 'Date'"
             );
         }
+
         if (!months || typeof months !== "number") {
             throw new ReferenceError(
                 "months is required and must " +
                     "be of type 'number' and a value other than 0"
             );
         }
+
         var dateUpdated = inputDate;
         var month = (inputDate.getUTCMonth() + months) % 12;
         //create a new Date object that gets the last day of the desired month

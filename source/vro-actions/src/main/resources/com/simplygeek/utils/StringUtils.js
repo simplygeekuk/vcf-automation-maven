@@ -26,11 +26,13 @@
                 "inputString is required and must " + "be of type 'string'"
             );
         }
+
         if ((!width && width !== 0) || typeof width !== "number") {
             throw new ReferenceError(
                 "width is required and must " + "be of type 'number'"
             );
         }
+
         if (padValue && typeof padValue !== "string") {
             throw new ReferenceError("padValue must be of type 'string'");
         }

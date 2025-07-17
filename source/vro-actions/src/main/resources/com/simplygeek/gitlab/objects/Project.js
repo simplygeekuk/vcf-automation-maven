@@ -28,12 +28,15 @@
                 "name is required and must " + "be of type 'string'"
             );
         }
+
         if (path && typeof path !== "string") {
             throw new ReferenceError("path must be of type 'string'");
         }
+
         if (description && typeof description !== "string") {
             throw new ReferenceError("description must be of type 'string'");
         }
+
         if (
             !namespaceId &&
             namespaceId !== 0 &&
@@ -41,9 +44,11 @@
         ) {
             throw new ReferenceError("namespaceId must be of type 'number'");
         }
+
         if (!templateId && templateId !== 0 && typeof templateId !== "number") {
             throw new ReferenceError("templateId must be of type 'number'");
         }
+
         if (
             !templateGroupId &&
             templateGroupId !== 0 &&
@@ -57,10 +62,15 @@
         // Construct Object
         this.name = name;
         if (path) this.path = path;
+
         if (description) this.description = description;
+
         if (namespaceId) this.namespace_id = namespaceId;
+
         if (templateId) this.use_custom_template = true;
+
         if (templateId) this.template_project_id = templateId;
+
         if (templateGroupId)
             this.group_with_project_templates_id = templateGroupId;
     }

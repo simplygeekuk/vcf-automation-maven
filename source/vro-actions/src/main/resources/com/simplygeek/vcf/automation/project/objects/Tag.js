@@ -17,6 +17,7 @@
                 "key is required and must " + "be of type 'string'"
             );
         }
+
         if (value && typeof value !== "string") {
             throw new ReferenceError("value must be of type 'string'");
         }

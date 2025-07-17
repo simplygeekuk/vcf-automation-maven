@@ -19,14 +19,17 @@
                 "name is required and must " + "be of type 'string'"
             );
         }
+
         if (!path || typeof path !== "string") {
             throw new ReferenceError(
                 "path is required and must " + "be of type 'string'"
             );
         }
+
         if (description && typeof description !== "string") {
             throw new ReferenceError("description must be of type 'string'");
         }
+
         if (parentId && typeof parentId !== "number") {
             throw new ReferenceError("parentId must be of type 'number'");
         }
@@ -35,6 +38,7 @@
         this.name = name;
         this.path = path;
         if (description) this.description = description;
+
         if (parentId) this.parent_id = parentId;
     }
 

@@ -29,6 +29,7 @@
                 "samlGroupName is required and must " + "be of type 'string'"
             );
         }
+
         if (
             (accessLevel || accessLevel === 0) &&
             typeof accessLevel !== "number"
@@ -46,6 +47,7 @@
                     validAccessLevels.join(", ")
             );
         }
+
         if (memberRoleId && typeof memberRoleId !== "number") {
             throw new ReferenceError("memberRoleId must be of type 'number'");
         }

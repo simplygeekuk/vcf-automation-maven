@@ -187,6 +187,7 @@
                 "customNamingId is required and must " + "be of type 'string'"
             );
         }
+
         if (!updatedObject || typeof updatedObject !== "object") {
             throw new ReferenceError(
                 "updatedObject is required and must " + "be of type 'object'"
@@ -218,6 +219,7 @@
                         "be of type 'string'"
                 );
             }
+
             if (!prefix || typeof prefix !== "string") {
                 throw new ReferenceError(
                     "prefix is required and must " + "be of type 'string'"
@@ -254,6 +256,7 @@
                         " templates matching prefix"
                 );
                 if (templatesWithPrefix.length > 0) prefixFound = true;
+
                 this.log.debug("prefixFound: " + prefixFound);
             }
 
@@ -286,11 +289,13 @@
                         "be of type 'string'"
                 );
             }
+
             if (!prefix || typeof prefix !== "string") {
                 throw new ReferenceError(
                     "prefix is required and must " + "be of type 'string'"
                 );
             }
+
             var validResourceTypes = [
                 "COMPUTE",
                 "NETWORK",
@@ -358,6 +363,7 @@
                         "'"
                 );
             }
+
             var pattern = defaultTemplates[0].pattern;
             var newNamingTemplate = {};
 

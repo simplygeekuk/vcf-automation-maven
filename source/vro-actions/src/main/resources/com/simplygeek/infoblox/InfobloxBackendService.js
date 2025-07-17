@@ -32,6 +32,7 @@
         if (!uri || typeof uri !== "string") {
             this.log.debug("uri has not been defined or not of type 'string'");
         }
+
         if (
             !expectedResponseCodes ||
             (Array.isArray(expectedResponseCodes) &&
@@ -102,6 +103,7 @@
                 result = responseContent.result[0];
             } else {
                 if (throwOnNotFound) throw new Error("No results found");
+
                 this.log.warn("No results found.");
             }
         }
@@ -126,9 +128,11 @@
         if (!uri || typeof uri !== "string") {
             this.log.debug("uri has not been defined or not of type 'string'");
         }
+
         if (!content) {
             content = "{}";
         }
+
         if (
             !expectedResponseCodes ||
             (Array.isArray(expectedResponseCodes) &&
@@ -169,11 +173,13 @@
         if (!uri || typeof uri !== "string") {
             this.log.debug("uri has not been defined or not of type 'string'");
         }
+
         if (!content || typeof content !== "string") {
             this.log.debug(
                 "content has not been defined or not of type 'string'"
             );
         }
+
         if (
             !expectedResponseCodes ||
             (Array.isArray(expectedResponseCodes) &&
@@ -213,11 +219,13 @@
         if (!uri || typeof uri !== "string") {
             this.log.debug("uri has not been defined or not of type 'string'");
         }
+
         if (!content || typeof content !== "string") {
             this.log.debug(
                 "content has not been defined or not of type 'string'"
             );
         }
+
         if (
             !expectedResponseCodes ||
             (Array.isArray(expectedResponseCodes) &&
@@ -254,6 +262,7 @@
         if (!uri || typeof uri !== "string") {
             this.log.debug("uri has not been defined or not of type 'string'");
         }
+
         if (
             !expectedResponseCodes ||
             (Array.isArray(expectedResponseCodes) &&

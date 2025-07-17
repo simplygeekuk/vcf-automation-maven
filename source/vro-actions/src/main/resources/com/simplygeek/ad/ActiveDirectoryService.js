@@ -89,9 +89,11 @@
                     "computerName is required and must be of type 'string'"
                 );
             }
+
             if (computerDn && typeof computerDn !== "string") {
                 throw new ReferenceError("computerDn must be of type 'string'");
             }
+
             if (containerDn && typeof containerDn !== "string") {
                 throw new ReferenceError(
                     "containerDn must be of type 'string'"
@@ -126,6 +128,7 @@
                     "computerName is required and must be of type 'string'"
                 );
             }
+
             if (
                 !parent ||
                 (System.getObjectType(parent) !== "AD:OrganizationalUnit" &&
@@ -136,6 +139,7 @@
                         "'AD:OrganizationalUnit' or 'AD:Group'"
                 );
             }
+
             if (domainName && typeof domainName !== "string") {
                 throw new ReferenceError("domainName must be of type 'string'");
             }
@@ -271,9 +275,11 @@
                     "groupName is required and must be of type 'string'"
                 );
             }
+
             if (groupDN && typeof groupDN !== "string") {
                 throw new ReferenceError("groupDN must be of type 'string'");
             }
+
             if (containerDn && typeof containerDn !== "string") {
                 throw new ReferenceError(
                     "containerDn must be of type 'string'"
@@ -316,9 +322,11 @@
                     "ouName is required and must be of type 'string'"
                 );
             }
+
             if (ouDN && typeof ouDN !== "string") {
                 throw new ReferenceError("ouDN must be of type 'string'");
             }
+
             if (containerDn && typeof containerDn !== "string") {
                 throw new ReferenceError(
                     "containerDn must be of type 'string'"
@@ -358,6 +366,7 @@
                     "organizationalUnitName is required and must be of type 'string'"
                 );
             }
+
             if (
                 !parent ||
                 System.getObjectType(parent) !== "AD:OrganizationalUnit"
@@ -468,9 +477,11 @@
                     "username is required and must be of type 'string'"
                 );
             }
+
             if (userDn && typeof userDn !== "string") {
                 throw new ReferenceError("userDn must be of type 'string'");
             }
+
             if (containerDn && typeof containerDn !== "string") {
                 throw new ReferenceError(
                     "containerDn must be of type 'string'"
@@ -517,12 +528,14 @@
                     "username is required and must be of type 'string'"
                 );
             }
+
             if (!password || typeof password !== "string") {
                 throw new ReferenceError(
                     "password is required and must be of type 'SecureString' " +
                         "or 'string"
                 );
             }
+
             if (
                 !parent ||
                 (System.getObjectType(parent) !== "AD:OrganizationalUnit" &&
@@ -533,14 +546,17 @@
                         "'AD:OrganizationalUnit' or 'AD:Group'"
                 );
             }
+
             if (domainName && typeof domainName !== "string") {
                 throw new ReferenceError("domainName must be of type 'string'");
             }
+
             if (displayName && typeof displayName !== "string") {
                 throw new ReferenceError(
                     "displayName must be of type 'string'"
                 );
             }
+
             if (description && typeof description !== "string") {
                 throw new ReferenceError(
                     "description must be of type 'string'"
@@ -566,6 +582,7 @@
 
                 // eslint-disable-next-line no-redeclare
                 if (!domainName) var domainName;
+
                 if (!displayName) displayName = username;
 
                 parent.createUserWithPassword(
@@ -584,6 +601,7 @@
                 adUser.setChangePasswordAtNextLogon(changePasswordAtNextLogon);
                 if (description)
                     adUser.setAttribute("description", description);
+
                 this.log.debug("User '" + username + "' created successfully.");
             } catch (e) {
                 throw new Error("Failed to create User: " + e);
@@ -666,6 +684,7 @@
                     "adUser is required and must be of type 'AD:User'"
                 );
             }
+
             if (!newPassword || typeof newPassword !== "string") {
                 throw new ReferenceError(
                     "newPassword is required and must be of type 'string'"
@@ -707,11 +726,13 @@
                     "userGroupName is required and must be of type 'string'"
                 );
             }
+
             if (!userGroupDN || typeof userGroupDN !== "string") {
                 throw new ReferenceError(
                     "userGroupDN is required and must be of type 'string'"
                 );
             }
+
             if (containerDn && typeof containerDn !== "string") {
                 throw new ReferenceError(
                     "containerDn must be of type 'string'"
@@ -745,6 +766,7 @@
                     "userGroupName is required and must be of type 'string'"
                 );
             }
+
             if (
                 !parent ||
                 (System.getObjectType(parent) !== "AD:OrganizationalUnit" &&
@@ -876,11 +898,13 @@
                     "searchPattern is required and must be of type 'string'"
                 );
             }
+
             if (searchBaseDn && typeof searchBaseDn !== "string") {
                 throw new ReferenceError(
                     "searchBaseDn must be of type 'string'"
                 );
             }
+
             if (searchAttribute && typeof searchAttribute !== "string") {
                 throw new ReferenceError(
                     "searchAttribute must be of type 'string'"
@@ -930,11 +954,13 @@
                     "searchPattern is required and must be of type 'string'"
                 );
             }
+
             if (searchBaseDn && typeof searchBaseDn !== "string") {
                 throw new ReferenceError(
                     "searchBaseDn must be of type 'string'"
                 );
             }
+
             if (searchAttribute && typeof searchAttribute !== "string") {
                 throw new ReferenceError(
                     "searchAttribute must be of type 'string'"
@@ -982,11 +1008,13 @@
                     "searchPattern is required and must be of type 'string'"
                 );
             }
+
             if (searchBaseDn && typeof searchBaseDn !== "string") {
                 throw new ReferenceError(
                     "searchBaseDn must be of type 'string'"
                 );
             }
+
             if (searchAttribute && typeof searchAttribute !== "string") {
                 throw new ReferenceError(
                     "searchAttribute must be of type 'string'"
@@ -1034,11 +1062,13 @@
                     "searchPattern is required and must be of type 'string'"
                 );
             }
+
             if (searchBaseDn && typeof searchBaseDn !== "string") {
                 throw new ReferenceError(
                     "searchBaseDn must be of type 'string'"
                 );
             }
+
             if (searchAttribute && typeof searchAttribute !== "string") {
                 throw new ReferenceError(
                     "searchAttribute must be of type 'string'"

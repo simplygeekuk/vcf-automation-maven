@@ -23,9 +23,11 @@
                 "restHost is required and must be of type 'REST:RESTHost'"
             );
         }
+
         if (retryMaxAttempts && typeof retryMaxAttempts !== "number") {
             throw new TypeError("retryMaxAttempts must be of type 'number'");
         }
+
         if (retryDelay && typeof retryDelay !== "number") {
             throw new TypeError("retryDelay must be of type 'number'");
         }
@@ -72,15 +74,19 @@
             } else if (uri && !uri.match(uriRegex)) {
                 throw new ReferenceError("uri not a valid URI");
             }
+
             if (acceptType && typeof acceptType !== "string") {
                 throw new TypeError("acceptType must be of type 'string'");
             }
+
             if (contentType && typeof contentType !== "string") {
                 throw new TypeError("contentType must be of type 'string'");
             }
+
             if (content && typeof content !== "object") {
                 throw new TypeError("content must be of type 'object'");
             }
+
             if (
                 expectedResponseCodes &&
                 !Array.isArray(expectedResponseCodes)
@@ -100,6 +106,7 @@
                     }
                 });
             }
+
             if (headers && System.getObjectType(headers) !== "Properties") {
                 throw new TypeError("headers must be of type 'Properties'");
             }
@@ -139,6 +146,7 @@
                     content[matches[1]] = "*******";
                     contentString = JSON.stringify(content);
                 }
+
                 this.log.debug("Content: " + contentString);
             }
 
@@ -319,6 +327,7 @@
                 } else {
                     value = encodeURIComponent(content[keys[i]]);
                 }
+
                 contentUrlEncoded += encodeURIComponent(key) + "=" + value;
                 if (i < keys.length - 1) contentUrlEncoded += "&";
             }

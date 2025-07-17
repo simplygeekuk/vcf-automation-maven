@@ -16,6 +16,7 @@
                 "restHost is required and must be of type 'REST:RESTHost'"
             );
         }
+
         if (!apiToken || typeof apiToken !== "string") {
             throw new ReferenceError(
                 "apiToken is required and must " + "be of type 'string'"
@@ -107,6 +108,7 @@
                 );
             }
         }
+
         if (projects && !Array.isArray(projects)) {
             throw new TypeError("projects not of type 'Array/string'");
         } else if (projects && projects.length > 0) {
@@ -118,6 +120,7 @@
                 throw new TypeError("projects not of type 'Array/string'");
             }
         }
+
         if (resourceTypes && !Array.isArray(resourceTypes)) {
             throw new TypeError("resourceTypes not of type 'Array/string'");
         } else if (resourceTypes && resourceTypes.length > 0) {
@@ -129,6 +132,7 @@
                 throw new TypeError("resourceTypes not of type 'Array/string'");
             }
         }
+
         if (cloudAccounts && !Array.isArray(cloudAccounts)) {
             throw new TypeError("cloudAccounts not of type 'Array/string'");
         } else if (cloudAccounts && cloudAccounts.length > 0) {
@@ -140,6 +144,7 @@
                 throw new TypeError("cloudAccounts not of type 'Array/string'");
             }
         }
+
         if (cloudTypes && !Array.isArray(cloudTypes)) {
             throw new TypeError("cloudTypes not of type 'Array/string'");
         } else if (cloudTypes && cloudTypes.length > 0) {
@@ -151,6 +156,7 @@
                 throw new TypeError("cloudTypes not of type 'Array/string'");
             }
         }
+
         if (requestedBy && !Array.isArray(requestedBy)) {
             throw new TypeError("requestedBy not of type 'Array/string'");
         } else if (requestedBy && requestedBy.length > 0) {
@@ -162,6 +168,7 @@
                 throw new TypeError("requestedBy not of type 'Array/string'");
             }
         }
+
         if (ownedBy && !Array.isArray(ownedBy)) {
             throw new TypeError("ownedBy not of type 'Array/string'");
         } else if (ownedBy && ownedBy.length > 0) {
@@ -173,6 +180,7 @@
                 throw new TypeError("ownedBy not of type 'Array/string'");
             }
         }
+
         if (tags && !Array.isArray(tags)) {
             throw new TypeError("ownedBy not of type 'Array/string'");
         } else if (tags && tags.length > 0) {
@@ -195,24 +203,31 @@
         if (statuses && statuses.length > 0) {
             uri += "&status=" + statuses.join(",");
         }
+
         if (projects && projects.length > 0) {
             uri += "&projects=" + projects.join(",");
         }
+
         if (resourceTypes && resourceTypes.length > 0) {
             uri += "&resourceTypes=" + resourceTypes.join(",");
         }
+
         if (cloudAccounts && cloudAccounts.length > 0) {
             uri += "&cloudAccounts=" + cloudAccounts.join(",");
         }
+
         if (cloudTypes && cloudTypes.length > 0) {
             uri += "&cloudTypes=" + cloudTypes.join(",");
         }
+
         if (requestedBy && requestedBy.length > 0) {
             uri += "&requestedBy=" + requestedBy.join(",");
         }
+
         if (ownedBy && ownedBy.length > 0) {
             uri += "&ownedBy=" + ownedBy.join(",");
         }
+
         if (tags && tags.length > 0) {
             uri += "&tags=" + tags.join(",");
         }
@@ -372,6 +387,7 @@
                 "deploymentId is required and must " + "be of type 'string'"
             );
         }
+
         if (
             !updatedDeploymentObject ||
             typeof updatedDeploymentObject !== "object"
@@ -480,6 +496,7 @@
                     "deploymentId is required and must " + "be of type 'string'"
                 );
             }
+
             if (!actionId || typeof actionId !== "string") {
                 throw new ReferenceError(
                     "actionId is required and must " + "be of type 'string'"
@@ -540,6 +557,7 @@
                 "deploymentId is required and must " + "be of type 'string'"
             );
         }
+
         if (!actionId || typeof actionId !== "string") {
             throw new ReferenceError(
                 "actionId is required and must " + "be of type 'string'"
@@ -651,6 +669,7 @@
                     "deploymentId is required and must " + "be of type 'string'"
                 );
             }
+
             if (!resourceId || typeof resourceId !== "string") {
                 throw new ReferenceError(
                     "resourceId is required and must " + "be of type 'string'"
@@ -725,6 +744,7 @@
                     "deploymentId is required and must " + "be of type 'string'"
                 );
             }
+
             if (!resourceId || typeof resourceId !== "string") {
                 throw new ReferenceError(
                     "resourceId is required and must " + "be of type 'string'"
@@ -778,6 +798,7 @@
                     "deploymentId is required and must " + "be of type 'string'"
                 );
             }
+
             if (!resourceId || typeof resourceId !== "string") {
                 throw new ReferenceError(
                     "resourceId is required and must " + "be of type 'string'"
@@ -822,11 +843,13 @@
                     "deploymentId is required and must " + "be of type 'string'"
                 );
             }
+
             if (!resourceId || typeof resourceId !== "string") {
                 throw new ReferenceError(
                     "resourceId is required and must " + "be of type 'string'"
                 );
             }
+
             if (!actionId || typeof actionId !== "string") {
                 throw new ReferenceError(
                     "actionId is required and must " + "be of type 'string'"
@@ -892,11 +915,13 @@
                     "deploymentId is required and must " + "be of type 'string'"
                 );
             }
+
             if (!resourceId || typeof resourceId !== "string") {
                 throw new ReferenceError(
                     "resourceId is required and must " + "be of type 'string'"
                 );
             }
+
             if (!actionId || typeof actionId !== "string") {
                 throw new ReferenceError(
                     "actionId is required and must " + "be of type 'string'"
@@ -1053,6 +1078,7 @@
                 );
             }
         }
+
         if (projects && !Array.isArray(projects)) {
             throw new TypeError("projects not of type 'Array/string'");
         } else if (projects && projects.length > 0) {
@@ -1064,6 +1090,7 @@
                 throw new TypeError("projects not of type 'Array/string'");
             }
         }
+
         if (resourceTypes && !Array.isArray(resourceTypes)) {
             throw new TypeError("resourceTypes not of type 'Array/string'");
         } else if (resourceTypes && resourceTypes.length > 0) {
@@ -1075,6 +1102,7 @@
                 throw new TypeError("resourceTypes not of type 'Array/string'");
             }
         }
+
         if (cloudAccounts && !Array.isArray(cloudAccounts)) {
             throw new TypeError("cloudAccounts not of type 'Array/string'");
         } else if (cloudAccounts && cloudAccounts.length > 0) {
@@ -1086,6 +1114,7 @@
                 throw new TypeError("cloudAccounts not of type 'Array/string'");
             }
         }
+
         if (cloudTypes && !Array.isArray(cloudTypes)) {
             throw new TypeError("cloudTypes not of type 'Array/string'");
         } else if (cloudTypes && cloudTypes.length > 0) {
@@ -1097,6 +1126,7 @@
                 throw new TypeError("cloudTypes not of type 'Array/string'");
             }
         }
+
         if (tags && !Array.isArray(tags)) {
             throw new TypeError("ownedBy not of type 'Array/string'");
         } else if (tags && tags.length > 0) {
@@ -1122,21 +1152,27 @@
         if (projects && projects.length > 0) {
             uri += "&projects=" + projects.join(",");
         }
+
         if (resourceTypes && resourceTypes.length > 0) {
             uri += "&resourceTypes=" + resourceTypes.join(",");
         }
+
         if (cloudAccounts && cloudAccounts.length > 0) {
             uri += "&cloudAccounts=" + cloudAccounts.join(",");
         }
+
         if (cloudTypes && cloudTypes.length > 0) {
             uri += "&cloudTypes=" + cloudTypes.join(",");
         }
+
         if (tags && tags.length > 0) {
             uri += "&tags=" + tags.join(",");
         }
+
         if (syncStatuses && syncStatuses.length > 0) {
             uri += "&syncStatus=" + syncStatuses.join(",");
         }
+
         if (isManaged) {
             uri += "&origin=" + managedOrigins.join(",");
         }
@@ -1246,6 +1282,7 @@
                 "resourceId is required and must " + "be of type 'string'"
             );
         }
+
         if (!actionId || typeof actionId !== "string") {
             throw new ReferenceError(
                 "actionId is required and must " + "be of type 'string'"
@@ -1300,6 +1337,7 @@
                 "resourceId is required and must " + "be of type 'string'"
             );
         }
+
         if (!actionId || typeof actionId !== "string") {
             throw new ReferenceError(
                 "actionId is required and must " + "be of type 'string'"

@@ -19,6 +19,7 @@
                 "email is required and must " + "be of type 'string'"
             );
         }
+
         if (type && typeof type !== "string") {
             throw new TypeError("type not of type 'string'");
         } else if (type && validTypes.indexOf(type.toLowerCase()) < 0) {

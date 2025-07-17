@@ -17,6 +17,7 @@
                 "restHost must be of type 'REST:RESTHost'"
             );
         }
+
         if (!apiToken || typeof apiToken !== "string") {
             throw new ReferenceError("apiToken must be a string");
         }
@@ -242,6 +243,7 @@
                 "projectId is required and must " + "be of type 'string'"
             );
         }
+
         if (!policyTypeId || typeof policyTypeId !== "string") {
             throw new ReferenceError(
                 "policyTypeId is required and must " + "be of type 'string'"
@@ -255,6 +257,7 @@
         if (projectId) {
             query.push("projectId=" + projectId);
         }
+
         if (policyTypeId) {
             query.push("policyTypeId=" + policyTypeId);
         }

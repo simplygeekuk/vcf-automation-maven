@@ -43,6 +43,7 @@
                     if (status === "poweredOff") {
                         break;
                     }
+
                     if (timeout <= 0) {
                         throw new Error(
                             "Timeout: VM '" +
@@ -50,6 +51,7 @@
                                 "' is still powered on"
                         );
                     }
+
                     log.info("Guest OS is still shutting down...");
                     timeout -= pollingRate;
                     System.sleep(pollingRate * 1000);

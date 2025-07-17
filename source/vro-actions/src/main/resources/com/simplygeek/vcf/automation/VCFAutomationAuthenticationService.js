@@ -15,6 +15,7 @@
                 "restHost is required and must be of type 'REST:RESTHost'"
             );
         }
+
         HttpRestClient.call(this, restHost);
 
         this.log = new (System.getModule(

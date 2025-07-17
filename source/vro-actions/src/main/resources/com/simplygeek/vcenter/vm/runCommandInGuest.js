@@ -30,32 +30,39 @@
             "vcVirtualMachine is required and must be of type 'VC:VirtualMachine'"
         );
     }
+
     if (!guestUsername || typeof guestUsername !== "string") {
         throw new ReferenceError(
             "guestUsername is required and must be of type 'string'"
         );
     }
+
     if (!guestPassword || typeof guestPassword !== "string") {
         throw new ReferenceError(
             "guestPassword is required and must be of type 'string'"
         );
     }
+
     if (!commandPath || typeof commandPath !== "string") {
         throw new ReferenceError(
             "commandPath is required and must be of type 'string'"
         );
     }
+
     if (!commandPath || typeof commandPath !== "string") {
         throw new ReferenceError(
             "commandPath is required and must be of type 'string'"
         );
     }
+
     if (commandArguments && typeof commandArguments !== "string") {
         throw new TypeError("commandArguments must be of type 'string'");
     }
+
     if (workingDirectory && typeof workingDirectory !== "string") {
         throw new TypeError("commandArguments must be of type 'string'");
     }
+
     if (environmentVariables && !Array.isArray(environmentVariables)) {
         throw new ReferenceError(
             "environmentVariables is required and must be of type 'Array/string'"
@@ -69,6 +76,7 @@
             }
         });
     }
+
     if (
         !vcVirtualMachine.guest ||
         !vcVirtualMachine.guest.toolsRunningStatus ||
@@ -93,6 +101,7 @@
         );
         maxWaitTime = 300;
     }
+
     if (
         expectedExitCode <= 0 ||
         typeof expectedExitCode !== "number" ||
@@ -126,6 +135,7 @@
         guestProgramSpec.arguments = commandArguments;
         if (workingDirectory)
             guestProgramSpec.workingDirectory = workingDirectory;
+
         if (environmentVariables && environmentVariables.length > 0)
             guestProgramSpec.envVariables = environmentVariables;
 
@@ -161,6 +171,7 @@
                             "Unexpected exit code: " + process.exitCode
                         );
                     }
+
                     break;
                 }
             } else {

@@ -220,6 +220,7 @@
                 "groupId is required and must " + "be of type 'number'"
             );
         }
+
         if (!samlGroupName || typeof samlGroupName !== "string") {
             throw new ReferenceError(
                 "samlGroupName is required and must " + "be of type 'string'"
@@ -256,6 +257,7 @@
                 "groupId is required and must " + "be of type 'number'"
             );
         }
+
         if (
             !samlGroupLinkSpecification ||
             typeof samlGroupLinkSpecification !== "object"
@@ -319,6 +321,7 @@
                 "groupId is required and must " + "be of type 'number'"
             );
         }
+
         if (
             (!accessTokenId && accessTokenId !== 0) ||
             typeof accessTokenId !== "number"
@@ -360,6 +363,7 @@
                 "groupId is required and must " + "be of type 'number'"
             );
         }
+
         if (!accessTokenName || typeof accessTokenName !== "string") {
             throw new ReferenceError(
                 "accessTokenName is required and must " + "be of type 'string'"
@@ -396,6 +400,7 @@
                 "groupId is required and must " + "be of type 'number'"
             );
         }
+
         if (
             !accessTokenSpecification ||
             typeof accessTokenSpecification !== "object"
@@ -435,6 +440,7 @@
                 "groupId is required and must " + "be of type 'number'"
             );
         }
+
         if (
             (!accessTokenId && accessTokenId !== 0) ||
             typeof accessTokenId !== "number"
@@ -457,6 +463,7 @@
             content.expires_at = expiresAt;
             //uri += "?expires_at=" + expiresAt;
         }
+
         var accessTokenObject;
 
         accessTokenObject = this.post(uri, content, [200]);
@@ -481,6 +488,7 @@
                 "groupId is required and must " + "be of type 'number'"
             );
         }
+
         if (
             (!accessTokenId && accessTokenId !== 0) ||
             typeof accessTokenId !== "number"
@@ -622,6 +630,7 @@
                 "projectId is required and must " + "be of type 'number'"
             );
         }
+
         if (
             !updatedProjectSpecification ||
             typeof updatedProjectSpecification !== "object"
@@ -761,6 +770,7 @@
                 "uri is required and must be of type 'string'"
             );
         }
+
         if (
             !expectedResponseCodes ||
             (Array.isArray(expectedResponseCodes) &&
@@ -874,6 +884,7 @@
                 "uri is required and must be of type 'string'"
             );
         }
+
         if (
             !expectedResponseCodes ||
             (Array.isArray(expectedResponseCodes) &&
@@ -917,6 +928,7 @@
                 "uri is required and must be of type 'string'"
             );
         }
+
         if (!content || typeof content !== "object") {
             throw new ReferenceError(
                 "content is required and must be of type 'object'"
@@ -965,6 +977,7 @@
                 "uri is required and must be of type 'string'"
             );
         }
+
         if (!content || typeof content !== "object") {
             throw new ReferenceError(
                 "content is required and must be of type 'object'"

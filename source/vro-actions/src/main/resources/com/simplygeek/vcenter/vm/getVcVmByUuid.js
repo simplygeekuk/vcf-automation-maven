@@ -10,6 +10,7 @@
             "vcVmInstanceUuid is required and must be of type 'string'"
         );
     }
+
     if (
         vCenterSdkConnection &&
         System.getObjectType(vCenterSdkConnection) !== "VC:SdkConnection"

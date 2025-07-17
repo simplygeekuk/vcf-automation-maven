@@ -28,6 +28,7 @@
                     "configElementName is required and must be of type 'string'"
                 );
             }
+
             if (!categoryPath || typeof categoryPath !== "string") {
                 throw new ReferenceError(
                     "categoryPath is required and must be of type 'string'"
@@ -107,6 +108,7 @@
                     "configElementName is required and must be of type 'string'"
                 );
             }
+
             if (!categoryPath || typeof categoryPath !== "string") {
                 throw new ReferenceError(
                     "categoryPath is required and must be of type 'string'"
@@ -161,6 +163,7 @@
                     "configElement is required and must be of type 'ConfigurationElement'"
                 );
             }
+
             if (!attributeName || typeof attributeName !== "string") {
                 throw new ReferenceError(
                     "attributeName is required and must be of type 'string'"
@@ -201,6 +204,7 @@
             attributeValue = attribute.value;
             attributeType = attribute.type;
             if (attributeType === "SecureString") attributeValue = "******";
+
             this.log.debug(
                 "Found Configuration Element Attribute '" +
                     attributeName +
@@ -239,16 +243,19 @@
                     "configElement is required and must be of type 'ConfigurationElement'"
                 );
             }
+
             if (!attributeName || typeof attributeName !== "string") {
                 throw new ReferenceError(
                     "attributeName is required and must be of type 'string'"
                 );
             }
+
             if (!attributeValue || typeof attributeValue !== "string") {
                 throw new ReferenceError(
                     "attributeValue is required and must be of type 'string'"
                 );
             }
+
             if (!attributeType || typeof attributeType !== "string") {
                 throw new ReferenceError(
                     "attributeType is required and must be of type 'string'"
@@ -334,16 +341,19 @@
                     "configElement is required and must be of type 'ConfigurationElement'"
                 );
             }
+
             if (!attributeName || typeof attributeName !== "string") {
                 throw new ReferenceError(
                     "attributeName is required and must be of type 'string'"
                 );
             }
+
             if (!attributeValue || typeof attributeValue !== "string") {
                 throw new ReferenceError(
                     "attributeValue is required and must be of type 'string'"
                 );
             }
+
             if (attributeType && typeof attributeType !== "string") {
                 throw new ReferenceError(
                     "attributeType must be of type 'string'"
@@ -433,6 +443,7 @@
                     "configElement is required and must be of type 'ConfigurationElement'"
                 );
             }
+
             if (!attributeName || typeof attributeName !== "string") {
                 throw new ReferenceError(
                     "attributeName is required and must be of type 'string'"

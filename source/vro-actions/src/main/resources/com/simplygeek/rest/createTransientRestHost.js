@@ -25,9 +25,8 @@
     var log = new (System.getModule(
         "com.simplygeek.vcf.orchestrator.logging"
     ).Logger())("Action", "VCFAutomationDeploymentService");
-    // eslint-disable-next-line no-useless-escape
     var urlRegex =
-        /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\/?$/i;
+        /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\/?$/i;
     var validAuthTypes = ["basic", "oauth2"];
 
     // Mandatory param check
@@ -38,10 +37,12 @@
     } else if (restHostUrl && !restHostUrl.match(urlRegex)) {
         throw new ReferenceError("restHostUrl not a valid URI");
     }
+
     // Optional param check
     if (restHostName && typeof restHostName !== "string") {
         throw new TypeError("restHostName must be of type 'string'");
     }
+
     if (
         connectionTimeout &&
         connectionTimeout !== 0 &&
@@ -49,6 +50,7 @@
     ) {
         throw new TypeError("connectionTimeout must be of type 'number'");
     }
+
     if (
         operationTimeout &&
         operationTimeout !== 0 &&
@@ -56,9 +58,11 @@
     ) {
         throw new TypeError("operationTimeout must be of type 'number'");
     }
+
     if (hostVerification && typeof hostVerification !== "boolean") {
         throw new TypeError("hostVerification must be of type 'boolean'");
     }
+
     if (authenticationType && typeof authenticationType !== "string") {
         throw new TypeError("authenticationType must be of type 'string'");
     } else if (

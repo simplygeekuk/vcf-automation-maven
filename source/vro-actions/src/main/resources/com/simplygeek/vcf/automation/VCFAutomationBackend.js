@@ -63,6 +63,7 @@
                 "uri is required and must be of type 'string'"
             );
         }
+
         if (
             !expectedResponseCodes ||
             (Array.isArray(expectedResponseCodes) &&
@@ -167,6 +168,7 @@
                 "uri is required and must be of type 'string'"
             );
         }
+
         if (
             !expectedResponseCodes ||
             (Array.isArray(expectedResponseCodes) &&
@@ -210,6 +212,7 @@
                 "uri is required and must be of type 'string'"
             );
         }
+
         if (!content || typeof content !== "object") {
             throw new ReferenceError(
                 "content is required and must be of type 'object'"
@@ -258,6 +261,7 @@
                 "uri is required and must be of type 'string'"
             );
         }
+
         if (!content || typeof content !== "object") {
             throw new ReferenceError(
                 "content is required and must be of type 'object'"

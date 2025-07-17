@@ -10,6 +10,7 @@ if (match) {
         failures: parseInt(match[2], 10),
         success: parseInt(match[2], 10) === 0,
     };
+
     console.log(JSON.stringify(result, null, 2));
 } else {
     console.error("Summary not found in log.");

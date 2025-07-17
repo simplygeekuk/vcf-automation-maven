@@ -16,6 +16,7 @@
                 "restHost is required and must be of type 'REST:RESTHost'"
             );
         }
+
         if (!apiToken || typeof apiToken !== "string") {
             throw new ReferenceError(
                 "apiToken is required and must " + "be of type 'string'"
@@ -148,6 +149,7 @@
         if (projectZones && projectZones.length > 0) {
             zones.zoneAssignmentSpecifications = projectZones;
         }
+
         request = this.put(uri, zones, [202]);
         this.pollRequestStatus(request.id);
         updatedProjectZones = this.getProjectZones(projectId);

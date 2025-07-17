@@ -29,6 +29,7 @@
                 "stringList is required and must be of type Array/string."
             );
         }
+
         if (!prefixPattern || typeof prefixPattern !== "object") {
             throw new TypeError(
                 "prefixPattern is required and must be a valid RegEx object"

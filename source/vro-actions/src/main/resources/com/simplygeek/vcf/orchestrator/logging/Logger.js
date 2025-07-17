@@ -26,6 +26,7 @@
                     validSources.join(", ")
             );
         }
+
         this.type = logSource;
         this.name = logName;
     }

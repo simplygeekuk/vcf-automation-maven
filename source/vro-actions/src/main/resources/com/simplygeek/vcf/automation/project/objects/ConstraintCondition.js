@@ -21,6 +21,7 @@
                 "tag is required and must " + "be of type 'object'"
             );
         }
+
         if (enforcement && typeof enforcement !== "string") {
             throw new TypeError("enforcement not of type 'string'");
         } else if (
@@ -35,6 +36,7 @@
                     validEnforcementTypes.join(", ")
             );
         }
+
         if (occurrence && typeof occurrence !== "string") {
             throw new TypeError("occurrence not of type 'string'");
         } else if (
@@ -53,6 +55,7 @@
         // Construct Object
         this.type = "TAG";
         if (enforcement) this.enforcement = enforcement;
+
         this.occurrence = occurrence ? occurrence.toUpperCase() : "MUST_OCCUR";
         this.expression = tag;
     }

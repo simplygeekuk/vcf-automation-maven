@@ -75,6 +75,7 @@ describe("LockingService", function () {
         expect(lockingService.log.debug).toHaveBeenCalledWith(
             "Creating lock for owner 'user1' and id 'lock1'"
         );
+
         expect(lockingService.log.debug).toHaveBeenCalledWith(
             "Lock created successfully"
         );

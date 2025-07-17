@@ -41,6 +41,7 @@
                 "name is required and must " + "be of type 'string'"
             );
         }
+
         if (!scopes || !Array.isArray(scopes)) {
             throw new TypeError(
                 "scopes is required and must be of type 'Array/string'"
@@ -62,6 +63,7 @@
                 }
             });
         }
+
         if (
             (accessLevel || accessLevel === 0) &&
             typeof accessLevel !== "number"

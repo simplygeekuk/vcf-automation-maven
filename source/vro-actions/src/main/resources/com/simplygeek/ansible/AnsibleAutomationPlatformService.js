@@ -82,6 +82,7 @@
                 "applicationId is required and must " + "be of type 'number'"
             );
         }
+
         var validScopes = ["read", "write"];
 
         if (!scope || typeof scope !== "string") {
@@ -645,6 +646,7 @@
                 "teamId is required and must " + "be of type 'number'"
             );
         }
+
         if ((!roleId && roleId !== 0) || typeof roleId !== "number") {
             throw new ReferenceError(
                 "roleId is required and must " + "be of type 'number'"
@@ -694,9 +696,11 @@
         if (roleName && typeof roleName !== "string") {
             throw new ReferenceError("roleName must be of type 'string'");
         }
+
         if (resourceType && typeof resourceType !== "string") {
             throw new ReferenceError("resourceType must be of type 'string'");
         }
+
         if (resourceName && typeof resourceName !== "string") {
             throw new ReferenceError("resourceName must be of type 'string'");
         }
@@ -944,6 +948,7 @@
                     "inventoryId is required and must " + "be of type 'number'"
                 );
             }
+
             if (!hostName || typeof hostName !== "string") {
                 throw new ReferenceError(
                     "hostName is required and must " + "be of type 'string'"

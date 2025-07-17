@@ -16,6 +16,7 @@
                 "restHost is required and must be of type 'REST:RESTHost'"
             );
         }
+
         if (!apiToken || typeof apiToken !== "string") {
             throw new ReferenceError(
                 "apiToken is required and must " + "be of type 'string'"
@@ -246,6 +247,7 @@
 
         if (projectSpecification.tags)
             var projectTags = projectSpecification.tags;
+
         delete projectSpecification.tags;
 
         this.log.debug("Creating project '" + projectSpecification.name + "'");
@@ -319,6 +321,7 @@
                 "projectId is required and must " + "be of type 'string'"
             );
         }
+
         if (tags && !Array.isArray(tags)) {
             throw new TypeError("tags not of type 'Array/object'");
         } else if (tags && tags.length > 0) {
@@ -367,6 +370,7 @@
                 "projectId is required and must " + "be of type 'string'"
             );
         }
+
         if (!updatedObject || typeof updatedObject !== "object") {
             throw new ReferenceError(
                 "updatedObject is required and must " + "be of type 'object'"

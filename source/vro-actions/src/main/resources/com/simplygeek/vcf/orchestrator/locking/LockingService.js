@@ -37,17 +37,20 @@
                     "lockOwner is required and must " + "be of type 'string'"
                 );
             }
+
             if (!lockId || typeof lockId !== "string") {
                 throw new ReferenceError(
                     "lockId is required and must " + "be of type 'string'"
                 );
             }
+
             if (retryMaxAttempts && typeof retryMaxAttempts !== "number") {
                 throw new ReferenceError(
                     "retryMaxAttempts is required and must " +
                         "be of type 'number'"
                 );
             }
+
             if (retryDelay && typeof retryDelay !== "number") {
                 throw new ReferenceError(
                     "retryDelay is required and must " + "be of type 'number'"
@@ -90,6 +93,7 @@
                 if (!lockAcquired && retryAttempt < retryMaxAttempts) {
                     System.sleep(retryDelay * 1000);
                 }
+
                 retryAttempt++;
             } while (!lockAcquired && retryAttempt <= retryMaxAttempts);
 
@@ -144,6 +148,7 @@
                     "lockOwner is required and must " + "be of type 'string'"
                 );
             }
+
             if (!lockId || typeof lockId !== "string") {
                 throw new ReferenceError(
                     "lockId is required and must " + "be of type 'string'"
