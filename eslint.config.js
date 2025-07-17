@@ -3,6 +3,8 @@ import jsdoc from "eslint-plugin-jsdoc";
 import jasmine from "eslint-plugin-jasmine";
 import prettierPlugin from "eslint-plugin-prettier";
 import eslintConfigPrettier from "eslint-config-prettier/flat";
+import orchestratorGlobals from "./eslint/orchestrator-globals.js";
+import jasmineGlobals from "./eslint/jasmine-globals.js";
 
 export default [
     // Ignore files globally
@@ -11,9 +13,7 @@ export default [
             "node_modules/**",
             "dist/**",
             "**/target/**",
-            "**/scripts/**",
             "eslint.config.js",
-            "prettier.config.js",
         ],
     },
 
@@ -30,59 +30,7 @@ export default [
         languageOptions: {
             ecmaVersion: 2015,
             globals: {
-                Atomics: "writable",
-                SharedArrayBuffer: "writable",
-                System: "writable",
-                Server: "writable",
-                Properties: "writable",
-                LockingSystem: "writable",
-                ActiveDirectory: "writable",
-                AD_Computer: "writable",
-                AD_Group: "writable",
-                AD_Host: "writable",
-                AD_HostManager: "writable",
-                AD_OrganizationalUnit: "writable",
-                AD_PluginOptions: "writable",
-                AD_ServerConfiguration: "writable",
-                AD_Unknown: "writable",
-                AD_User: "writable",
-                AD_UserGroup: "writable",
-                ConfigurationManager: "writable",
-                LdapAttribute: "writable",
-                LdapClient: "writable",
-                LdapClientFactory: "writable",
-                LdapDeleteRequest: "writable",
-                LdapDereferencePolicy: "writable",
-                LdapDN: "writable",
-                LdapEntry: "writable",
-                LdapFilter: "writable",
-                LdapLoadBalancingMode: "writable",
-                LdapModification: "writable",
-                LdapModificationType: "writable",
-                LdapRDN: "writable",
-                LdapResult: "writable",
-                LdapSearchRequest: "writable",
-                LdapSearchResult: "writable",
-                LdapSearchResultReference: "writable",
-                LdapSearchScope: "writable",
-                LdapSimplePagedResultsControl: "writable",
-                LdapSubtreeDeleteRequestControl: "writable",
-                AuthorizationValue: "writable",
-                HTTPBasicAuthentication: "writable",
-                RESTAuthentication: "writable",
-                RESTAuthenticationManager: "writable",
-                RESTCookie: "writable",
-                RESTHost: "writable",
-                RESTHostManager: "writable",
-                RESTOperation: "writable",
-                RESTRequest: "writable",
-                RESTRequestOptions: "writable",
-                RESTResponse: "writable",
-                RESTUtils: "writable",
-                VcPlugin: "writable",
-                VcVirtualDisk: "writable",
-                VcNamePasswordAuthentication: "writable",
-                VcGuestProgramSpec: "writable",
+                ...orchestratorGlobals,
             },
         },
         rules: {
@@ -91,7 +39,7 @@ export default [
             "jsdoc/require-description": "warn",
             "jsdoc/valid-types": "off",
             "jsdoc/no-undefined-types": "off",
-            "jsdoc/check-alignment": "error", // Example rule: enforce JSDoc comments alignment
+            "jsdoc/check-alignment": "error", // Enforce JSDoc comments alignment
             "jsdoc/check-param-names": "error", // Checks that parameter names match those in the function declaration
             "jsdoc/check-tag-names": "error", // Ensure that JSDoc tags exist
             "jsdoc/check-types": "error", // Enforces using consistent types
@@ -231,17 +179,11 @@ export default [
         languageOptions: {
             ecmaVersion: 2015,
             globals: {
-                jasmine: true,
-                describe: "readonly",
-                it: "readonly",
-                expect: "readonly",
-                beforeEach: "readonly",
-                afterEach: "readonly",
+                ...jasmineGlobals,
             },
         },
         rules: {
             ...jasmine.configs.recommended.rules,
-            "no-console": "off", // example override
             "no-undef": "off", // if Jasmine globals conflict
         },
     },
